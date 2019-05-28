@@ -4,7 +4,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 //Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 //Route::post('/login-user', 'Auth\LoginController@loginPost')->name('login-user');
