@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\ActiveScope;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,23 +17,37 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name','last_name', 'email', 'password','user_phone','skype_no','landline_no','address','gender','profile_image','is_active',
+        'city_id','state_id','country_id','role_id'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new ActiveScope());
+    }
+
+    public function role()
+    {
+        return $this->belongsTo('App\Role', 'role_id', 'id');
+    }
+
+    public function getProfileImageAttribute($profile_image)
+    {
+
+        if ($profile_image != null) {
+            return asset($profile_image);
+        } else {
+            return asset('images/user.png');
+        }
+
+    }
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
