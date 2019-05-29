@@ -43,7 +43,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -58,32 +58,17 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \App\User
      */
     protected function create(array $data)
     {
-        dd($data);
-        if ($data->hasFile('profile_image') && $data->file('profile_image')->isValid()) {
-            $extension = $data->file('profile_image')->extension();
-            $filename = time() . '.' . $extension;
-            $data->file('profile_image')->move(public_path('uploads'), $filename);
-        };
         return User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'user_phone' => $data['user_phone'],
-            'skype_no' => $data['skype_no'],
-            'landline_no' => $data['landline_no'],
-            'address' => $data['address'],
-            'city_id' => $data['city_id'],
-            'country_id' => $data['country_id'],
-            'state_id' => $data['state_id'],
-            'gender' => $data['gender'],
-            'profile_image' => "uploads/" . $filename,
-            'role_id' => $data['role_id'],
+            'role_id' => 3,
         ]);
     }
 }
