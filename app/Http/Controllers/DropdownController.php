@@ -6,12 +6,6 @@ use Illuminate\Http\Request;
 use DB;
 class DropdownController extends Controller
 {
-    public function index()
-    {
-        $countries = DB::table("countries")->pluck("name","id");
-        return view('index',compact('countries'));
-    }
-
     public function getStateList(Request $request)
     {
         $states = DB::table("states")

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\User;
 
 class LoginController extends Controller
@@ -36,8 +36,8 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, "password" => $request->password])) {
             if (Auth::user()->role->name == "Admin") {
                 return redirect()->route('admin-dashboard');
-            } elseif (Auth::user()->role->name == "User") {
-                return redirect()->route('welcome');
+            } else{
+                return redirect()->route('home');
             }
         }
         return redirect()->back();
@@ -56,7 +56,7 @@ class LoginController extends Controller
         if (Auth::check()) {
             Auth::logout();
         }
-        return redirect()->route('welcome');
+        return redirect()->route('login');
 
     }
     /**

@@ -49,9 +49,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:5', 'confirmed'],
         ]);
     }
 
@@ -63,10 +63,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        dd($data);
+        if ($data->hasFile('profile_image') && $data->file('profile_image')->isValid()) {
+            $extension = $data->file('profile_image')->extension();
+            $filename = time() . '.' . $extension;
+            $data->file('profile_image')->move(public_path('uploads'), $filename);
+        };
         return User::create([
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'user_phone' => $data['user_phone'],
+            'skype_no' => $data['skype_no'],
+            'landline_no' => $data['landline_no'],
+            'address' => $data['address'],
+            'city_id' => $data['city_id'],
+            'country_id' => $data['country_id'],
+            'state_id' => $data['state_id'],
+            'gender' => $data['gender'],
+            'profile_image' => "uploads/" . $filename,
+            'role_id' => $data['role_id'],
         ]);
     }
 }

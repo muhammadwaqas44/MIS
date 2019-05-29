@@ -14,17 +14,8 @@ use Image;
 
 class ImageHelpers
 {
-    /////     Type can be link or anything else. In $file we will receive path of file or object of file
-//    public static function updateProfileImage($folderName = "/assets-admin/images/", $file, $userName,$type, $fileName){
-//
-//        if($type == 'link'){
-//            Image::make($file)->save(public_path($folderName . $fileName));
-//        }else{
-//            Image::make($file)->save(public_path($folderName . $fileName));
-//            return "ok";
-//        }
-//    }
-    public static function updateProfileImage($folderName = "project-assets/images/", $file, $fileName){
+    public static function updateProfileImage($folderName = "/images/", $file, $fileName)
+    {
         Image::make($file)->save(public_path($folderName . $fileName));
     }
 }
