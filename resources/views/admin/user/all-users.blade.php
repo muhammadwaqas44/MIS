@@ -69,6 +69,9 @@
                                 <input type="search" placeholder="User Email..." name="search_email"
                                        class="form-control input-sm input-small input-inline"
                                        @if(!empty(app('request')->input('search_email'))) value="{{app('request')->input('search_email')}}" @endif>
+                                <input type="search" placeholder="User Phone..." name="search_phone"
+                                       class="form-control input-sm input-small input-inline"
+                                       @if(!empty(app('request')->input('search_phone'))) value="{{app('request')->input('search_phone')}}" @endif>
 
                                 <select id="role" name="role_id" class="form-control input-sm input-small input-inline">
                                     <option value="">Select Role</option>

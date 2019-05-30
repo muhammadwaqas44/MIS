@@ -27,6 +27,10 @@ class UserServices
             $email = $request->search_email;
             $allUsers = $allUsers->where('email', 'like', '%' . $email . '%');
         }
+        if ($request->filled('search_phone')) {
+            $phone = $request->search_phone;
+            $allUsers = $allUsers->where('user_phone', 'like', '%' . $phone . '%');
+        }
         if ($request->filled('role_id')) {
             $role_id = $request->role_id;
             $allUsers = $allUsers->where('role_id', 'like', '%' . $role_id . '%');
