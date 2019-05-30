@@ -1,5 +1,5 @@
 @extends('admin-layout.app')
-@section('title', "Update User")
+@section('title', "Add User")
 @section('content')
 
 
@@ -10,26 +10,26 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption caption-md">
                             <i class="icon-globe theme-font hide"></i>
-                            <span class="caption-subject font-blue-madison bold uppercase">Update Account</span>
+                            <span class="caption-subject font-blue-madison bold uppercase">Add User</span>
                         </div>
 
                     </div>
                     <div class="portlet-body">
                         <div class="tab-content">
-                            <form action="{{route('admin.update-account-post', $data['user']->id)}}" method="post"
+                            <form action="{{route('admin.add-user-post')}}" method="post"
                                   enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label class="control-label">First Name</label>
-                                    <input type="text" placeholder="First Name" value="{{ $data['user']->first_name}}"
+                                    <input type="text" placeholder="First Name"
                                            class="form-control" name="first_name" required/></div>
                                 <div class="form-group">
                                     <label class="control-label">Last Name</label>
-                                    <input type="text" placeholder="Last Name" value="{{ $data['user']->last_name}}"
+                                    <input type="text" placeholder="Last Name"
                                            class="form-control" required name="last_name"/></div>
                                 <div class="form-group">
                                     <label class="control-label">Email</label>
-                                    <input type="text" placeholder="Email" value="{{ $data['user']->email}}"
+                                    <input type="text" placeholder="Email"
                                            class="form-control" required name="email"/></div>
                                 <div class="form-group">
                                     <label class="control-label">Password</label>
@@ -39,13 +39,13 @@
                                 <div class="form-group">
                                     <label class="control-label ">Address</label>
                                     <input class="form-control placeholder-no-fix" type="text" placeholder="Address"
-                                           value="{{ $data['user']->address}}" name="address" /></div>
+                                           name="address"/></div>
 
                                 <div class="form-group">
                                     <label class="control-label">Country</label>
 
-                                    <select id="country" name="country_id" class="form-control" >
-                                        <option selected="true" value="{{ $data['user']->country_id}}">Select Country
+                                    <select id="country" name="country_id" class="form-control">
+                                        <option value="">Select Country
                                         </option>
                                         @foreach($data['countries'] as  $country)
                                             <option value="{{$country->id}}">
@@ -57,37 +57,36 @@
 
                                 <div class="form-group">
                                     <label class="control-label">State</label>
-                                    <select name="state_id" id="state" class="form-control" >
-                                        <option value="{{ $data['user']->state_id}}">Choose Country first</option>
+                                    <select name="state_id" id="state" class="form-control">
+                                        <option value="">Choose Country first</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">City</label>
-                                    <select name="city_id" id="city" class="form-control" >
-                                        <option value="{{ $data['user']->city_id}}">Choose State first</option>
+                                    <select name="city_id" id="city" class="form-control">
+                                        <option value="">Choose State first</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Mobile Number</label>
-                                    <input class="form-control placeholder-no-fix"
-                                           value="{{ $data['user']->user_phone}}" type="text"
-                                           placeholder="Mobile Number"  name="user_phone"/></div>
+                                    <input class="form-control placeholder-no-fix" type="text"
+                                           placeholder="Mobile Number" name="user_phone"/></div>
                                 <div class="form-group">
                                     <label class="control-label">Landline Number</label>
                                     <input class="form-control placeholder-no-fix" type="text"
-                                           value="{{ $data['user']->landline_no}}" placeholder="Landline Number"
-                                            name="landline_no"/></div>
+                                           placeholder="Landline Number"
+                                           name="landline_no"/></div>
                                 <div class="form-group">
                                     <label class="control-label">Skype Number</label>
                                     <input class="form-control placeholder-no-fix" type="text"
-                                           value="{{ $data['user']->skype_no}}" placeholder="Skype Number"
-                                           name="skype_no" />
+                                           placeholder="Skype Number"
+                                           name="skype_no"/>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label ">Role</label>
 
-                                    <select id="role" name="role_id" class="form-control" >
-                                        <option selected="true" value="{{ $data['user']->role_id}}">Select Role</option>
+                                    <select id="role" name="role_id" class="form-control">
+                                        <option value="">Select Role</option>
                                         @foreach($data['roles'] as  $role)
                                             <option value="{{$role->id}}">
                                                 {{$role->name}}
@@ -107,14 +106,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Profile Image</label>
-                                    <input type="file" class="form-control form-control-line" name="profile_image"
-                                           value="{{ $data['user']->profile_image}}" >
+                                    <input type="file" class="form-control form-control-line" name="profile_image">
                                 </div>
 
                                 <div class="margiv-top-10">
 
-                                    <button type="submit" class="btn green">{{ __(' Save Changes ') }}</button>
-
+                                    <button type="submit" class="btn green">Save Changes</button>
+                                    <a href="{{route('admin.all-users')}}" class="btn red">Cancel</a>
                                 </div>
                             </form>
 
