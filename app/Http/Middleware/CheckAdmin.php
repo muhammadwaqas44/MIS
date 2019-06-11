@@ -14,10 +14,10 @@ class CheckAdmin
         if(Auth::check()){
             if((Auth::user()->role_id != 1)){
                 Auth::logout();
-                return redirect()->route('welcome');
+                return redirect()->route('login');
             }
         }else
-            return redirect()->route('welcome');
+            return redirect()->route('login');
 
         return $next($request);
     }

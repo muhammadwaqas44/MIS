@@ -3,16 +3,14 @@
 namespace App\Services;
 
 use App\Helpers\ImageHelpers;
-use App\TawkUser;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserServices
 {
     function __construct()
     {
-        $this->usersPagination = 10;
+        $this->usersPagination = 20;
     }
 
     public function allUsers($request)
@@ -33,7 +31,7 @@ class UserServices
         }
         if ($request->filled('role_id')) {
             $role_id = $request->role_id;
-            $allUsers = $allUsers->where('role_id', 'like', '%' . $role_id . '%');
+            $allUsers = $allUsers->where('role_id', '=', $role_id);
         }
         $data['users'] = $allUsers->simplePaginate($this->usersPagination);
         return $data;
@@ -44,15 +42,11 @@ class UserServices
         $user = User::withoutGlobalScopes()->find($userId);
 
         if ($user->is_active == 0) {
-//            $user->update(['is_active' => 1]);
             $user->is_active = 1;
             $user->save();
-            return redirect()->back();
         } else {
-//            $user->update(['is_active' => 0]);
             $user->is_active = 0;
             $user->save();
-            return redirect()->back();
         }
     }
 
@@ -64,9 +58,13 @@ class UserServices
     public function myProfileUpdate($request, $userId)
     {
         $user = User::withoutGlobalScopes()->find($userId);
-        $fileName = time() . "-" . 'profile_image' . ".png";
-        ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
-        $user->update(array_merge($request->except('_token'), ['profile_image' => "/project-assets/images/users/" . $fileName, 'is_active' => 1, 'password' => Hash::make($request->get('password'))]));
+        if (!empty($request->profile_image)) {
+            $fileName = time() . "-" . 'profile_image' . ".png";
+            ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
+            $user->update(array_merge($request->except('_token'), ['profile_image' => "/project-assets/images/users/" . $fileName, 'is_active' => 1, 'password' => Hash::make($request->get('password'))]));
+        } else {
+            $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'password' => Hash::make($request->get('password')),]));
+        }
     }
 
     public function addUserPost($request)
@@ -75,9 +73,20 @@ class UserServices
             $fileName = time() . "-" . 'profile_image' . ".png";
             ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
             User::create(array_merge($request->except('_token'), ['profile_image' => "/project-assets/images/users/" . $fileName, 'is_active' => 1, 'password' => Hash::make($request->get('password'))]));
-
         } else {
             User::create(array_merge($request->except('_token'), ['is_active' => 1, 'password' => Hash::make($request->get('password')),]));
+        }
+    }
+
+    public function editUserUpdate($request, $userId)
+    {
+        $user = User::withoutGlobalScopes()->find($userId);
+        if (!empty($request->profile_image)) {
+            $fileName = time() . "-" . 'profile_image' . ".png";
+            ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
+            $user->update(array_merge($request->except('_token'), ['profile_image' => "/project-assets/images/users/" . $fileName, 'is_active' => 1, 'password' => Hash::make($request->get('password'))]));
+        } else {
+            $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'password' => Hash::make($request->get('password')),]));
         }
     }
 
@@ -105,6 +114,28 @@ class UserServices
     public function addTawkToUserPost($request)
     {
         User::create(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 4,]));
+    }
+
+    public function addTawkToUserPostJS($request)
+    {
+//        dd($request->all());
+        $name = $request->name;
+
+        $splitName = explode(' ', $name, 2);
+        $first_name = $splitName[0];
+        $last_name = !empty($splitName[1]) ? $splitName[1] : '';
+//        $firstname = strtok($name, ' ');
+//        $lastname = strstr($name, ' ');
+
+        User::create([
+            'is_active' => 1,
+            'role_id' => 4,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $request->email,
+            'user_phone' => $request->user_phone,
+        ]);
+        return redirect()->back();
     }
 
     public function editTawkToUserPost($request, $userId)
