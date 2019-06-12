@@ -13,7 +13,7 @@ class TawkToUsersExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $allUsers = collect(User::withoutGlobalScopes()->where('role_id', '=', 4)->get());
+        $allUsers = collect(User::withoutGlobalScopes()->where('role_id', '=', 3)->get());
         $valueArray = [];
         foreach ($allUsers as $user) {
             $valueArray[] = [
@@ -25,12 +25,10 @@ class TawkToUsersExport implements FromCollection, WithHeadings
                 'gender' => $user->gender,
             ];
         }
-
         return collect([
             $valueArray
         ]);
     }
-
     public function headings(): array
     {
         return [

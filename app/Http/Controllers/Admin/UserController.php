@@ -87,13 +87,6 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function addTawkToUserPostJS(Request $request, UserServices $userServices)
-    {
-//dd($request->all());
-        $userServices->addTawkToUserPostJS($request);
-        return redirect()->back();
-    }
-
     public function editTawkToUserPost(Request $request, $userId, UserServices $userServices)
     {
         $userServices->editTawkToUserPost($request, $userId);

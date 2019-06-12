@@ -14,15 +14,12 @@
                     </div>
                 </div>
                 <div class="portlet-body">
+
                     <div class="table-toolbar">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="btn-group">
-                                    <a href="#" data-toggle="modal" data-target="#myModal4">
-                                        <button id="sample_editable_1_new" class="btn sbold green"> Data Populate
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </a>
+
 
                                     <a href="#" data-toggle="modal" data-target="#myModal1">
                                         <button id="sample_editable_1_new" class="btn sbold green"> Add New
@@ -30,158 +27,134 @@
                                         </button>
                                     </a>
 
+
                                     <div class="modal fade" id="myModal1" tabindex="-1"
                                          role="dialog">
                                         <div class="modal-dialog">
-                                            <!-- Modal content-->
                                             <div class="modal-content">
-                                                <div class="modal-body modal-body-sub_agile">
 
-                                                    <div class="modal_body_left modal_body_left1">
-
-                                                        <div class="profile-content">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="portlet light ">
-                                                                        <div class="portlet-title tabbable-line">
-                                                                            <div class="caption caption-md">
-                                                                                <i class="icon-globe theme-font hide"></i>
-                                                                                <span class="caption-subject font-blue-madison bold uppercase">Add Tawk.to User</span>
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div class="portlet-body">
-                                                                            <div class="tab-content">
-                                                                                <form action="{{route('admin.add-tawk-to-user')}}"
-                                                                                      method="post"
-                                                                                      enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label">First
-                                                                                            Name</label>
-                                                                                        <input type="text"
-                                                                                               placeholder="First Name"
-                                                                                               class="form-control"
-                                                                                               name="first_name"
-                                                                                               required/></div>
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label">Last
-                                                                                            Name</label>
-                                                                                        <input type="text"
-                                                                                               placeholder="Last Name"
-                                                                                               class="form-control"
-                                                                                               required
-                                                                                               name="last_name"/></div>
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label">Email</label>
-                                                                                        <input type="text"
-                                                                                               placeholder="Email"
-                                                                                               class="form-control"
-                                                                                               required name="email"/>
-                                                                                    </div>
-
-
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label">Mobile
-                                                                                            Number</label>
-                                                                                        <input class="form-control placeholder-no-fix"
-                                                                                               type="text"
-                                                                                               placeholder="Mobile Number"
-                                                                                               name="user_phone"/></div>
-
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label ">Gender</label>
-                                                                                        <input type="radio"
-                                                                                               name="gender" id="male"
-                                                                                               value="Male" checked>
-                                                                                        <label for="male">Male</label>
-                                                                                        <span class="check"></span>
-
-                                                                                        <input type="radio"
-                                                                                               name="gender" id="female"
-                                                                                               value="Female">
-                                                                                        <label for="female">Female</label>
-                                                                                        <span class="check"></span>
-                                                                                    </div>
-
-                                                                                    <div class="margiv-top-10">
-
-                                                                                        <button type="submit"
-                                                                                                class="btn green">Save
-                                                                                        </button>
-                                                                                        <button type="button"
-                                                                                                class="btn red"
-                                                                                                data-dismiss="modal">
-                                                                                            Cancel
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </form>
-
-
-                                                                            </div>
-                                                                        </div>
+                                                <div class="modal-body">
+                                                    <div class="scroller" style="height:500px; width: 500px;"
+                                                         data-always-visible="1"
+                                                         data-rail-visible1="1">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="portlet-title tabbable-line">
+                                                                    <div class="caption caption-md">
+                                                                        <i class="icon-globe theme-font hide"></i>
+                                                                        <span class="caption-subject font-blue-madison bold uppercase">Add Tawk.to User</span>
                                                                     </div>
+
                                                                 </div>
+                                                                <hr>
+                                                                <form action="{{route('admin.add-tawk-to-user')}}"
+                                                                      method="post"
+                                                                      enctype="multipart/form-data">
+                                                                    @csrf
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">First
+                                                                            Name</label>
+                                                                        <input type="text"
+                                                                               placeholder="First Name"
+                                                                               id="first_name"
+                                                                               class="form-control"
+                                                                               name="first_name"
+                                                                               required/></div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Last
+                                                                            Name</label>
+                                                                        <input type="text"
+                                                                               placeholder="Last Name"
+                                                                               class="form-control"
+                                                                               required
+                                                                               name="last_name"
+                                                                               id="last_name"/>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Email</label>
+                                                                        <input type="text"
+                                                                               placeholder="Email"
+                                                                               class="form-control"
+                                                                               id="email"
+                                                                               required
+                                                                               name="email"/>
+                                                                    </div>
+
+
+                                                                    <div class="form-group">
+                                                                        <label class="control-label">Mobile
+                                                                            Number</label>
+                                                                        <input class="form-control placeholder-no-fix"
+                                                                               type="text"
+                                                                               placeholder="Mobile Number"
+                                                                               id="user_phone"
+                                                                               name="user_phone"/>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label class="control-label ">Gender</label>
+                                                                        <input type="radio"
+                                                                               name="gender"
+                                                                               id="male"
+                                                                               value="Male"
+                                                                               checked>
+                                                                        <label for="male">Male</label>
+                                                                        <span class="check"></span>
+
+                                                                        <input type="radio"
+                                                                               name="gender"
+                                                                               id="female"
+                                                                               value="Female">
+                                                                        <label for="female">Female</label>
+                                                                        <span class="check"></span>
+                                                                    </div>
+
+                                                                    <div class="margiv-top-10">
+
+                                                                        <button type="submit"
+                                                                                class="btn green">
+                                                                            Save
+                                                                        </button>
+                                                                        <button type="button"
+                                                                                class="btn red"
+                                                                                data-dismiss="modal">
+                                                                            Cancel
+                                                                        </button>
+
+                                                                    </div>
+                                                                </form>
+
+
+                                                            </div>
+                                                            <div class="col-md-6">
+
+                                                                <div class="portlet-title tabbable-line">
+                                                                    <div class="caption caption-md">
+                                                                        <i class="icon-globe theme-font hide"></i>
+                                                                        <span class="caption-subject font-blue-madison bold uppercase">Data Populate Tawk.to User</span>
+                                                                    </div>
+
+                                                                </div>
+                                                                <hr>
+                                                                <form method="post"
+                                                                      enctype="multipart/form-data">
+                                                                    @csrf
+                                                                    <textarea id="tawktouser" rows="4"
+                                                                              class="form-control"></textarea>
+                                                                    <br>
+                                                                    <button type="button" id="add"
+                                                                            class="btn green">Populate
+                                                                    </button>
+
+                                                                </form>
+
+
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
+
                                             </div>
-                                            <!-- //Modal content-->
-                                        </div>
-                                    </div>
-                                    <div class="modal fade" id="myModal4" tabindex="-1"
-                                         role="dialog">
-                                        <div class="modal-dialog">
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <div class="modal-body modal-body-sub_agile">
-
-                                                    <div class="modal_body_left modal_body_left1">
-
-                                                        <div class="profile-content">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="portlet light ">
-                                                                        <div class="portlet-title tabbable-line">
-                                                                            <div class="caption caption-md">
-                                                                                <i class="icon-globe theme-font hide"></i>
-                                                                                <span class="caption-subject font-blue-madison bold uppercase">Data Populate Tawk.to User</span>
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div class="portlet-body">
-                                                                            <div class="tab-content">
-
-                                                                                <form method="post"
-                                                                                      enctype="multipart/form-data">
-                                                                                    @csrf
-                                                                                    <textarea id="tawktouser" rows="4"
-                                                                                              class="form-control"></textarea>
-                                                                                    <br>
-                                                                                    <button type="button" id="add"
-                                                                                            class="btn green">Add
-                                                                                    </button>
-                                                                                    <button type="button"
-                                                                                            class="btn red"
-                                                                                            data-dismiss="modal">
-                                                                                        Cancel
-                                                                                    </button>
-                                                                                </form>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- //Modal content-->
                                         </div>
                                     </div>
 
@@ -214,6 +187,7 @@
                                                 <div class="modal-body modal-body-sub_agile">
 
                                                     <div class="modal_body_left modal_body_left1">
+
 
                                                         <div class="profile-content">
                                                             <div class="row">
@@ -294,21 +268,6 @@
                         </div>
 
                     </div>
-
-
-                    {{--<div class="table-toolbar">--}}
-                    {{--<div class="row">--}}
-                    {{--<div class="col-md-6">--}}
-                    {{--<form method="post" enctype="multipart/form-data">--}}
-                    {{--@csrf--}}
-                    {{--<textarea id="tawktouser" rows="4" class="form-control"></textarea>--}}
-                    {{--<br>--}}
-                    {{--<button type="button" id="add" class="btn green">Add</button>--}}
-                    {{--</form>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-
 
                     <table class="table table-striped table-bordered table-hover table-checkable order-column"
                            id="sample_1">
@@ -485,98 +444,42 @@
             });
             $("#add").click(function (e) {
                 e.preventDefault();
-
                 var tawktouser = $("#tawktouser").val().split('\n');
-
                 if (tawktouser[0]) {
                     var split_str_1 = tawktouser[0].split(':');
-                    var split_str_column_1 = split_str_1[1].split(':');
-                    console.log(split_str_column_1[0]);
-                    var split_str_column_1_name = split_str_1[0];
+                    var split_str_column_1 = split_str_1[0].split(':');
+                    var split_str_column_1_nameFor = split_str_column_1[0].split(' ');
+                    console.log(split_str_column_1_nameFor[0]);
+                    console.log(split_str_column_1_nameFor[1]);
                 }
                 else {
                     split_str_column_1 = null;
-                    var split_str_column_1_name = null;
-                    console.log(split_str_column_1_name);
-
                 }
-
                 if (tawktouser[1]) {
                     var split_str_2 = tawktouser[1].split(':');
                     var split_str_column_2 = split_str_2[1].split(':');
                     console.log(split_str_column_2[0]);
-                    var split_str_column_2_name = split_str_2[0];
+
                 } else {
                     split_str_column_2 = null;
-
-                    var split_str_column_2_name = null;
-                    console.log(split_str_column_2_name);
-
                 }
-
                 if (tawktouser[2]) {
                     var split_str_3 = tawktouser[2].split(':');
                     var split_str_column_3 = split_str_3[1].split(':');
                     console.log(split_str_column_3[0]);
-                    var split_str_column_3_name = split_str_3[0];
-
                 } else {
                     split_str_column_3 = null;
-                    var split_str_column_3_name = null;
-
-                    console.log(split_str_column_3_name);
                 }
-
-//                var arrayData = { "name" : split_str_column_1[0], "email" : split_str_column_2[0], "user_phone": split_str_column_3[0] };
-
-
-                var name = split_str_column_1[0];
+                var first_name = split_str_column_1_nameFor[0];
+                var last_name = split_str_column_1_nameFor[1];
                 var email = split_str_column_2[0];
+                var user_phone = split_str_column_3[0];
 
-                if (tawktouser[2]) {
-                    var user_phone = split_str_column_3[0];
-                } else {
-                    var user_phone = null;
-                }
-
-                $.ajax({
-                    type: "post",
-                    url: "/admin/js/add-tawk-to-user",
-                    data: {
-                        name: name,
-                        email: email,
-                        user_phone: user_phone
-                    },
-                    success: function (data) {
-                        alert("data added Successfully");
-                        window.location.reload();
-                    },
-                    error: function (data) {
-                        alert("Data Already Exists");
-                    }
-                });
-
-
-//                var i = 0;
-//                for (i = 0; i < tawktouser.length; i++) {
-//                    alert(tawktouser[i]);
-//                    var split_str = tawktouser[i].split(':');
-//                    var split_str_column = split_str[0].split(':');
-//                    var j = 0;
-//                        for (j = 0; j < split_str_column.length; j++) {
-//                            console.log(split_str_column[0]);
-//
-//
-////                            var split_str_name = split_str_column[j].split(':');
-////                            var split_str_name_get = split_str_name[0].split(':');
-////                            var k = 0;
-////                            for (k = 0; k < split_str_name_get.length; k++) {
-////                                alert(split_str_name_get[k]);
-////                            }
-//                        }
-//                }
+                $('#first_name').val(first_name);
+                $('#last_name').val(last_name);
+                $('#email').val(email);
+                $('#user_phone').val(user_phone);
             });
-
         });
     </script>
 @endsection

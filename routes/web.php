@@ -46,8 +46,6 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/export-tawk-to-user','Admin\UserController@exportTawkToUser')->name('admin.export-tawk-to-user');
     route::post('/admin/import-tawk-to-user','Admin\UserController@importTawkToUser')->name('admin.import-tawk-to-user');
 
-
-    route::post('/admin/js/add-tawk-to-user','Admin\UserController@addTawkToUserPostJS')->name('admin.js.add-tawk-to-user');
     /// END TAWK.TO USERS
 });
 
