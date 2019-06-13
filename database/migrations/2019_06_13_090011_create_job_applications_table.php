@@ -20,14 +20,14 @@ class CreateJobApplicationsTable extends Migration
             $table->string('user_phone');
             $table->string('address')->nullable();
             $table->string('city_name')->nullable();
-            $table->string('attachment_cv', '500');
+            $table->string('resume', '500');
             $table->integer('channel_id')->unsigned()->nullable();
             $table->foreign(['channel_id'])->references('id')->on('channels')->onDelete('cascade');
             $table->integer('designation_id')->unsigned()->nullable();
             $table->foreign(['designation_id'])->references('id')->on('designations')->onDelete('cascade');
             $table->integer('experience_id')->unsigned()->nullable();
             $table->foreign(['experience_id'])->references('id')->on('experiences')->onDelete('cascade');
-            $table->boolean('active')->default(true);
+            $table->integer('is_active')->default(true);
             $table->timestamps();
         });
     }

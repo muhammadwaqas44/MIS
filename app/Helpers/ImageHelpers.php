@@ -18,4 +18,10 @@ class ImageHelpers
     {
         Image::make($file)->save(public_path($folderName . $fileName));
     }
+
+    public static function uploadFile($folderName = '/files/' , $file , $fileName){
+        $filename = $fileName;
+        $destinationPath = public_path($folderName);
+        $file->move($destinationPath,$filename);
+    }
 }
