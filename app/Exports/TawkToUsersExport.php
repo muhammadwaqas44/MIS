@@ -40,5 +40,4 @@ class TawkToUsersExport implements FromCollection, WithHeadings
             'Gender',
         ];
     }
-
 }

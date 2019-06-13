@@ -66,7 +66,6 @@
                                                                         <input type="text"
                                                                                placeholder="Last Name"
                                                                                class="form-control"
-                                                                               required
                                                                                name="last_name"
                                                                                id="last_name"/>
                                                                     </div>
@@ -139,6 +138,7 @@
                                                                 <form method="post"
                                                                       enctype="multipart/form-data">
                                                                     @csrf
+                                                                    {{--<label class="control-label">Add Data</label>--}}
                                                                     <textarea id="tawktouser" rows="4"
                                                                               class="form-control"></textarea>
                                                                     <br>
