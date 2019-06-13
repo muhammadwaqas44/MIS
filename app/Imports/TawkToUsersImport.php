@@ -30,7 +30,7 @@ class TawkToUsersImport implements ToModel
                     'last_name' => $last_name,
                     'email' => $row[1],
                     'user_phone' => $row[2],
-                    'role_id' => 4,
+                    'role_id' => 3,
                 ]);
             }
         }

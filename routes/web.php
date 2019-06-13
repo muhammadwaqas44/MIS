@@ -23,7 +23,6 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
 
     //// ADMIN DASHBOARD
     Route::get('/admin-dashboard', 'Admin\DashboardController@dashboardView')->name('admin-dashboard');
-
     /// END DASHBOARD
     /// My Profile
     route::get('/admin/my-profile/{userId}','Admin\UserController@myProfile')->name('admin.my-profile');
@@ -45,8 +44,12 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::post('/admin/edit-tawk-to-user/{userId}','Admin\UserController@editTawkToUserPost')->name('admin.edit-tawk-to-user');
     route::get('/admin/export-tawk-to-user','Admin\UserController@exportTawkToUser')->name('admin.export-tawk-to-user');
     route::post('/admin/import-tawk-to-user','Admin\UserController@importTawkToUser')->name('admin.import-tawk-to-user');
-
     /// END TAWK.TO USERS
+    /// JOB APPLICATION FOR HIRING PROCESS
+
+    route::get('/admin/all-job-application','Admin\JobApplicationController@allJobApplications')->name('admin.all-job-application');
+    route::post('/admin/post-job-application','Admin\JobApplicationController@jobApplicationsPost')->name('admin.post-job-application');
+    /// END JOB APPLICATION FOR HIRING PROCESS
 });
 
 

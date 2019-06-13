@@ -33,7 +33,7 @@ class UserServices
             $role_id = $request->role_id;
             $allUsers = $allUsers->where('role_id', '=', $role_id);
         }
-        $data['users'] = $allUsers->simplePaginate($this->usersPagination);
+        $data['users'] = $allUsers->paginate($this->usersPagination);
         return $data;
     }
 
@@ -116,7 +116,7 @@ class UserServices
             $phone = $request->search_phone;
             $allUsers = $allUsers->where('user_phone', 'like', '%' . $phone . '%');
         }
-        $data['tawk_to_users'] = $allUsers->simplePaginate($this->usersPagination);
+        $data['tawk_to_users'] = $allUsers->paginate($this->usersPagination);
         return $data;
     }
 

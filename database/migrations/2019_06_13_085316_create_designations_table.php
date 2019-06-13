@@ -14,9 +14,9 @@ class CreateDesignationsTable extends Migration
     public function up()
     {
         Schema::create('designations', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name',"150")->unique();
-            $table->boolean('active')->default(true);
+            $table->increments('id');
+            $table->string('name',"150");
+            $table->integer('is_active')->default(true);
             $table->timestamps();
         });
     }

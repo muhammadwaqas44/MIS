@@ -11,7 +11,9 @@ class DesignationTableSeeder extends Seeder
      */
     public function run()
     {
-        $designations = ['Rozee'];
+        $designations = ['Internee','Frontend Developer','Backend Developer','Web Designer','Video Editor','Graphic Designer'
+        ,'SQA Engineer','Manager Sales','SEO Specialist','Director of Operations','General Manager','Office Assistant'
+        ,'Office Boy','Guard','Sweeper','Content Creator','WordPress Developer'];
 
         foreach ($designations as $designation) {
             \App\Designation::create(['name' => $designation]);
