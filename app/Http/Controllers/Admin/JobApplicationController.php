@@ -18,13 +18,11 @@ class JobApplicationController extends Controller
         $data['experience'] = Experience::all();
         $data['designation'] = Designation::orderBy('name')->get();
         return view('admin.job_application.all-job-applications', compact('data'));
-
     }
 
     public function jobApplicationsPost(Request $request, JobApplicationServices $applicationServices)
     {
         $applicationServices->jobApplicationsPost($request);
         return redirect()->back();
-
     }
 }

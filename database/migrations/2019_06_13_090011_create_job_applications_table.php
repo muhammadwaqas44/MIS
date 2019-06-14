@@ -14,7 +14,7 @@ class CreateJobApplicationsTable extends Migration
     public function up()
     {
         Schema::create('job_applications', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name',"150");
             $table->string('email',50)->unique();
             $table->string('user_phone');

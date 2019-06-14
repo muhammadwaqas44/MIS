@@ -1,7 +1,12 @@
 @extends('admin-layout.app')
 @section('title', "All Job Applications")
 @section('content')
-
+    <style href="{{asset('assets-admin/assets/global/plugins/jquery-datatable/jquery.dataTables.min.css')}}"  rel="stylesheet" type="text/css" ></style>
+<style>
+    thead input {
+        width: 100%;
+    }
+</style>
 
     <div class="row">
         <div class="col-md-12">
@@ -235,8 +240,7 @@
                         {{--</div>--}}
                     {{--</div>--}}
 
-                    <table class="table table-striped table-bordered table-hover table-checkable order-column"
-                           id="sample_1">
+                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="example" style="width:100%">
                         <thead>
                         <tr>
                             <th>Id</th>
@@ -312,4 +316,56 @@
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
     </div>
+
+    <script src="{{asset('assets-admin/assets/global/plugins/jquery-datatable/jquery-3.3.1.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets-admin/assets/global/plugins/jquery-datatable/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets-admin/assets/global/plugins/jquery-datatable/dataTables.fixedHeader.min.js')}}" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+        $('#example thead tr').clone(true).appendTo( '#example thead' );
+        $('#example thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+
+        var table = $('#example').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true
+        } );
+    } );
+
+    $(document).ready(function() {
+        $('#example').DataTable( {
+            initComplete: function () {
+                this.api().columns().every( function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo( $(column.header()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            }
+        } );
+    } );
+</script>
 @endsection
