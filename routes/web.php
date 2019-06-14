@@ -30,7 +30,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
      /// End My Profile
     /// ALL USERS
     route::get('/admin/all-users','Admin\UserController@allUsers')->name('admin.all-users');
-    Route::get('/admin/user-activation/{userId}',  'Admin\UserController@changeUserStatus')->name('admin.change-user-status');
+    Route::get('/admin/user-activation/{userId}','Admin\UserController@changeUserStatus')->name('admin.change-user-status');
     Route::get('/admin/user-delete/{userId}', 'Admin\UserController@deleteUser')->name('admin.delete-user');
     route::get('/admin/add-user','Admin\UserController@addUser')->name('admin.add-user');
     route::post('/admin/add-user-post','Admin\UserController@addUserPost')->name('admin.add-user-post');
@@ -49,6 +49,8 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
 
     route::get('/admin/all-job-application','Admin\JobApplicationController@allJobApplications')->name('admin.all-job-application');
     route::post('/admin/post-job-application','Admin\JobApplicationController@jobApplicationsPost')->name('admin.post-job-application');
+    route::get('/admin/download-resume/{jobApplicantId}','Admin\JobApplicationController@downloadResumeApplicant')->name('admin.download-resume');
+    Route::get('/admin/delete-job-application/{jobApplicantId}', 'Admin\JobApplicationController@deleteJobApplication')->name('admin.delete-job-application');
     /// END JOB APPLICATION FOR HIRING PROCESS
 });
 

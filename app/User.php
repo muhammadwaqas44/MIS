@@ -6,15 +6,17 @@ use App\Scopes\ActiveScope;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
     protected $fillable = [
-        'first_name','last_name', 'email', 'password','user_phone','skype_no','landline_no','address','gender','profile_image','is_active',
-        'city_id','state_id','country_id','role_id'
+        'first_name', 'last_name', 'email', 'password', 'user_phone', 'skype_no', 'landline_no', 'address', 'gender', 'profile_image', 'is_active',
+        'city_id', 'state_id', 'country_id', 'role_id'
     ];
+    use SoftDeletes;
 
     protected static function boot()
     {
@@ -38,6 +40,7 @@ class User extends Authenticatable
         }
 
     }
+
     protected $hidden = [
         'password', 'remember_token',
     ];

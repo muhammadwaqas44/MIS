@@ -4,10 +4,12 @@ namespace App;
 
 use App\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class JobApplication extends Model
 {
     protected $fillable = ['name', 'email', 'user_phone', 'address', 'city_name', 'resume', 'channel_id', 'designation_id', 'experience_id', 'is_active'];
+    use SoftDeletes;
 
     protected static function boot()
     {

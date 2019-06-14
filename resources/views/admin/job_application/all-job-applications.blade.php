@@ -6,6 +6,7 @@
     thead input {
         width: 100%;
     }
+    table.fixedHeader-floating{position:fixed !important;background-color:white}table.fixedHeader-floating.no-footer{border-bottom-width:0}table.fixedHeader-locked{position:absolute !important;background-color:white}@media print{table.fixedHeader-floating{display:none}}
 </style>
 
     <div class="row">
@@ -240,74 +241,73 @@
                         {{--</div>--}}
                     {{--</div>--}}
 
-                    <table class="table table-striped table-bordered table-hover table-checkable order-column" id="example" style="width:100%">
+                    <table class="table table-striped table-bordered table-hover " id="example" style="width:100%">
                         <thead>
                         <tr>
                             <th>Id</th>
                             <th> Name</th>
                             <th> Email</th>
                             <th> Phone</th>
-                            <th> Role</th>
+                            <th> Resume</th>
                             <th> Joined</th>
                             <th> Actions</th>
                         </tr>
                         </thead>
-                        {{--<tbody>--}}
-                        {{--@foreach($data['users']['users'] as $user)--}}
-                        {{--<tr class="odd gradeX">--}}
-                        {{--<td class="center"> {{$user->id}} </td>--}}
-                        {{--<td> {{$user->first_name}} {{$user->last_name}}</td>--}}
-                        {{--<td>--}}
-                        {{--<a href="mailto:{{$user->email}}"> {{$user->email}}</a>--}}
-                        {{--</td>--}}
+                        <tbody>
+                        @foreach($data['allJobApplications'] ['allJobApplications'] as $jobApplication)
+                            <tr class="odd gradeX">
+                                <td class="center"> {{$jobApplication->id}} </td>
+                                <td> {{$jobApplication->name}}</td>
+                                <td>
+                                    <a href="mailto:{{$jobApplication->email}}"> {{$jobApplication->email}}</a>
+                                </td>
 
-                        {{--<td class="center">{{$user->user_phone}}</td>--}}
-                        {{--<td class="center">{{$user->role->name}}</td>--}}
+                                <td class="center">{{$jobApplication->user_phone}}</td>
+                                <td class="center">
+                                    <a href="{{route('admin.download-resume',$jobApplication->id)}}">
+                                        <i class="fa fa-file"></i> Resume
+                                    </a>
+                                </td>
 
-                        {{--<td class="center">{{$user->created_at}}</td>--}}
-                        {{--<td>--}}
-                        {{--<div class="btn-group">--}}
-                        {{--<button class="btn btn-xs green dropdown-toggle" type="button"--}}
-                        {{--data-toggle="dropdown" aria-expanded="false"> Actions--}}
-                        {{--<i class="fa fa-angle-down"></i>--}}
-                        {{--</button>--}}
-                        {{--<ul class="dropdown-menu pull-left" role="menu">--}}
-                        {{--<li>--}}
-                        {{--@if($user->is_active == 0)--}}
-                        {{--<a href="{{route('admin.change-user-status',$user->id)}}">--}}
-                        {{--<i class="fa fa-user-plus"></i> Active </a>--}}
-                        {{--@else--}}
-                        {{--<a href="{{route('admin.change-user-status',$user->id)}}">--}}
-                        {{--<i class="fa fa-user-times"></i> DeActive </a>--}}
-                        {{--@endif--}}
-                        {{--</li>--}}
-                        {{--<li>--}}
-                        {{--<a href="{{route('admin.delete-user',$user->id)}}">--}}
-                        {{--<i class="icon-tag"></i> Delete </a>--}}
-                        {{--</li>--}}
-                        {{--<li>--}}
-                        {{--<a href="{{route('admin.update-account',$user->id)}}">--}}
-                        {{--<i class="icon-user"></i> Edit </a>--}}
-                        {{--</li>--}}
-                        {{--<li class="divider"></li>--}}
-                        {{--<li>--}}
-                        {{--<a href="javascript:;">--}}
-                        {{--<i class="icon-flag"></i> Comments--}}
-                        {{--<span class="badge badge-success">4</span>--}}
-                        {{--</a>--}}
-                        {{--</li>--}}
-                        {{--</ul>--}}
-                        {{--</div>--}}
-                        {{--</td>--}}
-                        {{--</tr>--}}
-                        {{--@endforeach--}}
-                        {{--</tbody>--}}
+                                <td class="center">{{$jobApplication->created_at}}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-xs green dropdown-toggle" type="button"
+                                                data-toggle="dropdown" aria-expanded="false"> Actions
+                                            <i class="fa fa-angle-down"></i>
+                                        </button>
+                                        <ul class="dropdown-menu pull-left" role="menu">
+                                            <li>
+                                                @if($jobApplication->is_active == 0)
+                                                    <a href="{{route('admin.change-user-status',$jobApplication->id)}}">
+                                                        <i class="fa fa-user-plus"></i> Active </a>
+                                                @else
+                                                    <a href="{{route('admin.change-user-status',$jobApplication->id)}}">
+                                                        <i class="fa fa-user-times"></i> DeActive </a>
+                                                @endif
+                                            </li>
+                                            <li>
+                                                <a href="{{route('admin.delete-job-application',$jobApplication->id)}}">
+                                                    <i class="icon-tag"></i> Delete </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{route('admin.update-account',$jobApplication->id)}}">
+                                                    <i class="icon-user"></i> Edit </a>
+                                            </li>
+                                            <li class="divider"></li>
+
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
                     </table>
                     <div class="row">
 
                         <div class="col-md-7 col-sm-7">
                             <div class="dataTables_paginate paging_bootstrap_full_number" id="sample_1_paginate">
-                                {{--                                {{$data['users']['users']->links()}}--}}
+                                                                {{$data['allJobApplications'] ['allJobApplications']->links()}}
                             </div>
                         </div>
                     </div>
@@ -346,7 +346,7 @@
     $(document).ready(function() {
         $('#example').DataTable( {
             initComplete: function () {
-                this.api().columns().every( function () {
+                this.columns().every( function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
                         .appendTo( $(column.header()).empty() )

@@ -14,7 +14,21 @@ use App\JobApplication;
 
 class JobApplicationServices
 {
-    public function jobApplicationsPost($request){
+    function __construct()
+    {
+        $this->jobApplicationsPagination = 20;
+    }
+
+    public function allJobApplications($request)
+    {
+        $allJobApplications = JobApplication::withoutGlobalScopes()->orderBy('id', 'desc');
+
+        $data['allJobApplications'] = $allJobApplications->paginate($this->jobApplicationsPagination);
+        return $data;
+    }
+
+    public function jobApplicationsPost($request)
+    {
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if (!$record) {
             if (!empty($request->resume)) {

@@ -62,7 +62,7 @@ class UserController extends Controller
 
     public function editUser($userId)
     {
-        $data['user'] = User::find($userId);
+        $data['user'] = User::withoutGlobalScopes()->find($userId);
         $data['countries'] = Country::all();
         $data['roles'] = Role::all();
         return view('admin.user.edit-user', compact('data'));

@@ -17,6 +17,7 @@ class CreateExperiencesTable extends Migration
             $table->increments('id');
             $table->string('name',"150")->unique();
             $table->integer('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

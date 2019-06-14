@@ -4,11 +4,12 @@ namespace App;
 
 use App\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Channel extends Model
 {
     protected $guarded = [];
-
+    use SoftDeletes;
 
     protected static function boot()
     {
