@@ -25,7 +25,7 @@ class JobApplication extends Model
 
     public function designation()
     {
-        return $this->belongsTo('App\Designation', 'designation_id', 'id');
+        return $this->belongsTo('App\Designation', 'designation_id','id');
     }
 
     public function experience()

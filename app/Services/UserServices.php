@@ -15,7 +15,7 @@ class UserServices
 
     public function allUsers($request)
     {
-        $allUsers = User::withoutGlobalScopes()->where('role_id', '!=', 1);
+        $allUsers = User::withoutGlobalScopes()->where('role_id', '!=', 1)->whereNull('deleted_at');
 
         if ($request->search_title) {
             $first_name = $request->search_title;
@@ -103,7 +103,7 @@ class UserServices
 
     public function allTawkToUsers($request)
     {
-        $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3);
+        $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3)->whereNull('deleted_at');
         if ($request->search_title) {
             $first_name = $request->search_title;
             $allUsers = $allUsers->where('first_name', 'like', '%' . $first_name . '%');

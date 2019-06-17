@@ -21,7 +21,7 @@ class JobApplicationServices
 
     public function allJobApplications($request)
     {
-        $allJobApplications = JobApplication::withoutGlobalScopes()->orderBy('id', 'desc');
+        $allJobApplications = JobApplication::withoutGlobalScopes()->orderBy('id', 'desc')->whereNull('deleted_at');
 
         $data['allJobApplications'] = $allJobApplications->paginate($this->jobApplicationsPagination);
         return $data;
@@ -41,6 +41,19 @@ class JobApplicationServices
             }
         } else {
             return redirect()->back();
+        }
+    }
+
+    public function jobApplicationsUpdate($request, $jobApplicantId)
+    {
+        $jobApplication = JobApplication::withoutGlobalScopes()->where('id', $jobApplicantId)->first();
+        if (!empty($request->resume)) {
+            $extension = $request->resume->getClientOriginalExtension();
+            $fileName = time() . "-" . 'resume.' . $extension;
+            ImageHelpers::uploadFile('/project-assets/files/', $request->file('resume'), $fileName);
+            $jobApplication->update(array_merge($request->except('_token'), ['resume' => "/project-assets/files/" . $fileName]));
+        } else {
+            $jobApplication->update(array_merge($request->except('_token'), ['is_active' => 1]));
         }
     }
 

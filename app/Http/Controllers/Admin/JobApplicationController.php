@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CallStatus;
 use App\Channel;
 use App\Designation;
 use App\Experience;
@@ -18,6 +19,8 @@ class JobApplicationController extends Controller
         $data['channels'] = Channel::all();
         $data['experience'] = Experience::all();
         $data['designation'] = Designation::orderBy('name')->get();
+        $data['callStatus'] = CallStatus::withoutGlobalScopes()->whereNull('parent_id')->get();
+
         $data['allJobApplications'] = $applicationServices->allJobApplications($request);
 
         return view('admin.job_application.all-job-applications', compact('data'));
@@ -33,7 +36,7 @@ class JobApplicationController extends Controller
     {
         $jobApplicant = JobApplication::where('id', $jobApplicantId)->firstOrFail();
         $file = public_path() . $jobApplicant->resume;
-        return response()->download($file);
+        return response()->file($file);
     }
 
     public function deleteJobApplication($jobApplicantId)
@@ -42,4 +45,11 @@ class JobApplicationController extends Controller
         $jobApplicant->delete();
         return redirect()->back();
     }
+
+    public function jobApplicationsUpdate(Request $request, $jobApplicantId, JobApplicationServices $applicationServices)
+    {
+        $applicationServices->jobApplicationsUpdate($request, $jobApplicantId);
+        return redirect()->back();
+    }
+
 }

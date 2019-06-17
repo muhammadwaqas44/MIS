@@ -21,4 +21,11 @@ class DropdownController extends Controller
             ->pluck("name","id");
         return response()->json($cities);
     }
+    public function getCallStatusList(Request $request)
+    {
+        $callStatuses = DB::table("call_statuses")
+            ->where("parent_id",$request->parent_id)
+            ->pluck("name","id");
+        return response()->json($callStatuses);
+    }
 }

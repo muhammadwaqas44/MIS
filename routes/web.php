@@ -17,6 +17,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //// Dropdown Dependent Country city state
 Route::get('get-state-list', 'DropdownController@getStateList');
 Route::get('get-city-list', 'DropdownController@getCityList');
+Route::get('get-call-status-list', 'DropdownController@getCallStatusList');
 ////End Dropdown
 
 Route::group(['middleware' => 'CheckAdmin'], function () {
@@ -51,6 +52,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::post('/admin/post-job-application','Admin\JobApplicationController@jobApplicationsPost')->name('admin.post-job-application');
     route::get('/admin/download-resume/{jobApplicantId}','Admin\JobApplicationController@downloadResumeApplicant')->name('admin.download-resume');
     Route::get('/admin/delete-job-application/{jobApplicantId}', 'Admin\JobApplicationController@deleteJobApplication')->name('admin.delete-job-application');
+    route::post('/admin/update-job-application/{jobApplicantId}','Admin\JobApplicationController@jobApplicationsUpdate')->name('admin.update-job-application');
     /// END JOB APPLICATION FOR HIRING PROCESS
 });
 
