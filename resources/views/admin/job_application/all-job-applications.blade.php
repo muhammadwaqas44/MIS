@@ -1,25 +1,15 @@
 @extends('admin-layout.app')
 @section('title', "All Job Applications")
 @section('content')
-    <link href="{{asset('assets-admin/assets/global/plugins/datatables/datatables.min.css')}}" rel="stylesheet"
-          type="text/css"/>
-    <link href="{{asset('assets-admin/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')}}"
-          rel="stylesheet" type="text/css"/>
 
-    <style>
-        thead input {
-            width: 100%;
-        }
-    </style>
-
-    <div class="row">
+    <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
             <div class="portlet light bordered">
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase"> Managed Table</span>
+                        <span class="caption-subject bold uppercase"> Job Applications Table</span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -221,6 +211,49 @@
 
                     </div>
 
+
+                    <div class="table-toolbar">
+
+                        <div id="sample_1_filter" class="dataTables_filter">
+                            <label>Search:</label>
+                            <form>
+                                <input type="search" placeholder="Search..." name="search_title"
+                                       class="form-control input-sm input-small input-inline"
+                                       @if(!empty(app('request')->input('search_title'))) value="{{app('request')->input('search_title')}}" @endif>
+
+                                <select id="channel" name="channel_id" class="form-control input-sm input-small input-inline">
+                                    <option value="">Select Channel</option>
+                                    @foreach( $data['channels'] as  $channel)
+                                        <option value="{{$channel->id}}">
+                                            {{$channel->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                <select id="channel" name="designation_id" class="form-control input-sm input-small input-inline">
+                                    <option value="">Select Position</option>
+                                    @foreach( $data['designation'] as  $designation)
+                                        <option value="{{$designation->id}}">
+                                            {{$designation->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                <select id="channel" name="experience_id" class="form-control input-sm input-small input-inline">
+                                    <option value="">Select Experience</option>
+                                    @foreach( $data['experience'] as  $experience)
+                                        <option value="{{$experience->id}}">
+                                            {{$experience->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <input type="submit" value="Search" class="btn btn-sm green">
+                            </form>
+
+                        </div>
+
+                    </div>
+
                     <table class="table table-striped table-bordered table-hover table-checkable order-column"
                            id="sample_1">
                         <thead>
@@ -229,8 +262,10 @@
                             <th> Name</th>
                             <th> Email</th>
                             <th> Phone</th>
+                            <th> Channel</th>
+                            <th> Position</th>
+                            <th> Experience</th>
                             <th> Resume</th>
-                            <th> Joined</th>
                             <th> Actions</th>
                         </tr>
                         </thead>
@@ -242,22 +277,38 @@
                                 <td>
                                     <a href="mailto:{{$jobApplication->email}}"> {{$jobApplication->email}}</a>
                                 </td>
-
                                 <td class="center">{{$jobApplication->user_phone}}</td>
+                                @if($jobApplication->channel_id)
+                                    <td class="center">{{$jobApplication->channel->name}}</td>
+                                @else
+                                    <td class="center">No Channel</td>
+                                @endif
+                                @if($jobApplication->designation_id)
+                                    <td class="center">{{$jobApplication->designation->name}}</td>
+                                @else
+                                    <td class="center">No Designation</td>
+                                @endif
+
+                                @if($jobApplication->experience_id)
+                                    <td class="center">{{$jobApplication->experience->name}}</td>
+                                @else
+                                    <td class="center">No Experience</td>
+                                @endif
+
+
+
                                 <td class="center">
                                     <a href="{{route('admin.download-resume',$jobApplication->id)}}">
                                         <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
                                     </a>
                                 </td>
-
-                                <td class="center">{{$jobApplication->created_at}}</td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-xs green dropdown-toggle" type="button"
                                                 data-toggle="dropdown" aria-expanded="false"> Actions
                                             <i class="fa fa-angle-down"></i>
                                         </button>
-                                        <ul class="dropdown-menu pull-left" role="menu">
+                                        <ul class="dropdown-menu pull-right" role="menu">
                                             <li>
                                                 <a href="{{route('admin.delete-job-application',$jobApplication->id)}}">
                                                     <i class="icon-trash"></i> Delete </a>
@@ -381,7 +432,7 @@
                                                                                         <div class="row">
                                                                                             <div class="col-6">
                                                                                                 <div class="form-group">
-                                                                                                    <label class="control-label">Designation</label>
+                                                                                                    <label class="control-label">Position</label>
                                                                                                     <select name="designation_id"
                                                                                                             class="form-control">
                                                                                                         @if($jobApplication->designation_id)
@@ -389,7 +440,7 @@
                                                                                                         @else
                                                                                                             <option value="">
                                                                                                                 Select
-                                                                                                                Designation
+                                                                                                                Position
                                                                                                             </option>
                                                                                                         @endif
                                                                                                         @foreach($data['designation'] as  $designation)
@@ -464,7 +515,7 @@
                                             </div>
                                         </div>
                                         <div class="modal fade" id="myModalApplication2_{{$jobApplication->id}}"
-                                             tabindex="-1" role="dialog" >
+                                             tabindex="-1" role="dialog">
                                             <div class="modal-dialog">
                                                 <!-- Modal content-->
                                                 <div class="modal-content">
@@ -483,20 +534,13 @@
                                                                 </div>
                                                                 <div class="portlet-body">
                                                                     <div class="tab-content">
-                                                                        <form action="{{route('admin.update-job-application',$jobApplication->id)}}"
+                                                                        <form action="{{route('admin.post-interview-schedule')}}"
                                                                               method="post"
                                                                               enctype="multipart/form-data">
                                                                             @csrf
-                                                                            @if($jobApplication->designation_id)
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label">Designation
-                                                                                        :</label>
-                                                                                    <input readonly
-                                                                                           style="background: none; border: none"
-                                                                                           value="{{$jobApplication->designation->name}}"
-                                                                                    />
-                                                                                </div>
-                                                                            @endif
+
+
+
                                                                             <div class="form-group">
                                                                                 <input hidden
                                                                                        name="job_id"
@@ -504,79 +548,125 @@
                                                                                 />
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label class="control-label">Name
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$jobApplication->name}}"
-                                                                                />
-                                                                            </div>
-
-
-                                                                            <div class="form-group">
-                                                                                <label class="control-label">Email
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$jobApplication->email}}"/>
-                                                                            </div>
-
-
-                                                                            <div class="form-group">
-                                                                                <label class="control-label">Phone
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$jobApplication->user_phone}}"/>
-                                                                            </div>
-
-                                                                            @if($jobApplication->city_name)
-
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label">Address
+                                                                                <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <label class="control-label">Name
                                                                                         :</label>
                                                                                     <input readonly
                                                                                            style="background: none; border: none"
-                                                                                           value="{{$jobApplication->address}}"/>
+                                                                                           value="{{$jobApplication->name}}"/>
                                                                                 </div>
 
-                                                                            @endif
+                                                                                <div class="col-md-6">
+                                                                                    @if($jobApplication->designation_id)
+                                                                                        <label class="control-label">Position
+                                                                                            :</label>
+                                                                                        <input readonly
+                                                                                               style="background: none; border: none"
+                                                                                               value="{{$jobApplication->designation->name}}"
+                                                                                        />
+                                                                                    @endif
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
 
-                                                                            @if($jobApplication->city_name)
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label">City
+
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                <div class="col-md-6">
+                                                                                    <label class="control-label">Email
                                                                                         :</label>
                                                                                     <input readonly
-                                                                                           style="background: none; border: none"
-                                                                                           value="{{$jobApplication->city_name}}"/>
+                                                                                           style="background: none; border: none; width: 75%"
+                                                                                           value="{{$jobApplication->email}}"/>
                                                                                 </div>
-                                                                            @endif
-                                                                            <div class="form-group">
-                                                                                <label class="control-label">Call
-                                                                                    Status</label>
-
-                                                                                <select id="callStatus"
-                                                                                        class="form-control">
-                                                                                    <option value="">Select Call Status
-                                                                                    </option>
-                                                                                    @foreach($data['callStatus'] as  $callStatus)
-                                                                                        <option value="{{$callStatus->id}}">
-                                                                                            {{$callStatus->name}}
-                                                                                        </option>
-                                                                                    @endforeach
-                                                                                </select>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="control-label">Phone
+                                                                                            :</label>
+                                                                                        <input readonly
+                                                                                               style="background: none; border: none"
+                                                                                               value="{{$jobApplication->user_phone}}"/>
+                                                                                    </div>
+                                                                            </div>
                                                                             </div>
 
                                                                             <div class="form-group">
-                                                                                <label class="control-label">Select Call
-                                                                                    Status</label>
-                                                                                <select name="callStatus_id"
-                                                                                        id="callStatusSub"
-                                                                                        class="form-control">
-                                                                                    <option value="">Choose Call
-                                                                                        Status
-                                                                                    </option>
-                                                                                </select>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-7">
+                                                                                        @if($jobApplication->address)
+                                                                                            <label class="control-label">Address
+                                                                                                :</label>
+                                                                                            <textarea readonly
+                                                                                                   style="background: none; border: none;width: 60%" rows="2" class="form-control">{{$jobApplication->address}}</textarea> @endif
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        @if($jobApplication->city_name)
+                                                                                            <label class="control-label">City
+                                                                                                :</label>
+                                                                                            <input readonly
+                                                                                                   style="background: none; border: none"
+                                                                                                   value="{{$jobApplication->city_name}}"/>
+                                                                                        @endif
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="control-label">Call
+                                                                                            Status</label>
+                                                                                        <select id="callStatus"
+                                                                                                class="form-control">
+                                                                                            <option value="">Select Call
+                                                                                                Status
+                                                                                            </option>
+                                                                                            @foreach($data['callStatus'] as  $callStatus)
+                                                                                                <option value="{{$callStatus->id}}">
+                                                                                                    {{$callStatus->name}}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="control-label">Select
+                                                                                            Call
+                                                                                            Status</label>
+                                                                                        <select name="call_id"
+                                                                                                id="callStatusSub"
+                                                                                                class="form-control">
+                                                                                            <option value="">Choose Call
+                                                                                                Status
+                                                                                            </option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+
+
+                                                                            <div class="form-group">
+                                                                                <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <label class="control-label">Time
+                                                                                        & Date</label>
+                                                                                    <div class="input-append date form_datetime">
+                                                                                        <input size="16" type="text" value="" required readonly name="dateTime" class="form-control">
+                                                                                        <span class="add-on"><i class="icon-remove"></i></span>
+                                                                                        <span class="add-on"><i class="icon-th"></i></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="form-group">
+                                                                                <label class="control-label">Remarks</label>
+                                                                                <textarea name="remarks"
+                                                                                          class="form-control"
+                                                                                          rows="4" required></textarea>
                                                                             </div>
                                                                             <div class="margiv-top-10">
 
@@ -623,44 +713,21 @@
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
     </div>
-    <script src="{{asset('assets-admin/assets/global/plugins/jquery.min.js')}}"
-            type="text/javascript"></script>
-    <script src="{{asset('assets-admin/assets/global/scripts/datatable.js')}}"
-            type="text/javascript"></script>
-    <script src="{{asset('assets-admin/assets/global/plugins/datatables/datatables.min.js')}}"
-            type="text/javascript"></script>
-    <script src="{{asset('assets-admin/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js')}}"
-            type="text/javascript"></script>
 
-
-    <script>
-        $(document).ready(function () {
-            // Setup - add a text input to each footer cell
-            $('#sample_1 thead tr').clone(true).appendTo('#example thead');
-            $('#sample_1 thead tr:eq(1) th').each(function (i) {
-                var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-
-                $('input', this).on('keyup change', function () {
-                    if (table.column(i).search() !== this.value) {
-                        table
-                            .column(i)
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
-            var table = $('#sample_1').DataTable({
-                orderCellsTop: true,
-                fixedHeader: true
-            });
-        });
-
-    </script>
-
-
-
+    <script src="{{asset('assets-admin/assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets-admin/assets/global/scripts/datatable.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets-admin/assets/global/plugins/datatables/datatables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets-admin/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets-admin/assets/global/plugins/moment.min.js')}}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('assets-admin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
+    <script src="{{asset('assets-admin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
+        $(".form_datetime").datetimepicker({
+            format: "dd MM yyyy - HH:ii P",
+            showMeridian: false,
+            autoclose: true,
+            todayBtn: true
+        });
         $('#callStatus').change(function () {
             var id = $(this).val();
             if (id) {

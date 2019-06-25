@@ -3,8 +3,14 @@
 namespace App\Services;
 
 use App\Helpers\ImageHelpers;
+use App\Massege;
+use App\SmsLog;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Session;
 
 class UserServices
 {
@@ -15,7 +21,7 @@ class UserServices
 
     public function allUsers($request)
     {
-        $allUsers = User::withoutGlobalScopes()->where('role_id', '!=', 1)->whereNull('deleted_at');
+        $allUsers = User::withoutGlobalScopes()->orderBy('id', 'desc')->where('role_id', '!=', 1)->whereNull('deleted_at');
 
         if ($request->search_title) {
             $first_name = $request->search_title;
@@ -40,7 +46,6 @@ class UserServices
     public function changeUserStatus($userId)
     {
         $user = User::withoutGlobalScopes()->find($userId);
-
         if ($user->is_active == 0) {
             $user->is_active = 1;
             $user->save();
@@ -103,7 +108,7 @@ class UserServices
 
     public function allTawkToUsers($request)
     {
-        $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3)->whereNull('deleted_at');
+        $allUsers = User::withoutGlobalScopes()->orderBy('id', 'desc')->where('role_id', '=', 3)->whereNull('deleted_at');
         if ($request->search_title) {
             $first_name = $request->search_title;
             $allUsers = $allUsers->where('first_name', 'like', '%' . $first_name . '%');
@@ -132,12 +137,61 @@ class UserServices
 
     public function editTawkToUserPost($request, $userId)
     {
-        $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
-        if (!$record) {
-            $user = User::withoutGlobalScopes()->find($userId);
-            $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,]));
-        } else {
-            return redirect()->back();
+        $user = User::withoutGlobalScopes()->find($userId);
+        $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,]));
+
+    }
+
+    public function smsTawkToUsers($request)
+    {
+        $userId = $request->userId;
+        $user = User::withoutGlobalScopes()->find($userId);
+        $userPhone = $user->user_phone;
+        $first_name = $user->first_name;
+        $last_name = $user->last_name;
+        $name = ucfirst($first_name) . ' ' . ucfirst($last_name);
+        $massege = $request->massegeBody;
+        $massegeBody = str_replace('$name', $name, $massege);
+        $jazzMassegeApi = 'https://connect.jazzcmt.com/sendsms_url.html?Username=03081279299&Password=Pakistan1&From=DANKASH&To=' . $userPhone . '&Message=' . $massegeBody . '';
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', $jazzMassegeApi);
+        $result = $response->getBody()->getContents();
+        SmsLog::create([
+            'is_active' => 1,
+            'recipient_no' => $userPhone,
+            'body' => $massegeBody,
+            'sent_on' => Carbon::now(),
+            'sent_by' => Auth::user()->id,
+            'status' => $result,
+            'masking' => 'DANKASH',
+            'reference' => 'DANKASH Promotion',
+        ]);
+    }
+
+    public function smsTawkToAllUsers($massegeId)
+    {
+        $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3)->whereNull('deleted_at')->get();
+        foreach ($allUsers as $user) {
+            $userPhone = $user->user_phone;
+            $massege = Massege::find($massegeId);
+            $first_name = $user->first_name;
+            $last_name = $user->last_name;
+            $name = ucfirst($first_name) . ' ' . ucfirst($last_name);
+            $massegeBody = str_replace('$name', $name, $massege->body);
+            $jazzMassegeApi = 'https://connect.jazzcmt.com/sendsms_url.html?Username=03081279299&Password=Pakistan1&From=DANKASH&To=' . $userPhone . '&Message=' . $massegeBody . '';
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('GET', $jazzMassegeApi);
+            $result = $response->getBody()->getContents();
+            SmsLog::create([
+                'is_active' => 1,
+                'recipient_no' => $userPhone,
+                'body' => $massegeBody,
+                'sent_on' => Carbon::now(),
+                'sent_by' =>  Auth::user()->id,
+                'status' => $result,
+                'masking' => 'DANKASH',
+                'reference' => 'DANKASH Promotion',
+            ]);
         }
     }
 }

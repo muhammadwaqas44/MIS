@@ -1,7 +1,7 @@
 @extends('admin-layout.app')
 @section('title', "All Tawk.to Users")
 @section('content')
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+
 
     <div class="row">
         <div class="col-md-12">
@@ -248,25 +248,86 @@
 
                     </div>
                     <div class="table-toolbar">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div id="sample_1_filter" class="dataTables_filter">
+                                    <label>Search:</label>
+                                    <form>
+                                        <input type="search" placeholder="User First name..." name="search_title"
+                                               class="form-control input-sm input-small input-inline"
+                                               @if(!empty(app('request')->input('search_title'))) value="{{app('request')->input('search_title')}}" @endif>
 
-                        <div id="sample_1_filter" class="dataTables_filter">
-                            <label>Search:</label>
-                            <form>
-                                <input type="search" placeholder="User First name..." name="search_title"
-                                       class="form-control input-sm input-small input-inline"
-                                       @if(!empty(app('request')->input('search_title'))) value="{{app('request')->input('search_title')}}" @endif>
+                                        <input type="search" placeholder="User Email..." name="search_email"
+                                               class="form-control input-sm input-small input-inline"
+                                               @if(!empty(app('request')->input('search_email'))) value="{{app('request')->input('search_email')}}" @endif>
+                                        <input type="search" placeholder="User Phone..." name="search_phone"
+                                               class="form-control input-sm input-small input-inline"
+                                               @if(!empty(app('request')->input('search_phone'))) value="{{app('request')->input('search_phone')}}" @endif>
+                                        <input type="submit" value="Search" class="btn btn-sm green">
+                                    </form>
 
-                                <input type="search" placeholder="User Email..." name="search_email"
-                                       class="form-control input-sm input-small input-inline"
-                                       @if(!empty(app('request')->input('search_email'))) value="{{app('request')->input('search_email')}}" @endif>
-                                <input type="search" placeholder="User Phone..." name="search_phone"
-                                       class="form-control input-sm input-small input-inline"
-                                       @if(!empty(app('request')->input('search_phone'))) value="{{app('request')->input('search_phone')}}" @endif>
-                                <input type="submit" value="Search" class="btn btn-sm green">
-                            </form>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="btn-group pull-right">
+                                    <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">SMS To
+                                        All
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right">
+                                        @foreach($data['masseges'] as $massege)
+                                            <li>
+                                                <a href="#" data-toggle="modal"
+                                                   data-target="#sendMassegeModal_{{$massege->id}}">
+                                                    <i class="icon-tag"></i> {{$massege->title}} </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @foreach($data['masseges'] as $massege)
+                                    <div class="modal fade" id="sendMassegeModal_{{$massege->id}}" tabindex="-1"
+                                         role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-body modal-body-sub_agile">
 
+                                                    <div class="modal_body_left modal_body_left1">
+
+                                                        <div class="profile-content">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="portlet light ">
+                                                                        <div class="portlet-title tabbable-line">
+                                                                            <div class="caption caption-md">
+                                                                                <i class="icon-globe theme-font hide"></i>
+                                                                                <span class="caption-subject font-blue-madison bold uppercase">Send Massege To All Tawk.to User</span>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="portlet-body">
+                                                                            <div class="tab-content">
+                                                                                <h2>{{$massege->title}}</h2>
+                                                                                <p>{{$massege->body}}</p>
+                                                                                <a href="{{route('admin.sms-tawk-to-all-users', $massege->id)}}"
+                                                                                   class="btn green">
+                                                                                    Send</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- //Modal content-->
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-
                     </div>
 
                     <table class="table table-striped table-bordered table-hover table-checkable order-column"
@@ -278,6 +339,7 @@
                             <th> Email</th>
                             <th> Phone</th>
                             <th> Gender</th>
+                            <th> Sms</th>
                             <th> Actions</th>
                         </tr>
                         </thead>
@@ -290,13 +352,34 @@
                                     <a href="mailto:{{$user->email}}"> {{$user->email}}</a></td>
                                 <td class="center">{{$user->user_phone}}</td>
                                 <td class="center">{{$user->gender}}</td>
+                                <td class="center">
+                                    <div class="btn-group">
+                                        <button class="btn btn-xs green dropdown-toggle" type="button"
+                                                data-toggle="dropdown" aria-expanded="false"> Sms
+                                            <i class="fa fa-angle-down"></i>
+                                        </button>
+                                        <ul class="dropdown-menu pull-left" role="menu">
+                                            @foreach($data['masseges'] as $massege)
+                                                <li>
+                                                    {{--<a href="#" class="massege" data-toggle="modal" data-id="{{$massege->id}}" data-target="sendMassegeModa2">--}}
+
+                                                    <a href="{{route('admin.massege-data',$massege->id)}}"
+                                                       class="btn btn-default modal-global"  data-id="{{$user->id}}">
+                                                        <i class="icon-tag"></i> {{$massege->title}} </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+
+
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-xs green dropdown-toggle" type="button"
                                                 data-toggle="dropdown" aria-expanded="false"> Actions
                                             <i class="fa fa-angle-down"></i>
                                         </button>
-                                        <ul class="dropdown-menu pull-left" role="menu">
+                                        <ul class="dropdown-menu pull-right" role="menu">
                                             <li>
                                                 @if($user->is_active == 0)
                                                     <a href="{{route('admin.change-user-status',$user->id)}}">
@@ -319,6 +402,53 @@
                                     </div>
                                 </td>
                             </tr>
+                            <div class="modal fade" id="sendMassegeModa2" tabindex="-1" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body modal-body-sub_agile">
+
+                                            <div class="modal_body_left modal_body_left1">
+
+                                                <div class="profile-content">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="portlet light ">
+                                                                <div class="portlet-title tabbable-line">
+                                                                    <div class="caption caption-md">
+                                                                        <i class="icon-globe theme-font hide"></i>
+                                                                        <span class="caption-subject font-blue-madison bold uppercase">Send Massege To All Tawk.to User</span>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="portlet-body">
+                                                                    <div class="tab-content">
+                                                                        <form action="{{route('admin.sms-tawk-to-users')}}"
+                                                                              method="get"
+                                                                              enctype="multipart/form-data">
+                                                                            @csrf
+                                                                            <input class="form-control" id="massegeId" value="" name="massegeId" type="hidden" style="background: none;border: none;">
+                                                                            <input class="form-control" id="userId" value="" name="userId" type="hidden" style="background: none;border: none;">
+                                                                            <h2 id="title"></h2>
+                                                                            <textarea type="text" rows="5" id="body" class="form-control" name="massegeBody"></textarea>
+                                                                            <p ></p>
+                                                                            <button
+                                                                                    class="btn green">
+                                                                                Send
+                                                                            </button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- //Modal content-->
+                                </div>
+                            </div>
                             <div class="modal fade" id="myModal2_{{$user->id}}" tabindex="-1"
                                  role="dialog">
                                 <div class="modal-dialog">
@@ -433,15 +563,34 @@
 
         </div>
     </div>
-
     <script src="{{asset('js/app.js')}}" type="text/javascript"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('.modal-global').click(function (event) {
+            event.preventDefault();
+            var user_id = $(this).data('id');
+            var url = $(this).attr('href');
+
+            $("#sendMassegeModa2").modal('show');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                    $("#sendMassegeModa2").find('#massegeId').val(response.id);
+                    $("#sendMassegeModa2").find('#userId').val(user_id);
+                    $("#sendMassegeModa2").find('#title').text(response.title);
+                    $("#sendMassegeModa2").find('#body').text(response.body);
+                });
+        });
+    </script>
+    <script>
         $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             $("#add").click(function (e) {
                 e.preventDefault();
                 var tawktouser = $("#tawktouser").val().split('\n');

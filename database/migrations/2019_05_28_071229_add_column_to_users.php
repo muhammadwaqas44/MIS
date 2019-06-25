@@ -20,7 +20,7 @@ class AddColumnToUsers extends Migration
             $table->foreign(['state_id'])->references('id')->on('states')->onDelete('cascade');
             $table->integer('country_id')->unsigned()->nullable();
             $table->foreign(['country_id'])->references('id')->on('countries')->onDelete('cascade');
-            $table->integer('role_id')->unsigned()->nullable();
+            $table->integer('role_id')->unsigned()->default(3);
             $table->foreign(['role_id'])->references('id')->on('roles')->onDelete('cascade');
         });
     }

@@ -16,9 +16,9 @@ class JobApplicationController extends Controller
 
     public function allJobApplications(Request $request, JobApplicationServices $applicationServices)
     {
-        $data['channels'] = Channel::all();
-        $data['experience'] = Experience::all();
-        $data['designation'] = Designation::orderBy('name')->get();
+        $data['channels'] = Channel::where('id','!=',1)->get();
+        $data['experience'] = Experience::where('id','!=',1)->get();
+        $data['designation'] = Designation::orderBy('name')->where('id','!=',1)->get();
         $data['callStatus'] = CallStatus::withoutGlobalScopes()->whereNull('parent_id')->get();
 
         $data['allJobApplications'] = $applicationServices->allJobApplications($request);

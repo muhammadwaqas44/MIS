@@ -10,7 +10,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase"> Managed Table</span>
+                        <span class="caption-subject bold uppercase">All User Table</span>
                     </div>
                     {{--<div class="actions">--}}
                     {{--<div class="btn-group btn-group-devided" data-toggle="buttons">--}}

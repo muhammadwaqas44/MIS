@@ -15,15 +15,16 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('status');
             $table->string('remarks');
             $table->integer('job_id')->unsigned()->nullable();
             $table->foreign(['job_id'])->references('id')->on('job_applications')->onDelete('cascade');
+            $table->dateTime('dateTime');
             $table->integer('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

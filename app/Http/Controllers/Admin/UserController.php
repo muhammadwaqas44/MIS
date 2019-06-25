@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Country;
 use App\Exports\TawkToUsersExport;
 use App\Imports\TawkToUsersImport;
+use App\Massege;
 use App\Role;
 use App\Services\UserServices;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -76,6 +78,7 @@ class UserController extends Controller
 
     public function allTawkToUsers(Request $request, UserServices $userServices)
     {
+        $data['masseges'] = Massege::all();
         $data['tawk_to_users'] = $userServices->allTawkToUsers($request);
         return view('admin.user.all-tawk-to-users', compact('data'));
     }
@@ -103,5 +106,23 @@ class UserController extends Controller
         Excel::import(new TawkToUsersImport, request()->file('import_file'));
 
         return back();
+    }
+
+    public function massegeData($massegeId)
+    {
+        $massege = Massege::find($massegeId);
+        return response()->json($massege);
+    }
+
+    public function smsTawkToUsers(Request $request,  UserServices $userServices)
+    {
+        $userServices->smsTawkToUsers($request);
+        return redirect()->back();
+    }
+
+    public function smsTawkToAllUsers($massegeId, UserServices $userServices)
+    {
+        $userServices->smsTawkToAllUsers($massegeId);
+        return redirect()->back();
     }
 }
