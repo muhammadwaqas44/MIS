@@ -3,35 +3,38 @@
 namespace App\Imports;
 
 use App\User;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class TawkToUsersImport implements ToModel
+class TawkToUsersImport implements ToCollection
 {
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        if (isset($row[0])) {
-            $name = $row[0];
-            $splitName = explode(' ', $name);
-            $first_name = $splitName[0];
-            $last_name = !empty($splitName[1]) ? $splitName[1] : '';
-            if (!isset($splitName[1])) {
-                $last_name = null;
+        foreach ($rows as $row) {
+            if (!isset($row[0])) {
+                return null;
             }
-        } else {
-            $first_name = null;
-            $last_name = null;
-        }
-        if (isset($row[1])) {
-            $email = $row[1];
-            $emailCheck = User::where('email', $email)->first();
-            if (!$emailCheck) {
-                return new User([
-                    'first_name' => $first_name,
-                    'last_name' => $last_name,
-                    'email' => $row[1],
-                    'user_phone' => $row[2],
-                    'role_id' => 3,
-                ]);
+            if (!isset($row[1])) {
+                return null;
+            }
+            if (!isset($row[2])) {
+                return null;
+            }
+            if (!isset($row[3])) {
+                return null;
+            }
+            if ($row[2]) {
+                $email = $row[2];
+                $emailCheck = User::where('email', $email)->first();
+                if (!$emailCheck) {
+                    User::create([
+                        'first_name' => $row[0],
+                        'last_name' => $row[1],
+                        'email' => $row[2],
+                        'user_phone' => $row[3],
+                        'role_id' => 3,
+                    ]);
+                }
             }
         }
     }

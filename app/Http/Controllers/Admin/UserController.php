@@ -104,7 +104,6 @@ class UserController extends Controller
     public function importTawkToUser()
     {
         Excel::import(new TawkToUsersImport, request()->file('import_file'));
-
         return back();
     }
 

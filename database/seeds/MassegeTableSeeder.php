@@ -13,6 +13,9 @@ class MassegeTableSeeder extends Seeder
     {
         $masseges = [
             [
+                'title' => 'Show Live Freelancing',
+                'body' => '$name,<br>Remember we did a survey on The Ask Dankash show timings?<br>It is Every Friday 8-9 pm.<br>This week’s topic: Freelancing for Newbies<br>See you,<br>Dania',
+            ],[
                 'title' => 'Show Live',
                 'body' => 'Dear $name, The Show is going to live on $date . Do not miss it',
             ],

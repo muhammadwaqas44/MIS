@@ -152,6 +152,8 @@ class UserServices
         $name = ucfirst($first_name) . ' ' . ucfirst($last_name);
         $massege = $request->massegeBody;
         $massegeBody = str_replace('$name', $name, $massege);
+//        $massegeBody = str_replace('\n', , $massegeBody);
+//        dd($massegeBody);
         $jazzMassegeApi = 'https://connect.jazzcmt.com/sendsms_url.html?Username=03081279299&Password=Pakistan1&From=DANKASH&To=' . $userPhone . '&Message=' . $massegeBody . '';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', $jazzMassegeApi);
