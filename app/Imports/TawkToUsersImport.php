@@ -10,7 +10,10 @@ class TawkToUsersImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row) {
+        $skipRows = $rows->slice(1);
+//        dd($skipRows);
+        foreach ($skipRows as $row) {
+
             if (!isset($row[0])) {
                 return null;
             }
@@ -36,6 +39,7 @@ class TawkToUsersImport implements ToCollection
                     ]);
                 }
             }
+
         }
     }
 }

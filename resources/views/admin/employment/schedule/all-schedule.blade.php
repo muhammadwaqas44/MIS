@@ -31,13 +31,7 @@
                     <div class="table-toolbar">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="btn-group">
-                                    <a href="{{route('admin.all-job-application')}}">
-                                        <button id="sample_editable_1_new" class="btn sbold green"> Add New
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </a>
-                                </div>
+
                             </div>
                             <div class="col-md-6">
                                 <div class="btn-group pull-right">
@@ -102,7 +96,7 @@
                             <th> Applicant Phone</th>
                             <th> Status</th>
                             <th> Date & Time</th>
-                            <th> Status</th>
+                            <th> Remarks</th>
                             <th> Actions</th>
                         </tr>
                         </thead>
@@ -131,29 +125,22 @@
                                             <i class="fa fa-angle-down"></i>
                                         </button>
                                         <ul class="dropdown-menu pull-left" role="menu">
-                                            <li>
-                                                @if($schedule->is_active == 0)
-                                                    <a href="{{route('admin.change-schedule-status',$schedule->id)}}">
-                                                        <i class="fa fa-user-plus"></i> Active </a>
-                                                @else
-                                                    <a href="{{route('admin.change-schedule-status',$schedule->id)}}">
-                                                        <i class="fa fa-user-times"></i> DeActive </a>
-                                                @endif
-                                            </li>
-                                            <li>
-                                                <a href="{{route('admin.delete-schedule',$schedule->id)}}">
-                                                    <i class="icon-tag"></i> Delete </a>
-                                            </li>
+
                                             <li>
                                                 <a href="#" data-toggle="modal"
                                                    data-target="#editSchedule_{{$schedule->id}}">
-                                                    <i class="icon-user"></i> Edit </a>
+                                                    <i class="icon-note"></i> View </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-toggle="modal"
+                                                   data-target="#addInterview_{{$schedule->id}}">
+                                                    <i class="icon-note"></i> Add Interview </a>
                                             </li>
 
                                         </ul>
-                                        <div class="modal fade" id="editSchedule_{{$schedule->id}}"
+                                        <div class="modal fade bs-modal-lg" id="editSchedule_{{$schedule->id}}"
                                              tabindex="-1" role="dialog" style="width: auto">
-                                            <div class="modal-dialog">
+                                            <div class="modal-dialog modal-lg">
                                                 <!-- Modal content-->
 
 
@@ -261,7 +248,7 @@
                                                                                 <option value="">Select Call
                                                                                     Status
                                                                                 </option>
-                                                                                @foreach($data['callStatus'] as  $callStatus)
+                                                                                @foreach($data['callStatus']->where('parent_id',null) as  $callStatus)
                                                                                     <option value="{{$callStatus->id}}">
                                                                                         {{$callStatus->name}}
                                                                                     </option>
@@ -328,7 +315,7 @@
                                                                 </div>
                                                             </form>
                                                             <hr>
-                                                            <div>
+                                                            <div class="table-responsive">
                                                                 <table class="table table-striped table-bordered table-hover"
                                                                        id="sample_1">
                                                                     <thead>
@@ -342,6 +329,23 @@
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                    @foreach($data['jobApp']->where('id','=',$schedule->job_id) as $job)
+                                                                        <tr class="odd gradeX">
+                                                                            <td class="center"> {{$job->id}} </td>
+                                                                            <td> {{$job->name}}</td>
+                                                                            <td>
+                                                                                <a href="mailto:{{$job->email}}"> {{$job->email}}</a>
+                                                                            </td>
+
+                                                                            <td class="center">{{$job->user_phone}}</td>
+                                                                            <td class="center">
+                                                                                <a href="{{route('admin.download-resume',$job->id)}}">
+                                                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
+                                                                                </a>
+                                                                            </td>
+                                                                            <td class="center">{{$job->created_at}}</td>
+                                                                        </tr>
+                                                                    @endforeach
                                                                     @foreach($data['updatedSchedules']->where('job_id', '=', $schedule->applicant->id) as $updatedSchedule)
                                                                         <tr class="odd gradeX">
                                                                             <td class="center"> {{$updatedSchedule->id}} </td>
@@ -363,6 +367,174 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- //Modal content-->
+                                            </div>
+                                        </div>
+                                        <div class="modal fade bs-modal-lg" id="addInterview_{{$schedule->id}}"
+                                             tabindex="-1" role="dialog" style="width: auto">
+                                            <div class="modal-dialog modal-lg">
+                                                <!-- Modal content-->
+
+
+                                                <div class="portlet light ">
+                                                    <div class="portlet-title tabbable-line">
+                                                        <div class="caption caption-md">
+                                                            <i class="icon-globe theme-font hide"></i>
+                                                            <span class="caption-subject font-blue-madison bold uppercase">Post Interview Data</span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="portlet-body">
+                                                        <div class="tab-content">
+                                                            <form action="{{route('admin.post-add-interview-data',$schedule->id)}}"
+                                                                  method="post"
+                                                                  enctype="multipart/form-data">
+                                                                @csrf
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <input hidden
+                                                                           name="job_id"
+                                                                           value="{{$schedule->applicant->id}}"
+                                                                    />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label class="control-label">Name
+                                                                                :</label>
+                                                                            <input readonly
+                                                                                   style="background: none; border: none"
+                                                                                   value="{{$schedule->applicant->name}}"/>
+                                                                        </div>
+                                                                        @if($schedule->applicant->designation_id)
+                                                                            <div class="col-md-6">
+                                                                                <label class="control-label">Position
+                                                                                    :</label>
+                                                                                <input readonly
+                                                                                       style="background: none; border: none"
+                                                                                       value="{{$schedule->applicant->designation->name}}"
+                                                                                />
+                                                                            </div>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label class="control-label">Email
+                                                                                :</label>
+                                                                            <input readonly
+                                                                                   style="background: none; border: none; width: 75%"
+                                                                                   value="{{$schedule->applicant->email}}"/>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label class="control-label">Phone
+                                                                                :</label>
+                                                                            <input readonly
+                                                                                   style="background: none; border: none"
+                                                                                   value="{{$schedule->applicant->user_phone}}"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            @if($schedule->applicant->address)
+                                                                                <label class="control-label">Address
+                                                                                    :</label>
+                                                                                <textarea readonly class="form-control"
+                                                                                          style="background: none; border: none;width: 60%"
+                                                                                          rows="2">
+                                                                                                {{$schedule->applicant->address}}</textarea>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            @if($schedule->applicant->city_name)
+                                                                                <label class="control-label">City
+                                                                                    :</label>
+                                                                                <input readonly
+                                                                                       style="background: none; border: none"
+                                                                                       value="{{$schedule->applicant->city_name}}"/>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <label class="control-label">Call
+                                                                                Status</label>
+                                                                            <select name="call_id"
+                                                                                    class="form-control">
+                                                                                <option value="">Select InterView Status</option>
+                                                                                @foreach($data['interviewStatus'] as  $interviewStatus)
+                                                                                    <option value="{{$interviewStatus->id}}">
+                                                                                        {{$interviewStatus->name}}
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <label class="control-label">Time
+                                                                                & Date</label>
+                                                                            <div class="input-append date form_datetime">
+                                                                                <input size="16" type="text"
+                                                                                       required readonly
+                                                                                       name="dateTime"
+                                                                                       class="form-control">
+                                                                                <span class="add-on"><i
+                                                                                            class="icon-remove"></i></span>
+                                                                                <span class="add-on"><i
+                                                                                            class="icon-th"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <label class="control-label">Remarks</label>
+                                                                    <textarea name="remarks"
+                                                                              class="form-control"
+                                                                              rows="4"
+                                                                              required></textarea>
+                                                                </div>
+                                                                <div class="margiv-top-10">
+
+                                                                    <button type="submit"
+                                                                            class="btn green">
+                                                                        Save
+                                                                    </button>
+                                                                    <button type="button"
+                                                                            class="btn red"
+                                                                            data-dismiss="modal">
+                                                                        Cancel
+                                                                    </button>
+
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

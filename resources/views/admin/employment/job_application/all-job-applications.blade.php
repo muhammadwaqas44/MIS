@@ -309,14 +309,11 @@
                                             <i class="fa fa-angle-down"></i>
                                         </button>
                                         <ul class="dropdown-menu pull-right" role="menu">
-                                            <li>
-                                                <a href="{{route('admin.delete-job-application',$jobApplication->id)}}">
-                                                    <i class="icon-trash"></i> Delete </a>
-                                            </li>
+
                                             <li>
                                                 <a href="#" data-toggle="modal"
                                                    data-target="#myModalApplication1_{{$jobApplication->id}}">
-                                                    <i class="icon-user"></i> Edit </a>
+                                                    <i class="icon-user"></i> View </a>
                                             </li>
                                             <li>
                                                 <a href="#" data-toggle="modal"
@@ -622,7 +619,7 @@
                                                                                             <option value="">Select Call
                                                                                                 Status
                                                                                             </option>
-                                                                                            @foreach($data['callStatus'] as  $callStatus)
+                                                                                            @foreach($data['callStatus']->where('parent_id',null) as  $callStatus)
                                                                                                 <option value="{{$callStatus->id}}">
                                                                                                     {{$callStatus->name}}
                                                                                                 </option>
@@ -724,7 +721,7 @@
     <script type="text/javascript">
         $(".form_datetime").datetimepicker({
             format: "dd MM yyyy - HH:ii P",
-            showMeridian: false,
+            showMeridian: true,
             autoclose: true,
             todayBtn: true
         });

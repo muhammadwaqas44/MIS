@@ -15,7 +15,7 @@ class SMSResponseServices
 {
     function __construct()
     {
-        $this->messageResponsePagination = 12;
+        $this->messageResponsePagination = 20;
     }
 
     public function allMessageResponse($request)

@@ -44,14 +44,21 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     /// ALL TAWK.TO USERS
     route::get('/admin/all-tawk-to-users','Admin\UserController@allTawkToUsers')->name('admin.all-tawk-to-users');
     route::post('/admin/add-tawk-to-user','Admin\UserController@addTawkToUserPost')->name('admin.add-tawk-to-user');
-    route::post('/admin/edit-tawk-to-user/{userId}','Admin\UserController@editTawkToUserPost')->name('admin.edit-tawk-to-user');
+    route::post('/admin/edit-tawk-to-user/','Admin\UserController@editTawkToUserPost')->name('admin.edit-tawk-to-user');
     route::get('/admin/export-tawk-to-user','Admin\UserController@exportTawkToUser')->name('admin.export-tawk-to-user');
     route::post('/admin/import-tawk-to-user','Admin\UserController@importTawkToUser')->name('admin.import-tawk-to-user');
     //// FOR SMS ROUTE ON TAWK.TO USERS
     route::get('/admin/sms-tawk-to-users','Admin\UserController@smsTawkToUsers')->name('admin.sms-tawk-to-users');
     route::get('/admin/sms-tawk-to-all-users/{massegeId}','Admin\UserController@smsTawkToAllUsers')->name('admin.sms-tawk-to-all-users');
     route::get('/admin/massege-data/{massegeId}','Admin\UserController@massegeData')->name('admin.massege-data');
+    route::get('/admin/user-data/{userId}','Admin\UserController@userData')->name('admin.user-data');
     /// END TAWK.TO USERS
+
+    /// WINNER ROUTES
+    route::get('/admin/all-winners','Admin\WinnerController@allWinners')->name('admin.all-winners');
+    route::post('/admin/add-data-winner','Admin\WinnerController@addWinnerPost')->name('admin.add-data-winner');
+    route::post('/admin/edit-data-winner/{winnerId}','Admin\WinnerController@editWinnerPost')->name('admin.edit-data-winner');
+    /// END WINNER ROUTES
 
     /// JOB APPLICATION FOR HIRING PROCESS
     route::get('/admin/all-job-application','Admin\JobApplicationController@allJobApplications')->name('admin.all-job-application');
@@ -62,12 +69,25 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     /// END JOB APPLICATION FOR HIRING PROCESS
 
     /// SCHEDULE ROUTES
-    route::get('/admin/all-schedules','Admin\ScheduleController@allSchedules')->name('admin.all-schedules');
-    Route::get('/admin/schedule-activation/{scheduleId}','Admin\ScheduleController@changeScheduleStatus')->name('admin.change-schedule-status');
-    Route::get('/admin/user-schedule/{scheduleId}', 'Admin\ScheduleController@deleteSchedule')->name('admin.delete-schedule');
-    route::post('/admin/post-interview-schedule','Admin\ScheduleController@interviewSchedulePost')->name('admin.post-interview-schedule');
-    route::post('/admin/update-interview-schedule/{scheduleId}','Admin\ScheduleController@interviewScheduleUpdate')->name('admin.update-interview-schedule');
-    route::get('/admin/edit-schedule-data/{scheduleId}','Admin\ScheduleController@editScheduleData')->name('admin.edit-schedule-data');
+    route::get('/admin/all-schedules','Admin\EmpHistoryController@allSchedules')->name('admin.all-schedules');
+    Route::get('/admin/schedule-activation/{scheduleId}','Admin\EmpHistoryController@changeScheduleStatus')->name('admin.change-schedule-status');
+    Route::get('/admin/user-schedule/{scheduleId}', 'Admin\EmpHistoryController@deleteSchedule')->name('admin.delete-schedule');
+    route::post('/admin/post-interview-schedule','Admin\EmpHistoryController@interviewSchedulePost')->name('admin.post-interview-schedule');
+    route::post('/admin/update-interview-schedule/{scheduleId}','Admin\EmpHistoryController@interviewScheduleUpdate')->name('admin.update-interview-schedule');
+    /// ADD INITIAL INTERVIEW
+    route::get('/admin/all-interviews','Admin\EmpHistoryController@allInterviews')->name('admin.all-interviews');
+    route::post('/admin/post-update-interview-data/{interviewId}','Admin\EmpHistoryController@interviewDataUpdate')->name('admin.post-update-interview-data');
+    route::post('/admin/post-add-interview-data','Admin\EmpHistoryController@interviewDataPost')->name('admin.post-add-interview-data');
+    //// ADD  INITIAL INTERVIEW FOR OTHER DETAILS
+    route::post('/admin/post-add-interview-data/{scheduleId}','Admin\EmpHistoryController@interviewDataPost')->name('admin.post-add-interview-data');
+    //// SHORTLISTED ROUTES
+    route::get('/admin/shortlisted','Admin\EmpHistoryController@allShortlisted')->name('admin.shortlisted');
+    /////   TECHNICAL INTERVIEWS ROUTES
+    route::get('/admin/tech-interview','Admin\EmpHistoryController@allTechInterviews')->name('admin.tech-interview');
+    ///// HR INTERVIEWS ROUTES
+    route::get('/admin/hr-interview','Admin\EmpHistoryController@allHRInterviews')->name('admin.hr-interview');
+    ///// HR INTERVIEWS ROUTES
+    route::get('/admin/offer-given','Admin\EmpHistoryController@allOfferGiven')->name('admin.offer-given');
     /// END SCHEDULE ROUTES
 
     /// MESSAGEGS RESPONSE

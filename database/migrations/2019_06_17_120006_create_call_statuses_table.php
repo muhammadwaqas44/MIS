@@ -17,7 +17,13 @@ class CreateCallStatusesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('parent_id')->nullable();
+            $table->string('module');
             $table->integer('is_active')->default(true);
+            $table->integer('ini_int')->nullable()  ->comment = 'Initial Interview';
+            $table->integer('short_int')->nullable()  ->comment = 'Short Listed';
+            $table->integer('tech_int')->nullable()  ->comment = 'Technical Interview Required';
+            $table->integer('hr_int')->nullable()  ->comment = 'HR Interview';
+
             $table->softDeletes();
             $table->timestamps();
         });

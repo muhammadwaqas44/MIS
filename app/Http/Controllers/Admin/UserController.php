@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $data['roles'] = Role::all();
         $data['users'] = $userServices->allUsers($request);
-        return view('admin.user.all-users', compact('data'));
+        return view('admin.user.all-users.all-users', compact('data'));
     }
 
     public function changeUserStatus($userId, UserServices $userServices)
@@ -40,7 +40,7 @@ class UserController extends Controller
         $data['user'] = User::find($userId);
         $data['countries'] = Country::all();
         $data['roles'] = Role::all();
-        return view('admin.user.user-profile', compact('data'));
+        return view('admin.user.all-users.user-profile', compact('data'));
     }
 
     public function myProfileUpdate(Request $request, $userId, UserServices $userServices)
@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         $data['countries'] = Country::all();
         $data['roles'] = Role::all();
-        return view('admin.user.add-user', compact('data'));
+        return view('admin.user.all-users.add-user', compact('data'));
     }
 
     public function addUserPost(Request $request, UserServices $userServices)
@@ -67,7 +67,7 @@ class UserController extends Controller
         $data['user'] = User::withoutGlobalScopes()->find($userId);
         $data['countries'] = Country::all();
         $data['roles'] = Role::all();
-        return view('admin.user.edit-user', compact('data'));
+        return view('admin.user.all-users.edit-user', compact('data'));
     }
 
     public function editUserUpdate(Request $request, $userId, UserServices $userServices)
@@ -80,7 +80,7 @@ class UserController extends Controller
     {
         $data['masseges'] = Massege::all();
         $data['tawk_to_users'] = $userServices->allTawkToUsers($request);
-        return view('admin.user.all-tawk-to-users', compact('data'));
+        return view('admin.user.tawk-to-user.all-tawk-to-users', compact('data'));
     }
 
     public function addTawkToUserPost(Request $request, UserServices $userServices)
@@ -90,9 +90,9 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function editTawkToUserPost(Request $request, $userId, UserServices $userServices)
+    public function editTawkToUserPost(Request $request, UserServices $userServices)
     {
-        $userServices->editTawkToUserPost($request, $userId);
+        $userServices->editTawkToUserPost($request);
         return redirect()->back();
     }
 
@@ -113,7 +113,13 @@ class UserController extends Controller
         return response()->json($massege);
     }
 
-    public function smsTawkToUsers(Request $request,  UserServices $userServices)
+    public function userData($userId)
+    {
+        $massege = User::withoutGlobalScopes()->find($userId);
+        return response()->json($massege);
+    }
+
+    public function smsTawkToUsers(Request $request, UserServices $userServices)
     {
         $userServices->smsTawkToUsers($request);
         return redirect()->back();

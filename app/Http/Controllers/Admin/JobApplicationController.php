@@ -19,11 +19,10 @@ class JobApplicationController extends Controller
         $data['channels'] = Channel::where('id','!=',1)->get();
         $data['experience'] = Experience::where('id','!=',1)->get();
         $data['designation'] = Designation::orderBy('name')->where('id','!=',1)->get();
-        $data['callStatus'] = CallStatus::withoutGlobalScopes()->whereNull('parent_id')->get();
-
+        $data['callStatus'] = CallStatus::withoutGlobalScopes()->where('module','=','Call Status')->get();
         $data['allJobApplications'] = $applicationServices->allJobApplications($request);
 
-        return view('admin.job_application.all-job-applications', compact('data'));
+        return view('admin.employment.job_application.all-job-applications', compact('data'));
     }
 
     public function jobApplicationsPost(Request $request, JobApplicationServices $applicationServices)

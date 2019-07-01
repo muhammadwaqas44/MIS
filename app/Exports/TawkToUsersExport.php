@@ -17,12 +17,10 @@ class TawkToUsersExport implements FromCollection, WithHeadings
         $valueArray = [];
         foreach ($allUsers as $user) {
             $valueArray[] = [
-                'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'email' => $user->email,
                 'user_phone' => $user->user_phone,
-                'gender' => $user->gender,
             ];
         }
         return collect([
@@ -32,12 +30,12 @@ class TawkToUsersExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Id',
+
             'First Name',
             'Last Name',
             'Email',
             'User Phone',
-            'Gender',
+       
         ];
     }
 }

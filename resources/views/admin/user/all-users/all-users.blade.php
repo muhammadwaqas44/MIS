@@ -12,14 +12,7 @@
                         <i class="icon-settings font-dark"></i>
                         <span class="caption-subject bold uppercase">All User Table</span>
                     </div>
-                    {{--<div class="actions">--}}
-                    {{--<div class="btn-group btn-group-devided" data-toggle="buttons">--}}
-                    {{--<label class="btn btn-transparent dark btn-outline btn-circle btn-sm active">--}}
-                    {{--<input type="radio" name="options" class="toggle" id="option1">Actions</label>--}}
-                    {{--<label class="btn btn-transparent dark btn-outline btn-circle btn-sm">--}}
-                    {{--<input type="radio" name="options" class="toggle" id="option2">Settings</label>--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
+
                 </div>
                 <div class="portlet-body">
                     <div class="table-toolbar">
@@ -62,7 +55,7 @@
                         <div id="sample_1_filter" class="dataTables_filter">
                             <label>Search:</label>
                             <form>
-                                <input type="search" placeholder="User First name..." name="search_title"
+                                <input type="search" placeholder="User Name..." name="search_title"
                                        class="form-control input-sm input-small input-inline"
                                        @if(!empty(app('request')->input('search_title'))) value="{{app('request')->input('search_title')}}" @endif>
 
@@ -91,7 +84,7 @@
                            id="sample_1">
                         <thead>
                         <tr>
-                            <th>Id</th>
+                            <th> Id</th>
                             <th> Name</th>
                             <th> Email</th>
                             <th> Phone</th>
@@ -119,23 +112,23 @@
                                                 data-toggle="dropdown" aria-expanded="false"> Actions
                                             <i class="fa fa-angle-down"></i>
                                         </button>
-                                        <ul class="dropdown-menu pull-left" role="menu">
-                                            <li>
-                                                @if($user->is_active == 0)
-                                                    <a href="{{route('admin.change-user-status',$user->id)}}">
-                                                        <i class="fa fa-user-plus"></i> Active </a>
-                                                @else
-                                                    <a href="{{route('admin.change-user-status',$user->id)}}">
-                                                        <i class="fa fa-user-times"></i> DeActive </a>
-                                                @endif
-                                            </li>
-                                            <li>
-                                                <a href="{{route('admin.delete-user',$user->id)}}">
-                                                    <i class="icon-tag"></i> Delete </a>
-                                            </li>
+                                        <ul class="dropdown-menu pull-right" role="menu">
+                                            {{--<li>--}}
+                                                {{--@if($user->is_active == 0)--}}
+                                                    {{--<a href="{{route('admin.change-user-status',$user->id)}}">--}}
+                                                        {{--<i class="fa fa-user-plus"></i> Active </a>--}}
+                                                {{--@else--}}
+                                                    {{--<a href="{{route('admin.change-user-status',$user->id)}}">--}}
+                                                        {{--<i class="fa fa-user-times"></i> DeActive </a>--}}
+                                                {{--@endif--}}
+                                            {{--</li>--}}
+                                            {{--<li>--}}
+                                                {{--<a href="{{route('admin.delete-user',$user->id)}}">--}}
+                                                    {{--<i class="icon-tag"></i> Delete </a>--}}
+                                            {{--</li>--}}
                                             <li>
                                                 <a href="{{route('admin.update-account',$user->id)}}">
-                                                    <i class="icon-user"></i> Edit </a>
+                                                    <i class="icon-user"></i> View </a>
                                             </li>
                                             {{--<li class="divider"></li>--}}
                                             {{--<li>--}}

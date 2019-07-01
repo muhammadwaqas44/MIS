@@ -14,11 +14,6 @@
 
             </li>
 
-
-            <li class="heading">
-                <h3 class="uppercase">User</h3>
-            </li>
-
             <li class="nav-item  ">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -34,48 +29,81 @@
                     </li>
                     <li class="nav-item  ">
                         <a href="{{route('admin.all-tawk-to-users')}}" class="nav-link ">
-                            <i class="icon-user-female"></i>
+                            <i class="icon-user"></i>
                             <span class="title">Tawk.To User</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.all-winners')}}" class="nav-link ">
+                            <i class="icon-user"></i>
+                            <span class="title">Winners</span>
                         </a>
                     </li>
 
                 </ul>
             </li>
 
-
-            <li class="heading">
-                <h3 class="uppercase">Hiring Process</h3>
-            </li>
-
             <li class="nav-item  ">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-notebook"></i>
-                    <span class="title">Hiring Process</span>
+                    <span class="title">Employment</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item  ">
                         <a href="{{route('admin.all-job-application')}}" class="nav-link ">
                             <i class="icon-paper-clip"></i>
-                            <span class="title">Job Application</span>
+                            <span class="title">Job Applications</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
                         <a href="{{route('admin.all-schedules')}}" class="nav-link ">
                             <i class="icon-paper-clip"></i>
-                            <span class="title">Schedule</span>
+                            <span class="title">Interview Schedules</span>
                         </a>
                     </li>
-
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.all-interviews')}}" class="nav-link ">
+                            <i class="icon-paper-clip"></i>
+                            <span class="title">Initial Interviews</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.shortlisted')}}" class="nav-link ">
+                            <i class="icon-paper-clip"></i>
+                            <span class="title">Shortlisted</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.tech-interview')}}" class="nav-link ">
+                            <i class="icon-paper-clip"></i>
+                            <span class="title">Technical Evaluation</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.hr-interview')}}" class="nav-link ">
+                            <i class="icon-paper-clip"></i>
+                            <span class="title">HR Interviews</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.offer-given')}}" class="nav-link ">
+                            <i class="icon-paper-clip"></i>
+                            <span class="title">Offer Given</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.all-interviews')}}" class="nav-link ">
+                            <i class="icon-paper-clip"></i>
+                            <span class="title">Joining</span>
+                        </a>
+                    </li>
 
                 </ul>
             </li>
 
-            <li class="heading">
-                <h3 class="uppercase">SMS Response</h3>
-            </li>
             <li class="nav-item ">
-                <a  href="javascript:;" class="nav-link nav-toggle">
+                <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-envelope"></i>
                     <span class="title">SMS Response</span>
                     <span class="arrow"></span>

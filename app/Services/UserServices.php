@@ -24,8 +24,11 @@ class UserServices
         $allUsers = User::withoutGlobalScopes()->orderBy('id', 'desc')->where('role_id', '!=', 1)->whereNull('deleted_at');
 
         if ($request->search_title) {
-            $first_name = $request->search_title;
-            $allUsers = $allUsers->where('first_name', 'like', '%' . $first_name . '%');
+            $full_name = $request->search_title;
+            $splitName = explode(' ', $full_name, 2);
+            $firstName = $splitName[0];
+            $lastName = !empty($splitName[1]) ? $splitName[1] : '';
+            $allUsers = $allUsers->where('first_name', 'like', '%' . $firstName . '%')->orWhere('last_name', 'like', '%' . $lastName . '%');
         }
         if ($request->filled('search_email')) {
             $email = $request->search_email;
@@ -110,8 +113,11 @@ class UserServices
     {
         $allUsers = User::withoutGlobalScopes()->orderBy('id', 'desc')->where('role_id', '=', 3)->whereNull('deleted_at');
         if ($request->search_title) {
-            $first_name = $request->search_title;
-            $allUsers = $allUsers->where('first_name', 'like', '%' . $first_name . '%');
+            $full_name = $request->search_title;
+            $splitName = explode(' ', $full_name, 2);
+            $firstName = $splitName[0];
+            $lastName = !empty($splitName[1]) ? $splitName[1] : '';
+            $allUsers = $allUsers->where('first_name', 'like', '%' . $firstName . '%')->orWhere('last_name', 'like', '%' . $lastName . '%');
         }
         if ($request->filled('search_email')) {
             $email = $request->search_email;
@@ -135,8 +141,9 @@ class UserServices
         }
     }
 
-    public function editTawkToUserPost($request, $userId)
+    public function editTawkToUserPost($request)
     {
+        $userId = $request->id;
         $user = User::withoutGlobalScopes()->find($userId);
         $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,]));
 
@@ -152,8 +159,6 @@ class UserServices
         $name = ucfirst($first_name) . ' ' . ucfirst($last_name);
         $massege = $request->massegeBody;
         $massegeBody = str_replace('$name', $name, $massege);
-//        $massegeBody = str_replace('\n', , $massegeBody);
-//        dd($massegeBody);
         $jazzMassegeApi = 'https://connect.jazzcmt.com/sendsms_url.html?Username=03081279299&Password=Pakistan1&From=DANKASH&To=' . $userPhone . '&Message=' . $massegeBody . '';
         $client = new \GuzzleHttp\Client();
         $response = $client->request('GET', $jazzMassegeApi);
@@ -173,6 +178,10 @@ class UserServices
     public function smsTawkToAllUsers($massegeId)
     {
         $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3)->whereNull('deleted_at')->get();
+        set_time_limit(600);
+        $normalTimeLimit = ini_get('max_execution_time');
+        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', $normalTimeLimit);
         foreach ($allUsers as $user) {
             $userPhone = $user->user_phone;
             $massege = Massege::find($massegeId);
@@ -184,16 +193,17 @@ class UserServices
             $client = new \GuzzleHttp\Client();
             $response = $client->request('GET', $jazzMassegeApi);
             $result = $response->getBody()->getContents();
-            SmsLog::create([
+            $smsId = SmsLog::create([
                 'is_active' => 1,
                 'recipient_no' => $userPhone,
                 'body' => $massegeBody,
                 'sent_on' => Carbon::now(),
-                'sent_by' =>  Auth::user()->id,
+                'sent_by' => Auth::user()->id,
                 'status' => $result,
                 'masking' => 'DANKASH',
                 'reference' => 'DANKASH Promotion',
             ]);
         }
+//        }
     }
 }

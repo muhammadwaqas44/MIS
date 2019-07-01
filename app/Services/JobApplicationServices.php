@@ -21,7 +21,7 @@ class JobApplicationServices
 
     public function allJobApplications($request)
     {
-        $allJobApplications = JobApplication::withoutGlobalScopes()->orderBy('id', 'desc')->whereNull('deleted_at');
+        $allJobApplications = JobApplication::withoutGlobalScopes()->orderBy('id', 'desc')->where('is_active',1)->whereNull('deleted_at');
 
         if ($request->search_title) {
             $allJobApplications = $allJobApplications
