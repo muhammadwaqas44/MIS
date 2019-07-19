@@ -174,7 +174,7 @@ class CallStatusTableSeeder extends Seeder
             ],
             [
                 'id' => 17,
-                'name' => 'Initial Interview',
+                'name' => 'Form Filled',
                 'parent_id' => null,
                 'module' => 'Form Fill Status',
                 'ini_int'=>0,
@@ -182,8 +182,16 @@ class CallStatusTableSeeder extends Seeder
                 'tech_int'=>0,
                 'hr_int'=>0,
             ],
-
-
+            [
+                'id' => 18,
+                'name' => 'Added Applicant',
+                'parent_id' => null,
+                'module' => 'Added Applicant',
+                'ini_int' => 0,
+                'short_int' => 0,
+                'tech_int' => 0,
+                'hr_int' => 0,
+            ],
         ];
 
         foreach ($statuses as $status) {

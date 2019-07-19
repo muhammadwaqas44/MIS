@@ -570,8 +570,6 @@
                     $("#editUser").find('#last_name').val(response.last_name);
                     $("#editUser").find('#email').val(response.email);
                     $("#editUser").find('#user_phone').val(response.user_phone);
-//                    $("#editUser").find('#male').val(response.gender);
-//                    $("#editUser").find('#female').val(response.gender);
                 });
         });
     </script>

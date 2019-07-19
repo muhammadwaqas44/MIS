@@ -45,8 +45,8 @@
 
             <li class="nav-item  ">
                 <a href="javascript:;" class="nav-link nav-toggle">
-                    <i class="icon-notebook"></i>
-                    <span class="title">Employment</span>
+                    <i class="icon-paper-clip"></i>
+                    <span class="title">Hiring</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
@@ -92,16 +92,36 @@
                             <span class="title">Offer Given</span>
                         </a>
                     </li>
+                    {{--<li class="nav-item  ">--}}
+                        {{--<a href="{{route('admin.all-interviews')}}" class="nav-link ">--}}
+                            {{--<i class="icon-paper-clip"></i>--}}
+                            {{--<span class="title">Joining</span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                     <li class="nav-item  ">
-                        <a href="{{route('admin.all-interviews')}}" class="nav-link ">
+                        <a href="{{route('admin.all-applicants')}}" class="nav-link ">
                             <i class="icon-paper-clip"></i>
-                            <span class="title">Joining</span>
+                            <span class="title">All Applicants</span>
                         </a>
                     </li>
 
                 </ul>
             </li>
-
+            <li class="nav-item">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="icon-briefcase"></i>
+                    <span class="title">Employment</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu">
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.all-employees')}}" class="nav-link ">
+                            <i class="icon-briefcase"></i>
+                            <span class="title">All Employees</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item ">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-envelope"></i>
@@ -111,7 +131,7 @@
                 <ul class="sub-menu">
                     <li class="nav-item  ">
                         <a href="{{route('admin.all-message-responses')}}" class="nav-link ">
-                            <i class="icon-note"></i>
+                            <i class="icon-envelope"></i>
                             <span class="title">All SMS Response</span>
                         </a>
                     </li>

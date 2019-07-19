@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+route::post('post-job-application', 'Admin\JobApplicationController@jobApplicationsPostApi')->name('api.post-job-application');

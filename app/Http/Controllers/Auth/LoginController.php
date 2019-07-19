@@ -32,7 +32,8 @@ class LoginController extends Controller
 
     public function loginPost(Request $request)
     {
-
+//        dd($request->all());
+        session(['timezone' => $request->timezone]);
         if (Auth::attempt(['email' => $request->email, "password" => $request->password])) {
             if (Auth::user()->role->name == "Admin") {
                 return redirect()->route('admin-dashboard');

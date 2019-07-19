@@ -178,9 +178,9 @@ class UserServices
     public function smsTawkToAllUsers($massegeId)
     {
         $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3)->whereNull('deleted_at')->get();
-        set_time_limit(600);
+        set_time_limit(6000);
         $normalTimeLimit = ini_get('max_execution_time');
-        ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 6000);
         ini_set('max_execution_time', $normalTimeLimit);
         foreach ($allUsers as $user) {
             $userPhone = $user->user_phone;
@@ -204,6 +204,5 @@ class UserServices
                 'reference' => 'DANKASH Promotion',
             ]);
         }
-//        }
     }
 }

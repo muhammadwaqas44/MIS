@@ -1,5 +1,5 @@
 @extends('admin-layout.app')
-@section('title', "All Shortlisted")
+@section('title', "All Offer Given")
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -8,7 +8,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">Shortlisted Table </span>
+                        <span class="caption-subject bold uppercase">Offer Given Table </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -69,7 +69,7 @@
 
 
                     </div>
-
+                    <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover table-checkable order-column"
                            id="sample_1">
                         <thead>
@@ -79,29 +79,34 @@
                             <th> Email</th>
                             <th> Applicant Phone</th>
                             <th> Status</th>
+                            <th> Position</th>
                             <th> Date & Time</th>
                             <th> Remarks</th>
+                            <th> Resume</th>
                             <th> Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($data['allShortlisted']['allShortlisted'] as $interview)
+                        @foreach($data['allOfferGiven']['allOfferGiven'] as $interview)
                             <tr class="odd gradeX">
-                                <td class="center"> {{$interview->id}} </td>
+                                <td class="center"> {{$interview->applicant->id}} </td>
                                 <td> {{$interview->applicant->name}}</td>
                                 <td>
                                     <a href="mailto:{{$interview->applicant->email}}"> {{$interview->applicant->email}}</a>
                                 </td>
-
                                 <td class="center">{{$interview->applicant->user_phone}}</td>
                                 @if($interview->call_id)
                                     <td class="center">{{$interview->status->name}}</td>
                                 @else
                                     <td class="center">No Status</td>
                                 @endif
-
+                                <td class="center">{{$interview->applicant->designation->name}}</td>
                                 <td class="center">{{$interview->dateTime}}</td>
                                 <td class="center"> {{ str_limit($interview->remarks, $limit = 60, $end = '...') }}</td>
+                                <td class="center"><a target="_blank"
+                                                      href="{{route('admin.download-resume',$interview->applicant->id)}}">
+                                        <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
+                                    </a></td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-xs green dropdown-toggle" type="button"
@@ -117,22 +122,23 @@
                                             <li>
                                                 <a href="#" data-toggle="modal"
                                                    data-target="#addDetailsInterview_{{$interview->id}}">
-                                                    <i class="icon-user"></i> add Interview Detials</a>
+                                                    <i class="icon-user"></i> Add</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{route('admin.join-employee',$interview->id)}}">
+                                                    <i class="icon-user"></i> Join</a>
                                             </li>
                                         </ul>
-                                        <div class="modal fade bs-modal-lg" id="editInterview_{{$interview->id}}"
+                                        <div class="modal fade  bs-modal-lg" id="editInterview_{{$interview->id}}"
                                              tabindex="-1" role="dialog" style="width: auto">
                                             <div class="modal-dialog modal-lg">
                                                 <!-- Modal content-->
-
-
                                                 <div class="portlet light ">
                                                     <div class="portlet-title tabbable-line">
                                                         <div class="caption caption-md">
                                                             <i class="icon-globe theme-font hide"></i>
-                                                            <span class="caption-subject font-blue-madison bold uppercase">Edit Schedule</span>
+                                                            <span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>
                                                         </div>
-
                                                     </div>
                                                     <div class="portlet-body">
                                                         <div class="tab-content">
@@ -140,22 +146,12 @@
                                                                   method="post"
                                                                   enctype="multipart/form-data">
                                                                 @csrf
-
                                                                 <div class="form-group">
-                                                                    <div class="row">
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <input hidden
-                                                                           name="job_id"
-                                                                           value="{{$interview->applicant->id}}"
-                                                                    />
+                                                                    <input hidden name="job_id" value="{{$interview->applicant->id}}"/>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <div class="row">
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             <label class="control-label">Name
                                                                                 :</label>
                                                                             <input readonly
@@ -163,7 +159,7 @@
                                                                                    value="{{$interview->applicant->name}}"/>
                                                                         </div>
                                                                         @if($interview->applicant->designation_id)
-                                                                            <div class="col-md-6">
+                                                                            <div class="col-md-4">
                                                                                 <label class="control-label">Position
                                                                                     :</label>
                                                                                 <input readonly
@@ -172,43 +168,36 @@
                                                                                 />
                                                                             </div>
                                                                         @endif
+                                                                        <div class="col-md-4">
+                                                                            <label class="control-label"> Email Notification
+                                                                                :</label>
+                                                                            <input type="checkbox" name="emailSend"
+                                                                                   value="1" CHECKED
+                                                                                   class="checkbox-inline">
+                                                                            {{--<label style="padding: 2px;"><input type="file" style="display: none;"--}}
+                                                                                                                {{--name="file_attach"--}}
+                                                                                                                {{--class="form-control pull-right"><i class="icon-paper-clip"></i></label>--}}
+                                                                        </div>
+
                                                                     </div>
                                                                 </div>
-
-
                                                                 <div class="form-group">
                                                                     <div class="row">
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             <label class="control-label">Email
                                                                                 :</label>
                                                                             <input readonly
                                                                                    style="background: none; border: none; width: 75%"
                                                                                    value="{{$interview->applicant->email}}"/>
                                                                         </div>
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             <label class="control-label">Phone
                                                                                 :</label>
                                                                             <input readonly
                                                                                    style="background: none; border: none"
                                                                                    value="{{$interview->applicant->user_phone}}"/>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            @if($interview->applicant->address)
-                                                                                <label class="control-label">Address
-                                                                                    :</label>
-                                                                                <textarea readonly class="form-control"
-                                                                                          style="background: none; border: none;width: 60%"
-                                                                                          rows="2">
-                                                                                                {{$interview->applicant->address}}</textarea>
-                                                                            @endif
-                                                                        </div>
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             @if($interview->applicant->city_name)
                                                                                 <label class="control-label">City
                                                                                     :</label>
@@ -219,11 +208,23 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
                                                                 <div class="form-group">
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <label class="control-label">Call
+                                                                            @if($interview->applicant->address)
+                                                                                <label class="control-label">Address
+                                                                                    :</label>
+                                                                                <input readonly
+                                                                                       style="background: none; border: none;width: 80%"
+                                                                                       value="{{$interview->applicant->address}}"  rows="2" />
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label class="control-label">
                                                                                 Status</label>
                                                                             <select name="call_id"
                                                                                     class="form-control">
@@ -235,36 +236,43 @@
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
 
-
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <label class="control-label">Time
-                                                                                & Date</label>
-                                                                            <div class="input-append date form_datetime">
-                                                                                <input size="16" type="text"
-                                                                                       required readonly
-                                                                                       name="dateTime" value="{{$interview->dateTime}}"
-                                                                                       class="form-control">
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-remove"></i></span>
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-th"></i></span>
+                                                                        @if($interview->dateTime)
+                                                                            <div class="col-md-6">
+                                                                                <label class="control-label">Date Time</label>
+                                                                                <div class="input-append date form_datetime">
+                                                                                    <input size="16"  type="text" autocomplete="off"
+                                                                                           value="{{$interview->dateTime}}"
+                                                                                           name="dateTime"
+                                                                                           class="form-control dateTime">
+                                                                                    <span class="add-on"><i
+                                                                                                class="icon-remove"></i></span>
+                                                                                    <span class="add-on"><i
+                                                                                                class="icon-th"></i></span>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
+                                                                        @else
+                                                                            <div class="col-md-6">
+                                                                                <label class="control-label">Date Time</label>
+                                                                                <div class="input-append date form_datetime">
+                                                                                    <input size="16" type="text" autocomplete="off"
+                                                                                           name="dateTime"
+                                                                                           class="form-control dateTime">
+                                                                                    <span class="add-on"><i
+                                                                                                class="icon-remove"></i></span>
+                                                                                    <span class="add-on"><i
+                                                                                                class="icon-th"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endif
                                                                     </div>
+
                                                                 </div>
-
-
                                                                 <div class="form-group">
                                                                     <label class="control-label">Remarks</label>
                                                                     <textarea name="remarks"
                                                                               class="form-control"
-                                                                              rows="4"
-                                                                              required>{{$interview->remarks}}</textarea>
+                                                                              rows="2">{{$interview->remarks}}</textarea>
                                                                 </div>
                                                                 <div class="margiv-top-10">
 
@@ -280,7 +288,7 @@
 
                                                                 </div>
                                                             </form>
-                                                            <hr>
+                                                            <br>
                                                             <div class="table-responsive">
                                                                 <table class="table table-striped table-bordered table-hover"
                                                                        id="sample_1">
@@ -288,48 +296,31 @@
                                                                     <tr>
                                                                         <th>Id</th>
                                                                         <th> Name</th>
-                                                                        <th> Email</th>
-                                                                        <th> Applicant Phone</th>
                                                                         <th> Status</th>
+                                                                        <th> Position</th>
                                                                         <th> Date & Time</th>
+                                                                        <th> Remarks</th>
+                                                                        <th> Updated by</th>
+                                                                        <th> Updated At</th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    @foreach($data['jobApp']->where('id','=',$interview->job_id) as $job)
+                                                                    @foreach( $data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterviews)
                                                                         <tr class="odd gradeX">
-                                                                            <td class="center"> {{$job->id}} </td>
-                                                                            <td> {{$job->name}}</td>
-                                                                            <td>
-                                                                                <a href="mailto:{{$job->email}}"> {{$job->email}}</a>
-                                                                            </td>
-
-                                                                            <td class="center">{{$job->user_phone}}</td>
-                                                                            <td class="center">
-                                                                                <a href="{{route('admin.download-resume',$job->id)}}">
-                                                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td class="center">{{$job->created_at}}</td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                    @foreach($data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterview)
-
-                                                                        <tr class="odd gradeX">
-                                                                            <td class="center"> {{$updatedInterview->id}} </td>
-                                                                            <td> {{$updatedInterview->applicant->name}}</td>
-                                                                            <td>
-                                                                                <a href="mailto:{{$updatedInterview->applicant->email}}"> {{$updatedInterview->applicant->email}}</a>
-                                                                            </td>
-
-                                                                            <td class="center">{{$updatedInterview->applicant->user_phone}}</td>
-                                                                            @if($updatedInterview->call_id)
-                                                                                <td class="center">{{$updatedInterview->status->name}}</td>
+                                                                            <td class="center"> {{$updatedInterviews->id}} </td>
+                                                                            <td> {{$updatedInterviews->applicant->name}}</td>
+                                                                            @if($updatedInterviews->call_id)
+                                                                                <td class="center">{{$updatedInterviews->status->name}}</td>
                                                                             @else
                                                                                 <td class="center">No Status</td>
                                                                             @endif
-                                                                            <td class="center">{{$updatedInterview->dateTime}}</td>
-                                                                        </tr>
+                                                                            <td class="center">{{$updatedInterviews->applicant->designation->name}}</td>
+                                                                            <td class="center">{{$updatedInterviews->dateTime}}</td>
+                                                                            <td class="center">{{$updatedInterviews->remarks}}</td>
+                                                                            <td class="center">{{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} </td>
+                                                                            <td class="center">{{$updatedInterviews->created_at}}</td>
 
+                                                                        </tr>
                                                                     @endforeach
                                                                     </tbody>
                                                                 </table>
@@ -337,24 +328,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                                 <!-- //Modal content-->
                                             </div>
                                         </div>
-                                        <div class="modal fade bs-modal-lg" id="addDetailsInterview_{{$interview->id}}"
+                                        <div class="modal fade  bs-modal-lg" id="addDetailsInterview_{{$interview->id}}"
                                              tabindex="-1" role="dialog" style="width: auto">
                                             <div class="modal-dialog modal-lg">
                                                 <!-- Modal content-->
-
-
                                                 <div class="portlet light ">
                                                     <div class="portlet-title tabbable-line">
                                                         <div class="caption caption-md">
                                                             <i class="icon-globe theme-font hide"></i>
-                                                            <span class="caption-subject font-blue-madison bold uppercase">Edit Schedule</span>
+                                                            <span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>
                                                         </div>
-
                                                     </div>
                                                     <div class="portlet-body">
                                                         <div class="tab-content">
@@ -444,12 +430,13 @@
 
                                                                 <div class="form-group">
                                                                     <div class="row">
-                                                                        <div class="col-md-12">
+                                                                        <div class="col-md-6">
                                                                             <label class="control-label">Call
                                                                                 Status</label>
                                                                             <select name="call_id"
                                                                                     class="form-control">
-                                                                                <option value="">.."Select Status"..</option>
+                                                                                <option value="">Select Status
+                                                                                </option>
                                                                                 @foreach($data['interviewStatusAfterInitial'] as  $interviewStatus)
                                                                                     <option value="{{$interviewStatus->id}}">
                                                                                         {{$interviewStatus->name}}
@@ -457,18 +444,11 @@
                                                                                 @endforeach
                                                                             </select>
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
+                                                                        <div class="col-md-6">
                                                                             <label class="control-label">Time
                                                                                 & Date</label>
                                                                             <div class="input-append date form_datetime">
-                                                                                <input size="16" type="text"
-                                                                                       required readonly
+                                                                                <input size="16"  type="text" autocomplete="off"
                                                                                        name="dateTime"
                                                                                        class="form-control">
                                                                                 <span class="add-on"><i
@@ -483,7 +463,7 @@
                                                                     <label class="control-label">Remarks</label>
                                                                     <textarea name="remarks"
                                                                               class="form-control"
-                                                                              rows="4"
+                                                                              rows="2"
                                                                               required></textarea>
                                                                 </div>
                                                                 <div class="margiv-top-10">
@@ -500,36 +480,38 @@
 
                                                                 </div>
                                                             </form>
-                                                            <hr>
-                                                            <div>
+                                                            <br>
+                                                            <div class="table-responsive">
                                                                 <table class="table table-striped table-bordered table-hover"
                                                                        id="sample_1">
                                                                     <thead>
                                                                     <tr>
                                                                         <th>Id</th>
                                                                         <th> Name</th>
-                                                                        <th> Email</th>
-                                                                        <th> Applicant Phone</th>
                                                                         <th> Status</th>
+                                                                        <th> Position</th>
                                                                         <th> Date & Time</th>
+                                                                        <th> Remarks</th>
+                                                                        <th> Updated by</th>
+                                                                        <th> Updated At</th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    @foreach($data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterview)
+                                                                    @foreach( $data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterviews)
                                                                         <tr class="odd gradeX">
-                                                                            <td class="center"> {{$updatedInterview->id}} </td>
-                                                                            <td> {{$updatedInterview->applicant->name}}</td>
-                                                                            <td>
-                                                                                <a href="mailto:{{$updatedInterview->applicant->email}}"> {{$updatedInterview->applicant->email}}</a>
-                                                                            </td>
-
-                                                                            <td class="center">{{$updatedInterview->applicant->user_phone}}</td>
-                                                                            @if($updatedInterview->call_id)
-                                                                                <td class="center">{{$updatedInterview->status->name}}</td>
+                                                                            <td class="center"> {{$updatedInterviews->id}} </td>
+                                                                            <td> {{$updatedInterviews->applicant->name}}</td>
+                                                                            @if($updatedInterviews->call_id)
+                                                                                <td class="center">{{$updatedInterviews->status->name}}</td>
                                                                             @else
                                                                                 <td class="center">No Status</td>
                                                                             @endif
-                                                                            <td class="center">{{$updatedInterview->dateTime}}</td>
+                                                                            <td class="center">{{$updatedInterviews->applicant->designation->name}}</td>
+                                                                            <td class="center">{{$updatedInterviews->dateTime}}</td>
+                                                                            <td class="center">{{$updatedInterviews->remarks}}</td>
+                                                                            <td class="center">{{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} </td>
+                                                                            <td class="center">{{$updatedInterviews->created_at}}</td>
+
                                                                         </tr>
                                                                     @endforeach
                                                                     </tbody>
@@ -538,8 +520,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                                 <!-- //Modal content-->
                                             </div>
                                         </div>
@@ -548,12 +528,12 @@
                             </tr>
                         @endforeach
                         </tbody>
-                    </table>
+                    </table></div>
                     <div class="row">
 
                         <div class="col-md-7 col-sm-7">
                             <div class="dataTables_paginate paging_bootstrap_full_number" id="sample_1_paginate">
-                                {{$data['allShortlisted']['allShortlisted']->links()}}
+                                {{$data['allOfferGiven']['allOfferGiven']->links()}}
                             </div>
                         </div>
                     </div>
@@ -566,8 +546,11 @@
 
     <script src="{{asset('assets-admin/assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets-admin/assets/global/plugins/moment.min.js')}}" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="{{asset('assets-admin/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets-admin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">    <script src="{{asset('assets-admin/bootstrap-datetimepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <link rel="stylesheet" type="text/css"
+          href="{{asset('assets-admin/bootstrap-datetimepicker/css/bootstrap-datepicker3.min.css')}}">
+    <link rel="stylesheet" type="text/css"
+          href="{{asset('assets-admin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}">
+    <script src="{{asset('assets-admin/bootstrap-datetimepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('assets-admin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
     <script type="text/javascript">
         $(".form_datetime1").datepicker({

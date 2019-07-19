@@ -19,4 +19,5 @@
 <script src="{{asset('assets-admin/assets/layouts/layout/scripts/layout.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets-admin/assets/layouts/layout/scripts/demo.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets-admin/assets/layouts/global/scripts/quick-sidebar.min.js')}}" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.6/jstz.min.js" type="text/javascript"></script>
 <!-- END THEME LAYOUT SCRIPTS -->

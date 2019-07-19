@@ -20,7 +20,7 @@ class CreateEmpHistoriesTable extends Migration
             $table->foreign(['job_id'])->references('id')->on('job_applications')->onDelete('cascade');
             $table->integer('call_id')->unsigned()->nullable();
             $table->foreign(['call_id'])->references('id')->on('call_statuses')->onDelete('cascade');
-            $table->dateTime('dateTime');
+            $table->string('dateTime')->nullable();
             $table->integer('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
