@@ -101,6 +101,10 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     /// end mail
     /// MESSAGEGS RESPONSE
     route::get('/admin/all-message-responses', 'Admin\SMSResponseController@allMessageResponse')->name('admin.all-message-responses');
+    route::get('/admin/all-messages', 'Admin\SMSResponseController@allMessages')->name('admin.all-messages');
+    route::post('/admin/add-message', 'Admin\SMSResponseController@addMessage')->name('admin.add-message');
+    Route::get('/admin/massage-activation/{messageId}', 'Admin\SMSResponseController@changeMessageStatus')->name('admin.change-message-status');
+    Route::post('/admin/update-massage/{messageId}', 'Admin\SMSResponseController@updateMessage')->name('admin.update-message');
     /// END MESSAGEGS RESPONSE
     ///
     /// ALL EMPLOYEES ROUTES
@@ -131,6 +135,4 @@ Route::group(['middleware' => 'CheckGuest'], function () {
 
 });
 
-
-//route::post('api/post-job-application', 'Admin\JobApplicationController@jobApplicationsPostApi')->name('api.post-job-application');;
 

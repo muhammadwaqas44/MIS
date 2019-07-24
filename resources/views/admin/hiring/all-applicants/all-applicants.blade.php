@@ -79,6 +79,7 @@
                                 <th> Position</th>
                                 <th> Experience</th>
                                 <th> Remarks</th>
+                                <th> Apply For</th>
                                 <th> Updated By</th>
                                 <th> Updated At</th>
                                 <th> Resume</th>
@@ -110,6 +111,7 @@
                                     <td class="center"> {{ $interview->applicant->experience->name}}</td>
 
                                     <td class="center"> {{ $interview->remarks}}</td>
+                                    <td class="center"> @if(isset($interview->applicant->apply_for)){{ $interview->applicant->apply_for}}@endif</td>
                                     @if($interview->user_id)
                                         <td class="center">{{$interview->user->first_name}} {{$interview->user->last_name}}</td>
                                     @else

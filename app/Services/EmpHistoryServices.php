@@ -89,7 +89,7 @@ class EmpHistoryServices
             if ($request->call_id1 != null) {
                 if ($request->dateTime == null) {
                     EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),
+                        'created_at' => Carbon::now()->timezone(session('timezone')),
                         'call_id' => $request->call_id1, 'user_id' => auth()->user()->id]));
 
                 } else {
@@ -98,12 +98,16 @@ class EmpHistoryServices
                         'call_id' => $request->call_id1,
                         'dateTime' => Carbon::parse(str_replace('-', '', $request->dateTime))->format('Y-m-d H:i:s'),
                         'user_id' => auth()->user()->id,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),]));
+                        'created_at' => Carbon::now()->timezone(session('timezone')),]));
                     if ($request->emailSend == 1) {
                         if ($scheduleData->call_id == 3) {
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
-                            $designation = $applicant->designation->name;
+                            if ($applicant->designation->id == 1) {
+                                $designation = $applicant->apply_for;
+                            } else {
+                                $designation = $applicant->designation->name;
+                            }
                             $name = $applicant->name;
                             $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
                             $to = $applicant->email;
@@ -136,6 +140,7 @@ class EmpHistoryServices
                 </div>';
                             $message = str_replace('$name', $name, $txt);
                             $message = str_replace('$date', $date, $message);
+
                             $message = str_replace('$designation', $designation, $message);
                             $headers = "MIME-Version: 1.0" . "\r\n";
                             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -155,19 +160,23 @@ class EmpHistoryServices
             } else {
                 if ($request->dateTime == null) {
                     EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),
+                        'created_at' => Carbon::now()->timezone(session('timezone')),
                         'call_id' => $request->call_id2, 'user_id' => auth()->user()->id]));
 
                 } else {
                     $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1, 'call_id' => $request->call_id2,
                         'dateTime' => Carbon::parse(str_replace('-', '', $request->dateTime))->format('Y-m-d H:i:s'),
                         'user_id' => auth()->user()->id,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),]));
+                        'created_at' => Carbon::now()->timezone(session('timezone')),]));
                     if ($request->emailSend == 1) {
                         if ($scheduleData->call_id == 3) {
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
-                            $designation = $applicant->designation->name;
+                            if ($applicant->designation->id == 1) {
+                                $designation = $applicant->apply_for;
+                            } else {
+                                $designation = $applicant->designation->name;
+                            }
                             dd($designation);
                             $name = $applicant->name;
                             $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
@@ -220,6 +229,7 @@ class EmpHistoryServices
             }
 
         }
+
     }
 
     public function changeScheduleStatus($scheduleId)
@@ -251,13 +261,17 @@ class EmpHistoryServices
                     $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1, 'call_id' => $request->call_id1,
                         'dateTime' => Carbon::parse(str_replace('-', '', $request->dateTime))->format('Y-m-d H:i:s'),
                         'user_id' => auth()->user()->id,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),
-                        ]));
+                        'created_at' => Carbon::now()->timezone(session('timezone')),
+                    ]));
                     if ($request->emailSend == 1) {
                         if ($scheduleData->call_id == 3) {
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
-                            $designation = $applicant->designation->name;
+                            if ($applicant->designation->id == 1) {
+                                $designation = $applicant->apply_for;
+                            } else {
+                                $designation = $applicant->designation->name;
+                            }
                             $name = $applicant->name;
                             $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
                             $to = $applicant->email;
@@ -309,19 +323,23 @@ class EmpHistoryServices
             } else {
                 if ($request->dateTime == null) {
                     EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),
+                        'created_at' => Carbon::now()->timezone(session('timezone')),
                         'call_id' => $request->call_id2, 'user_id' => auth()->user()->id]));
                 } else {
                     $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1, 'call_id' => $request->call_id2,
                         'dateTime' => Carbon::parse(str_replace('-', '', $request->dateTime))->format('Y-m-d H:i:s'),
                         'user_id' => auth()->user()->id,
-                        'created_at' =>Carbon::now()->timezone(session('timezone')),
-                        ]));
+                        'created_at' => Carbon::now()->timezone(session('timezone')),
+                    ]));
                     if ($request->emailSend == 1) {
                         if ($scheduleData->call_id == 3) {
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
-                            $designation = $applicant->designation->name;
+                            if ($applicant->designation->id == 1) {
+                                $designation = $applicant->apply_for;
+                            } else {
+                                $designation = $applicant->designation->name;
+                            }
                             $name = $applicant->name;
                             $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
                             $to = $applicant->email;
@@ -412,7 +430,7 @@ class EmpHistoryServices
             if ($request->dateTime == null) {
                 $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
                     'user_id' => auth()->user()->id,
-                    'created_at' =>Carbon::now()->timezone(session('timezone')),
+                    'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
                 if ($request->emailSend == 1) {
                     if ($scheduleData->call_id == 14) {
@@ -426,11 +444,11 @@ class EmpHistoryServices
                             'date' => $date,
                             'designation' => $designation,
                         );
-                        Mail::send('mail', $data, function ($message) use ( $to,$name,$request) {
+                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
                             $message->to($to, $name)->subject('Interview Invitation');
                             $message->attach($request->file('file_attach')->getRealPath(), [
                                 'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType() ]);
+                                'mime' => $request->file('file_attach')->getMimeType()]);
                             $message->from('kash@technerds.com', 'Kashif Shah');
                             $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                         });
@@ -440,11 +458,11 @@ class EmpHistoryServices
                         return redirect()->back();
                     }
                 }
-            }else{
+            } else {
                 $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
                     'dateTime' => Carbon::parse(str_replace('-', '', $request->dateTime))->format('Y-m-d H:i:s'),
                     'user_id' => auth()->user()->id,
-                    'created_at' =>Carbon::now()->timezone(session('timezone')),
+                    'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
                 if ($request->emailSend == 1) {
                     if ($scheduleData->call_id == 14) {
@@ -458,11 +476,11 @@ class EmpHistoryServices
                             'date' => $date,
                             'designation' => $designation,
                         );
-                        Mail::send('mail', $data, function ($message) use ( $to,$name,$request) {
+                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
                             $message->to($to, $name)->subject('Interview Invitation');
                             $message->attach($request->file('file_attach')->getRealPath(), [
                                 'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType() ]);
+                                'mime' => $request->file('file_attach')->getMimeType()]);
                             $message->from('kash@technerds.com', 'Kashif Shah');
                             $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                         });
@@ -490,7 +508,7 @@ class EmpHistoryServices
             if ($request->dateTime == null) {
                 $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
                     'user_id' => auth()->user()->id,
-                    'created_at' =>Carbon::now()->timezone(session('timezone')),
+                    'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
                 if ($request->emailSend == 1) {
                     if ($scheduleData->call_id == 14) {
@@ -504,11 +522,11 @@ class EmpHistoryServices
                             'date' => $date,
                             'designation' => $designation,
                         );
-                        Mail::send('mail', $data, function ($message) use ( $to,$name,$request) {
-                            $message->to($to,  $name)->subject('Interview Invitation');
+                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
+                            $message->to($to, $name)->subject('Interview Invitation');
                             $message->attach($request->file('file_attach')->getRealPath(), [
                                 'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType() ]);
+                                'mime' => $request->file('file_attach')->getMimeType()]);
                             $message->from('kash@technerds.com', 'Kashif Shah');
                             $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                         });
@@ -518,11 +536,11 @@ class EmpHistoryServices
                         return redirect()->back();
                     }
                 }
-            }else{
+            } else {
                 $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
                     'dateTime' => Carbon::parse(str_replace('-', '', $request->dateTime))->format('Y-m-d H:i:s'),
                     'user_id' => auth()->user()->id,
-                    'created_at' =>Carbon::now()->timezone(session('timezone')),
+                    'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
                 if ($request->emailSend == 1) {
                     if ($scheduleData->call_id == 14) {
@@ -536,11 +554,11 @@ class EmpHistoryServices
                             'date' => $date,
                             'designation' => $designation,
                         );
-                        Mail::send('mail', $data, function ($message) use ( $to,$name,$request) {
+                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
                             $message->to($to, $name)->subject('Interview Invitation');
                             $message->attach($request->file('file_attach')->getRealPath(), [
                                 'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType() ]);
+                                'mime' => $request->file('file_attach')->getMimeType()]);
                             $message->from('kash@technerds.com', 'Kashif Shah');
                             $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                         });

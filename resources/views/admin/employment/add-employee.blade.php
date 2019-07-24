@@ -13,6 +13,15 @@
                         <span class="caption-subject bold uppercase">Add Employee</span>
                     </div>
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div><br />
+                @endif
                 <div class="portlet-body">
                     <div class="table-toolbar">
                         <div class="row">
@@ -25,7 +34,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
 
-                                                    <label class="control-label">First Name</label>
+                                                    <label class="control-label">First Name</label><span style="color:red;">*</span>
                                                     <input type="text" name="first_name" class="form-control" required
                                                            placeholder="First Name"
                                                     />
@@ -42,7 +51,7 @@
                                                     <label class="control-label">Data Of Birth</label>
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off"
-                                                               name="date_of_birth" placeholder="Data Of Birth" required
+                                                               name="date_of_birth" placeholder="Data Of Birth"
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>
@@ -53,7 +62,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label class="control-label">Gender</label>
-                                                    <select class="form-control" name="gender" required>
+                                                    <select class="form-control" name="gender" >
                                                         <option value="">Select</option>
                                                         <option value="male">Male</option>
                                                         <option value="female">Female</option>
@@ -61,7 +70,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="control-label">Marital Status</label>
-                                                    <select class="form-control" name="marital_status" required>
+                                                    <select class="form-control" name="marital_status" >
                                                         <option value="">Select</option>
                                                         <option value="single">Single</option>
                                                         <option value="married">Married</option>
@@ -74,14 +83,14 @@
 
                                                     <label class="control-label">Father Name</label>
                                                     <input type="text" name="father_name" class="form-control"
-                                                           placeholder="Father Name" required
+                                                           placeholder="Father Name"
                                                     />
 
 
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="control-label">Nationality</label>
-                                                    <select class="form-control" name="nationality" required>
+                                                    <select class="form-control" name="nationality" >
                                                         <option value="">Select</option>
                                                         @foreach($data['countries'] as $country)
                                                             <option value="{{$country->id}}">{{$country->name}}</option>
@@ -94,7 +103,7 @@
                                                 <div class="col-md-6">
 
                                                     <label class="control-label">Nationality Identity Type</label>
-                                                    <select class="form-control" name="n_identity_type" required>
+                                                    <select class="form-control" name="n_identity_type" >
                                                         <option value="">Select</option>
                                                         <option value="CNIC">CNIC</option>
                                                         <option value="Passport">Passport</option>
@@ -105,7 +114,7 @@
                                                 <div class="col-md-6">
                                                     <label class="control-label">Nationality Identity No</label>
                                                     <input type="text" name="n_identity_no" class="form-control"
-                                                           placeholder="Nationality Identity No" required
+                                                           placeholder="Nationality Identity No"
                                                     />
                                                 </div>
                                             </div>
@@ -116,7 +125,7 @@
                                                 <div class="col-md-12">
                                                     <label class="control-label">Current Address</label>
                                                     <input type="text" name="current_address" class="form-control"
-                                                           placeholder="Address" required
+                                                           placeholder="Address"
                                                     />
                                                 </div>
                                             </div>
@@ -154,7 +163,7 @@
                                                 <div class="col-md-12">
                                                     <label class="control-label">Permanent Address</label>
                                                     <input type="text" name="permanent_address" class="form-control"
-                                                           required
+
                                                            placeholder="Address"/>
                                                 </div>
                                             </div>
@@ -189,7 +198,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Mobile Number</label>
+                                                    <label class="control-label">Mobile Number</label><span style="color:red;">*</span>
                                                     <input type="text" name="mobile_number" class="form-control"
                                                            placeholder="Mobile Number" required
                                                     />
@@ -209,7 +218,7 @@
                                                     />
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Email</label>
+                                                    <label class="control-label">Email</label><span style="color:red;">*</span>
                                                     <input type="email" name="email" class="form-control"
                                                            placeholder="Email" required
                                                     />
@@ -226,7 +235,7 @@
                                                 <img id="preview" src="{{asset('images/user.png')}}" width="233px"
                                                      height="233px">
                                             </div>
-                                            <input type="file" name="profile_image" required id="fileUploader" style="margin-top: 10px;">
+                                            <input type="file" name="profile_image" id="fileUploader" style="margin-top: 10px;">
                                         </div>
                                     </div>
                                     <hr>
@@ -282,24 +291,24 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Bank Name</label>
-                                                    <input type="text" class="form-control" name="bank_name" required
+                                                    <input type="text" class="form-control" name="bank_name"
                                                            placeholder="Bank Name"/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Branch Name</label>
-                                                    <input type="text" class="form-control" name="branch_name" required
+                                                    <input type="text" class="form-control" name="branch_name"
                                                            placeholder="Branch Name"/>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Account Name</label>
-                                                    <input type="text" class="form-control" name="account_name" required
+                                                    <input type="text" class="form-control" name="account_name"
                                                            placeholder="Account Name"/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Account Number</label>
-                                                    <input type="text" class="form-control" name="account_no" required
+                                                    <input type="text" class="form-control" name="account_no"
                                                            placeholder="Account Number"/>
                                                 </div>
                                             </div>
@@ -308,7 +317,7 @@
                                             <h4>Official Status</h4><br>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Department</label>
+                                                    <label>Department</label><span style="color:red;">*</span>
                                                     <select class="form-control" name="department_id" required>
                                                         <option value="">Select</option>
                                                         @foreach($data['department'] as $department)
@@ -317,7 +326,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>Designation</label>
+                                                    <label>Designation</label><span style="color:red;">*</span>
                                                     <select class="form-control" name="designation_id" required>
                                                         <option value="">Select</option>
                                                         @foreach($data['designation'] as $designation)
@@ -328,7 +337,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Location</label>
+                                                    <label>Location</label><span style="color:red;">*</span>
                                                     <select class="form-control" name="location_id" required>
                                                         <option value="">Select</option>
                                                         @foreach($data['location'] as $department)
@@ -340,7 +349,7 @@
                                                     <label>Joining Date</label>
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off"
-                                                               name="joining_date" placeholder="Joining Date" required
+                                                               name="joining_date" placeholder="Joining Date"
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>
@@ -444,7 +453,6 @@
             } else {
                 $("#current_city").empty();
             }
-
         });
     </script>
     <script type="text/javascript">
@@ -493,7 +501,6 @@
             } else {
                 $("#permanent_city").empty();
             }
-
         });
     </script>
 @endsection

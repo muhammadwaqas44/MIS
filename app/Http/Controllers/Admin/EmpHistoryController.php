@@ -35,12 +35,18 @@ class EmpHistoryController extends Controller
 
     public function interviewSchedulePost(Request $request, EmpHistoryServices $empHistoryServices)
     {
-        $empHistoryServices->interviewSchedulePost($request);
-        return redirect()->back();
+        $jobApplication = JobApplication::find($request->job_id);
+        if ($jobApplication->designation_id == 1) {
+            return "Please Update Applicant's Position";
+        } else {
+            $empHistoryServices->interviewSchedulePost($request);
+            return redirect()->back();
+        }
     }
 
     public function changeScheduleStatus($scheduleId, EmpHistoryServices $empHistoryServices)
     {
+
         $empHistoryServices->changeScheduleStatus($scheduleId);
         return redirect()->back();
     }
@@ -121,6 +127,7 @@ class EmpHistoryController extends Controller
         $data['updatedInterviews'] = EmpHistory::orderBy('id', 'desc')->get();
         return view('admin..hiring.offer-given.offer-given', compact('data'));
     }
+
     public function allApplicants(Request $request, EmpHistoryServices $empHistoryServices)
     {
         $data['allApplicants'] = $empHistoryServices->allApplicants($request);
@@ -128,6 +135,7 @@ class EmpHistoryController extends Controller
         $data['updatedInterviews'] = EmpHistory::orderBy('id', 'desc')->get();
         return view('admin..hiring.all-applicants.all-applicants', compact('data'));
     }
+
     public function exportJobApplicant()
     {
         return Excel::download(new JobApplicantExport(), 'Job-Applicants.xlsx');

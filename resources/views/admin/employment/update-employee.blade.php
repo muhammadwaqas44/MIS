@@ -13,6 +13,15 @@
                         <span class="caption-subject bold uppercase">Add Employee</span>
                     </div>
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div><br />
+                @endif
                 <div class="portlet-body">
                     <div class="table-toolbar">
                         <div class="row">
@@ -25,7 +34,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
 
-                                                    <label class="control-label">First Name</label>
+                                                    <label class="control-label">First Name</label><span style="color:red;">*</span>
                                                     <input type="text" name="first_name" class="form-control" required value="{{$employee->first_name}}"
                                                            placeholder="First Name"
                                                     />
@@ -42,7 +51,7 @@
                                                     <label class="control-label">Data Of Birth</label>
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off" value="{{$employee->date_of_birth}}"
-                                                               name="date_of_birth" placeholder="Data Of Birth" required
+                                                               name="date_of_birth" placeholder="Data Of Birth"
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>
@@ -53,7 +62,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label class="control-label">Gender</label>
-                                                    <select class="form-control" name="gender" required>
+                                                    <select class="form-control" name="gender">
                                                         <option value="{{$employee->gender}}">{{$employee->gender}}</option>
                                                         <option value="male">Male</option>
                                                         <option value="female">Female</option>
@@ -61,7 +70,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="control-label">Marital Status</label>
-                                                    <select class="form-control" name="marital_status" required>
+                                                    <select class="form-control" name="marital_status">
                                                         <option value="{{$employee->marital_status}}">{{$employee->marital_status}}</option>
                                                         <option value="single">Single</option>
                                                         <option value="married">Married</option>
@@ -74,12 +83,13 @@
 
                                                     <label class="control-label">Father Name</label>
                                                     <input type="text" name="father_name" class="form-control" value="{{$employee->father_name}}"
-                                                           placeholder="Father Name" required/>
+                                                           placeholder="Father Name"/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="control-label">Nationality</label>
-                                                    <select class="form-control" name="nationality" required>
-                                                        <option value="{{$employee->nationality}}">{{$employee->nationalityCountry->name}}</option>
+                                                    <select class="form-control" name="nationality">
+
+                                                        <option value="{{$employee->nationality}}">@if(isset($employee->nationalityCountry->name)){{$employee->nationalityCountry->name}}@endif</option>
                                                         @foreach($data['countries'] as $country)
                                                             <option value="{{$country->id}}">{{$country->name}}</option>
                                                         @endforeach
@@ -91,7 +101,7 @@
                                                 <div class="col-md-6">
 
                                                     <label class="control-label">Nationality Identity Type</label>
-                                                    <select class="form-control" name="n_identity_type" required>
+                                                    <select class="form-control" name="n_identity_type">
                                                         <option value="{{$employee->n_identity_type}}">{{$employee->n_identity_type}}</option>
                                                         <option value="CNIC">CNIC</option>
                                                         <option value="Passport">Passport</option>
@@ -102,7 +112,7 @@
                                                 <div class="col-md-6">
                                                     <label class="control-label">Nationality Identity No</label>
                                                     <input type="text" name="n_identity_no" class="form-control"
-                                                           placeholder="Nationality Identity No" required value="{{$employee->n_identity_no}}"
+                                                           placeholder="Nationality Identity No" value="{{$employee->n_identity_no}}"
                                                     />
                                                 </div>
                                             </div>
@@ -113,7 +123,7 @@
                                                 <div class="col-md-12">
                                                     <label class="control-label">Current Address</label>
                                                     <input type="text" name="current_address" class="form-control"
-                                                           placeholder="Address" required value="{{$employee->current_address}}"
+                                                           placeholder="Address" value="{{$employee->current_address}}"
                                                     />
                                                 </div>
                                             </div>
@@ -123,7 +133,7 @@
                                                     <label class="control-label">Current Country</label>
 
                                                     <select id="current_country" name="current_country" class="form-control">
-                                                        <option value="{{$employee->current_country}}">{{$employee->currentCountry->name}}
+                                                        <option value="{{$employee->current_country}}">@if(isset($employee->currentCountry->name)){{$employee->currentCountry->name}}@endif
                                                         </option>
                                                         @foreach($data['countries'] as  $country)
                                                             <option value="{{$country->id}}">
@@ -135,15 +145,15 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="control-label">Current State</label>
-                                                    <select name="current_state" id="current_state" class="form-control" required>
-                                                        <option value="{{$employee->current_state}}">{{$employee->currentState->name}}</option>
+                                                    <select name="current_state" id="current_state" class="form-control">
+                                                        <option value="{{$employee->current_state}}">@if(isset($employee->currentState->name)){{$employee->currentState->name}}@endif</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <label class="control-label">Current City</label>
-                                                    <select name="current_city" id="current_city" class="form-control" required>
-                                                        <option value="{{$employee->current_city}}">{{$employee->currentCity->name}}</option>
+                                                    <select name="current_city" id="current_city" class="form-control">
+                                                        <option value="{{$employee->current_city}}">@if(isset($employee->currentCity->name)){{$employee->currentCity->name}}@endif</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -151,7 +161,6 @@
                                                 <div class="col-md-12">
                                                     <label class="control-label">Permanent Address</label>
                                                     <input type="text" name="permanent_address" class="form-control" value="{{$employee->permanent_address}}"
-                                                           required
                                                            placeholder="Address"/>
                                                 </div>
                                             </div>
@@ -160,7 +169,7 @@
                                                     <label class="control-label">Permanent Country</label>
 
                                                     <select id="permanent_country" name="permanent_country" class="form-control">
-                                                        <option value="{{$employee->permanent_country}}">{{$employee->permanentCountry->name}}
+                                                        <option value="{{$employee->permanent_country}}">@if(isset($employee->permanentCountry->name)){{$employee->permanentCountry->name}}@endif
                                                         </option>
                                                         @foreach($data['countries'] as  $country)
                                                             <option value="{{$country->id}}">
@@ -173,20 +182,20 @@
                                                 <div class="col-md-4">
                                                     <label class="control-label">Permanent State</label>
                                                     <select name="permanent_state" id="permanent_state" class="form-control">
-                                                        <option value="{{$employee->permanent_state}}">{{$employee->permanentState->name}}</option>
+                                                        <option value="{{$employee->permanent_state}}">@if(isset($employee->permanentState->name)){{$employee->permanentState->name}}@endif</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <label class="control-label">Permanent City</label>
                                                     <select name="permanent_city" id="permanent_city" class="form-control">
-                                                        <option value="{{$employee->permanent_city}}">{{$employee->permanentCity->name}}</option>
+                                                        <option value="{{$employee->permanent_city}}">@if(isset($employee->permanentCity->name)){{$employee->permanentCity->name}}@endif</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Mobile Number</label>
+                                                    <label class="control-label">Mobile Number</label><span style="color:red;">*</span>
                                                     <input type="text" name="mobile_number" class="form-control"
                                                            placeholder="Mobile Number" required value="{{$employee->mobile_number}}"
                                                     />
@@ -206,7 +215,7 @@
                                                     />
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Email</label>
+                                                    <label class="control-label">Email</label><span style="color:red;">*</span>
                                                     <input type="email" name="email" class="form-control"
                                                            placeholder="Email" required value="{{$employee->email}}"
                                                     />
@@ -234,20 +243,20 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Resume</label>
-                                                    <input type="file" class="form-control" name="resume"  value="{{$employee->employeePersonalDoc->resume}}"/>
-                                                    <input type="hidden"  name="resume_hide" @if($employee->employeePersonalDoc()->get()->count()>0) value="{{$employee->employeePersonalDoc->resume}}" @endif/>
+                                                    <input type="file" class="form-control" name="resume" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeePersonalDoc->resume}}"@endif/>
+                                                    <input type="hidden"  name="resume_hide" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeePersonalDoc->resume}}" @endif/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>ID Proof</label>
-                                                    <input type="file" class="form-control" name="id_proof" @if($employee->employeePersonalDoc()->get()->count()>0) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
-                                                    <input type="hidden" name="id_proof_hie" @if($employee->employeePersonalDoc()->get()->count()>0) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
+                                                    <input type="file" class="form-control" name="id_proof" @if(isset($employee->employeePersonalDoc->id_proof)) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
+                                                    <input type="hidden" name="id_proof_hie" @if(isset($employee->employeePersonalDoc->id_proof)) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_personal" @if($employee->employeePersonalDoc()->get()->count()>0)value="{{$employee->employeePersonalDoc->other_doc_personal}}" @endif/>
-                                                    <input type="hidden" name="other_doc_personal_hide" @if($employee->employeePersonalDoc()->get()->count()>0)value="{{$employee->employeePersonalDoc->other_doc_personal}}" @endif/>
+                                                    <input type="file" class="form-control" name="other_doc_personal" @if(isset($employee->employeePersonalDoc->other_doc_personal))value="{{$employee->employeePersonalDoc->other_doc_personal}}" @endif/>
+                                                    <input type="hidden" name="other_doc_personal_hide" @if(isset($employee->employeePersonalDoc->other_doc_personal))value="{{$employee->employeePersonalDoc->other_doc_personal}}" @endif/>
                                                 </div>
                                             </div>
                                         </div>
@@ -287,24 +296,24 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Bank Name</label>
-                                                    <input type="text" class="form-control" name="bank_name" required value="{{$employee->bank_name}}"
+                                                    <input type="text" class="form-control" name="bank_name" value="{{$employee->bank_name}}"
                                                            placeholder="Bank Name"/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Branch Name</label>
-                                                    <input type="text" class="form-control" name="branch_name" required value="{{$employee->branch_name}}"
+                                                    <input type="text" class="form-control" name="branch_name" value="{{$employee->branch_name}}"
                                                            placeholder="Branch Name"/>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Account Name</label>
-                                                    <input type="text" class="form-control" name="account_name" required value="{{$employee->account_name}}"
+                                                    <input type="text" class="form-control" name="account_name" value="{{$employee->account_name}}"
                                                            placeholder="Account Name"/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Account Number</label>
-                                                    <input type="text" class="form-control" name="account_no" required value="{{$employee->account_no}}"
+                                                    <input type="text" class="form-control" name="account_no" value="{{$employee->account_no}}"
                                                            placeholder="Account Number"/>
                                                 </div>
                                             </div>
@@ -313,18 +322,18 @@
                                             <h4>Official Status</h4><br>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Department</label>
+                                                    <label>Department</label><span style="color:red;">*</span>
                                                     <select class="form-control" name="department_id" required>
-                                                        <option value="{{$employee->department_id}}">{{$employee->departmentName->name}}</option>
+                                                        <option value="{{$employee->department_id}}">@if(isset($employee->departmentName->name)){{$employee->departmentName->name}}@endif</option>
                                                         @foreach($data['department'] as $department)
                                                             <option value="{{$department->id}}">{{$department->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>Designation</label>
+                                                    <label>Designation</label><span style="color:red;">*</span>
                                                     <select class="form-control" name="designation_id" required>
-                                                        <option value="{{$employee->designation_id}}">{{$employee->designationName->name}}</option>
+                                                        <option value="{{$employee->designation_id}}">@if(isset($employee->designationName->name)){{$employee->designationName->name}}@endif</option>
                                                         @foreach($data['designation'] as $designation)
                                                             <option value="{{$designation->id}}">{{$designation->name}}</option>
                                                         @endforeach
@@ -333,10 +342,10 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label>Location</label>
+                                                    <label>Location</label><span style="color:red;">*</span>
 
                                                     <select class="form-control" name="location_id" required>
-                                                        <option value="{{$employee->location_id}}">{{$employee->locationName->name}}</option>
+                                                        <option value="{{$employee->location_id}}">@if(isset($employee->locationName->name)){{$employee->locationName->name}}@endif</option>
                                                         @foreach($data['location'] as $department)
                                                             <option value="{{$department->id}}">{{$department->name}}</option>
                                                         @endforeach
@@ -346,7 +355,7 @@
                                                     <label>Joining Date</label>
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off" value="{{$employee->joining_date}}"
-                                                               name="joining_date" placeholder="Joining Date" required
+                                                               name="joining_date" placeholder="Joining Date"
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>

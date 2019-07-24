@@ -130,17 +130,17 @@
                                     <td class="center">{{$employee->gender}}</td>
                                     <td class="center">{{$employee->marital_status}}</td>
                                     <td class="center">{{$employee->father_name}}</td>
-                                    <td class="center">{{$employee->nationalityCountry->name}}</td>
+                                    <td class="center">@if(isset($employee->nationalityCountry->name)){{$employee->nationalityCountry->name}}@endif</td>
                                     <td class="center">{{$employee->n_identity_type}}</td>
                                     <td class="center">{{$employee->n_identity_no}}</td>
                                     <td class="center">{{$employee->current_address}}</td>
-                                    <td class="center">{{$employee->currentCountry->name}}</td>
-                                    <td class="center">{{$employee->currentState->name}}</td>
-                                    <td class="center">{{$employee->currentCity->name}}</td>
+                                    <td class="center">@if(isset($employee->currentCountry->name)){{$employee->currentCountry->name}}@endif</td>
+                                    <td class="center">@if(isset($employee->currentState->name)){{$employee->currentState->name}}@endif</td>
+                                    <td class="center">@if(isset($employee->currentCity->name)){{$employee->currentCity->name}}@endif</td>
                                     <td class="center">{{$employee->permanent_address}}</td>
-                                    <td class="center">{{$employee->permanentCountry->name}}</td>
-                                    <td class="center">{{$employee->permanentState->name}}</td>
-                                    <td class="center">{{$employee->permanentCity->name}}</td>
+                                    <td class="center">@if(isset($employee->permanentCountry->name)){{$employee->permanentCountry->name}}@endif</td>
+                                    <td class="center">@if(isset($employee->permanentState->name)){{$employee->permanentState->name}}@endif</td>
+                                    <td class="center">@if(isset($employee->permanentCity->name)){{$employee->permanentCity->name}}@endif</td>
                                     <td class="center">{{$employee->mobile_number}}</td>
                                     <td class="center">{{$employee->secondary_number}}</td>
                                     <td class="center">{{$employee->skype_id}}</td>
@@ -198,9 +198,9 @@
                                     <td class="center">{{$employee->branch_name}}</td>
                                     <td class="center">{{$employee->account_name}}</td>
                                     <td class="center">{{$employee->account_no}}</td>
-                                    <td class="center">{{$employee->departmentName->name}}</td>
-                                    <td class="center">{{$employee->designationName->name}}</td>
-                                    <td class="center">{{$employee->locationName->name}}</td>
+                                    <td class="center">@if($employee->departmentName()->get()->count()>0){{$employee->departmentName->name}}@endif</td>
+                                    <td class="center"> @if($employee->designationName()->get()->count()>0){{$employee->designationName->name}} @endif</td>
+                                    <td class="center"> @if($employee->locationName()->get()->count()>0){{$employee->locationName->name}}@endif</td>
                                     <td class="center">{{$employee->joining_date}}</td>
                                     <td class="center">{{$employee->created_at}}</td>
                                     <td class="center">
@@ -220,11 +220,11 @@
                                                     <a href="{{route('admin.update-employee-view',$employee->id)}}">
                                                         <i class="icon-user"></i> View </a>
                                                 </li>
-                                                <li>
-                                                    <a href="#" data-toggle="modal"
-                                                       data-target="#myModalApplication2_{{$employee->id}}">
-                                                        <i class="icon-tag"></i> Add </a>
-                                                </li>
+                                                {{--<li>--}}
+                                                    {{--<a href="#" data-toggle="modal"--}}
+                                                       {{--data-target="#myModalApplication2_{{$employee->id}}">--}}
+                                                        {{--<i class="icon-tag"></i> Add </a>--}}
+                                                {{--</li>--}}
                                             </ul>
                                         </div>
 

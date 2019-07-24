@@ -37,8 +37,12 @@ class JobApplicationController extends Controller
     public function downloadResumeApplicant($jobApplicantId)
     {
         $jobApplicant = JobApplication::where('id', $jobApplicantId)->firstOrFail();
-        $file = public_path() . $jobApplicant->resume;
-        return response()->file($file);
+        if ($jobApplicant->resume) {
+            $file = public_path() . $jobApplicant->resume;
+            return response()->file($file);
+        } else {
+            return 'File Does not Exist';
+        }
     }
 
     public function deleteJobApplication($jobApplicantId)
@@ -56,7 +60,7 @@ class JobApplicationController extends Controller
 
     public function jobApplicationsPostApi(Request $request, JobApplicationServices $applicationServices)
     {
-
+//dd($request->all());
         $hello = Validator::make($request->all(), [
             'apply_for' => 'required',
             'name' => 'required',
@@ -79,17 +83,10 @@ class JobApplicationController extends Controller
 //                'data' => [],
 //                'errors' => $errorArray,
 //            ];
-            return response()->json([$hello->errors(),  'message'=> 'Validation errors'],200);
+            return response()->json([$hello->errors(), 'message' => 'Validation errors'], 200);
         }
-
         return $applicationServices->jobApplicationsPostApi($request);
 
 
     }
-
-    public function check()
-    {
-        return 'okkkkk';
-    }
-
 }

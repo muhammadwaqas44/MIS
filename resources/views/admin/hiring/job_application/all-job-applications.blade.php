@@ -118,7 +118,7 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="control-label">Position</label>
-                                                                        <select name="designation_id"
+                                                                        <select name="designation_id" required
                                                                                 class="form-control">
                                                                             <option value="">Select
                                                                                 Designation
@@ -294,6 +294,7 @@
                             <th> Channel</th>
                             <th> Position</th>
                             <th> Experience</th>
+                            <th> Apply For</th>
                             <th> Resume</th>
                             <th> Actions</th>
                         </tr>
@@ -326,7 +327,7 @@
                                     <td class="center">No Experience</td>
                                 @endif
 
-
+                                <td class="center"> @if(isset($jobApplication->apply_for)){{ $jobApplication->apply_for}}@endif</td>
                                 <td class="center">
                                     <a target="_blank" href="{{route('admin.download-resume',$jobApplication->id)}}">
                                         <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
@@ -454,7 +455,7 @@
                                                                             <div class="form-group">
                                                                                 <label class="control-label">Position</label>
                                                                                 <select name="designation_id"
-                                                                                        class="form-control">
+                                                                                        required class="form-control">
                                                                                     @if($jobApplication->designation_id)
                                                                                         <option value="{{$jobApplication->designation_id}}">{{$jobApplication->designation->name}}</option>
                                                                                     @else
@@ -527,9 +528,23 @@
                                                                                        value="{{$jobApplication->resume}}"
                                                                                 />
                                                                             </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    @if(isset($jobApplication->apply_for))
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label">Apply For</label>
+                                                                                <input type="text"
+                                                                                       class="form-control"
+                                                                                       name="apply_for"
+                                                                                       value="{{$jobApplication->apply_for}}"
+                                                                                />
+                                                                            </div>
 
                                                                         </div>
                                                                     </div>
+                                                                    @endif
                                                                     <div class="row">
                                                                         <div class="col-md-12">
                                                                             <div class="form-group">
@@ -538,7 +553,6 @@
                                                                                           name="remarks"
                                                                                           class="form-control">@if(isset($jobApplication->history->remarks)){{$jobApplication->history->remarks}}@endif</textarea>
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
                                                                     @if(isset($jobApplication->history->id))

@@ -53,7 +53,7 @@ class JoinEmployeeServices
 
     public function postJoinEmployee($request)
     {
-//        dd($request);
+//        dd($request->all());
         if (!empty($request->profile_image)) {
             $fileName = time() . "-" . 'profile_image' . ".png";
             ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
@@ -127,7 +127,16 @@ class JoinEmployeeServices
         } else {
             $empHis_id = null;
         }
-
+        if (!empty($request->date_of_birth)) {
+            $date_of_birth= Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d');
+        } else {
+            $date_of_birth = null;
+        }
+        if (!empty($request->joining_date)) {
+            $joining_date= Carbon::parse(str_replace('-', '', $request->joining_date))->format('Y-m-d');
+        } else {
+            $joining_date = null;
+        }
 
         if (!empty($request->empHis_id)) {
             $empHis = EmpHistory::find($request->empHis_id);
@@ -149,7 +158,7 @@ class JoinEmployeeServices
             "job_id" => $job_id,
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
-            "date_of_birth" => Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d'),
+            "date_of_birth" => $date_of_birth,
             "gender" => $request->gender,
             "marital_status" => $request->marital_status,
             "father_name" => $request->father_name,
@@ -176,7 +185,7 @@ class JoinEmployeeServices
             "designation_id" => $request->designation_id,
             "location_id" => $request->location_id,
             "profile_image" => $profile_image,
-            "joining_date" => Carbon::parse(str_replace('-', '', $request->joining_date))->format('Y-m-d'),
+            "joining_date" =>$joining_date ,
             'created_at' => Carbon::now()->timezone(session('timezone')),
             'user_id' => auth()->user()->id,
             "is_active" => 1,
@@ -202,7 +211,7 @@ class JoinEmployeeServices
             $employee_histroy = EmployeeHistroy::create([
                 "first_name" => $request->first_name,
                 "last_name" => $request->last_name,
-                "date_of_birth" => Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d'),
+                "date_of_birth" => $date_of_birth,
                 "gender" => $request->gender,
                 "marital_status" => $request->marital_status,
                 "father_name" => $request->father_name,
@@ -229,7 +238,7 @@ class JoinEmployeeServices
                 "designation_id" => $request->designation_id,
                 "location_id" => $request->location_id,
                 "profile_image" => $profile_image,
-                "joining_date" => Carbon::parse(str_replace('-', '', $request->joining_date))->format('Y-m-d'),
+                "joining_date" =>$joining_date,
                 'created_at' => Carbon::now()->timezone(session('timezone')),
                 "job_id" => $job_id,
                 "employee_id" => $employee->id,
@@ -319,12 +328,21 @@ class JoinEmployeeServices
         } else {
             $job_id = null;
         }
-
+        if (!empty($request->date_of_birth)) {
+            $date_of_birth= Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d');
+        } else {
+            $date_of_birth = null;
+        }
+        if (!empty($request->joining_date)) {
+            $joining_date= Carbon::parse(str_replace('-', '', $request->joining_date))->format('Y-m-d');
+        } else {
+            $joining_date = null;
+        }
         $employee->update([
             "job_id" => $job_id,
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
-            "date_of_birth" => Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d'),
+            "date_of_birth" =>$date_of_birth,
             "gender" => $request->gender,
             "marital_status" => $request->marital_status,
             "father_name" => $request->father_name,
@@ -351,7 +369,7 @@ class JoinEmployeeServices
             "designation_id" => $request->designation_id,
             "location_id" => $request->location_id,
             "profile_image" => $profile_image,
-            "joining_date" => Carbon::parse(str_replace('-', '', $request->joining_date))->format('Y-m-d'),
+            "joining_date" => $joining_date,
             'created_at' => Carbon::now()->timezone(session('timezone')),
             'user_id' => auth()->user()->id,
             "is_active" => 1,
@@ -378,7 +396,7 @@ class JoinEmployeeServices
             $employee_histroy = EmployeeHistroy::create([
                 "first_name" => $request->first_name,
                 "last_name" => $request->last_name,
-                "date_of_birth" => Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d'),
+                "date_of_birth" => $date_of_birth,
                 "gender" => $request->gender,
                 "marital_status" => $request->marital_status,
                 "father_name" => $request->father_name,
@@ -405,7 +423,7 @@ class JoinEmployeeServices
                 "designation_id" => $request->designation_id,
                 "location_id" => $request->location_id,
                 "profile_image" => $profile_image,
-                "joining_date" => Carbon::parse(str_replace('-', '', $request->joining_date))->format('Y-m-d'),
+                "joining_date" => $joining_date,
                 'created_at' => Carbon::now()->timezone(session('timezone')),
                 "job_id" => $job_id,
                 "employee_id" => $employee->id,

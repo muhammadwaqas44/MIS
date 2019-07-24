@@ -130,6 +130,12 @@
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item  ">
+                        <a href="{{route('admin.all-messages')}}" class="nav-link ">
+                            <i class="icon-envelope"></i>
+                            <span class="title">All Messages</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
                         <a href="{{route('admin.all-message-responses')}}" class="nav-link ">
                             <i class="icon-envelope"></i>
                             <span class="title">All SMS Response</span>

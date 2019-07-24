@@ -180,7 +180,7 @@ class JobApplicationServices
 
     public function jobApplicationsPostApi($request)
     {
-
+//dd($request->all());
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if ($record) {
             return response()->json(["data" => $record, 'message' => 'Data Already Exist']);
