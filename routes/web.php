@@ -18,6 +18,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('get-state-list', 'DropdownController@getStateList');
 Route::get('get-city-list', 'DropdownController@getCityList');
 Route::get('get-call-status-list', 'DropdownController@getCallStatusList');
+Route::get('get-designation-list', 'DropdownController@getDesignationList');
 ////End Dropdown
 
 Route::group(['middleware' => 'CheckAdmin'], function () {
@@ -106,14 +107,20 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     Route::get('/admin/massage-activation/{messageId}', 'Admin\SMSResponseController@changeMessageStatus')->name('admin.change-message-status');
     Route::post('/admin/update-massage/{messageId}', 'Admin\SMSResponseController@updateMessage')->name('admin.update-message');
     /// END MESSAGEGS RESPONSE
-    ///
+
     /// ALL EMPLOYEES ROUTES
     route::get('/admin/all-employees', 'Admin\JoinEmployeeController@allEmployees')->name('admin.all-employees');
     route::get('/admin/add-employee', 'Admin\JoinEmployeeController@addEmployee')->name('admin.add-employee');
+    route::post('/admin/add-employee-post', 'Admin\JoinEmployeeController@addEmployeePost')->name('admin.add-employee-post');
     route::get('/admin/join-employee/{jobApplicantId}', 'Admin\JoinEmployeeController@joinEmployee')->name('admin.join-employee');
     route::post('/admin/post-join-employee', 'Admin\JoinEmployeeController@postJoinEmployee')->name('admin.post-join-employee');
     route::get('/admin/update-employee-view/{employeeId}', 'Admin\JoinEmployeeController@updateEmployeeView')->name('admin.update-employee-view');
     route::post('/admin/update-employee/{employeeId}', 'Admin\JoinEmployeeController@updateEmployee')->name('admin.update-employee');
+    route::get('/admin/status-employee-view/{employeeId}', 'Admin\JoinEmployeeController@statusEmployeeView')->name('admin.status-employee-view');
+    route::post('/admin/add-status-employee/{employeeId}', 'Admin\JoinEmployeeController@addStatusEmployee')->name('admin.add-status-employee');
+    route::post('/admin/next-review-employee-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewEmployee')->name('admin.next-review-employee-post');
+
+   /// FOR SHOWING FILES FOR EMPLOYMENT
     route::get('/admin/download-resume-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadResumeEmployee')->name('admin.download-resume-employee');
     route::get('/admin/download-id-proof-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadIDProofEmployee')->name('admin.download-id-proof-employee');
     route::get('/admin/download-other-doc-personal-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadOtherDocPersonalEmployee')->name('admin.download-other-doc-personal-employee');
@@ -121,6 +128,16 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/download-joining-latter-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadJoiningLatterEmployee')->name('admin.download-joining-latter-employee');
     route::get('/admin/download-contract-paper-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadContractPaperEmployee')->name('admin.download-contract-paper-employee');
     route::get('/admin/download-other-doc-official-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadOtherDocOfficialEmployee')->name('admin.download-other-doc-official-employee');
+
+    //////// ALL UPCOMING REVIEWS FOR EMPLOYMENT
+    route::get('/admin/all-upcoming-reviews-employment', 'Admin\JoinEmployeeController@allUpcomingReviews')->name('admin.all-upcoming-reviews-employment');
+    route::get('/admin/status-employee-review/{employeeId}', 'Admin\JoinEmployeeController@statusEmployeeReview')->name('admin.status-employee-review');
+    route::post('/admin/add-status-employee-review/{employeeId}', 'Admin\JoinEmployeeController@addStatusEmployeeReview')->name('admin.add-status-employee-review');
+    route::get('/admin/next-review-employee/{employeeId}', 'Admin\JoinEmployeeController@nextReviewEmployeeView')->name('admin.next-review-employee');
+    route::post('/admin/next-review-employee-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewUpcomingEmployee')->name('admin.next-review-upcoming-employee-post');
+
+
+
 });
 
 

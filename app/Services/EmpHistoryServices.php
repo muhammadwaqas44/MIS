@@ -420,6 +420,11 @@ class EmpHistoryServices
 
     public function interviewDataPost($request, $scheduleId)
     {
+        if ($request->call_id == 14) {
+            if (empty($request->file_attach)) {
+                return 'Please Attach Offer Given Latter..';
+            }
+        }
 //        dd($request);
         $schedule = EmpHistory::find($scheduleId);
         if ($schedule->is_active == 1) {
@@ -432,30 +437,31 @@ class EmpHistoryServices
                     'user_id' => auth()->user()->id,
                     'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
-                if ($request->emailSend == 1) {
-                    if ($scheduleData->call_id == 14) {
-                        $applicant = JobApplication::find($scheduleData->job_id);
-                        $scheduleData = EmpHistory::find($scheduleData->id);
-                        $designation = $applicant->designation->name;
-                        $name = $applicant->name;
-                        $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
-                        $to = $applicant->email;
-                        $data = array('name' => $name,
-                            'date' => $date,
-                            'designation' => $designation,
-                        );
-                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
-                            $message->to($to, $name)->subject('Interview Invitation');
-                            $message->attach($request->file('file_attach')->getRealPath(), [
-                                'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType()]);
-                            $message->from('kash@technerds.com', 'Kashif Shah');
-                            $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
-                        });
-                        return response()->json(['message' => 'Request completed']);
+                if ($request->file_attach) {
+                    if ($request->emailSend == 1) {
+                        if ($scheduleData->call_id == 14) {
+                            $applicant = JobApplication::find($scheduleData->job_id);
+                            $scheduleData = EmpHistory::find($scheduleData->id);
+                            $designation = $applicant->designation->name;
+                            $name = $applicant->name;
+                            $date = Carbon::parse($scheduleData->dateTime)->format("d F Y");
+                            $to = $applicant->email;
+                            $data = array('name' => $name,
+                                'date' => $date,
+                                'designation' => $designation,
+                            );
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                                $message->to($to, $name)->subject('Job Offer Letter');
+                                $message->attach($request->file('file_attach')->getRealPath(), [
+                                    'as' => $request->file('file_attach')->getClientOriginalName(),
+                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                            });
+                            return response()->json(['message' => 'Request completed']);
 
-                    } else {
-                        return redirect()->back();
+                        } else {
+                            return redirect()->back();
+                        }
                     }
                 }
             } else {
@@ -464,30 +470,31 @@ class EmpHistoryServices
                     'user_id' => auth()->user()->id,
                     'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
-                if ($request->emailSend == 1) {
-                    if ($scheduleData->call_id == 14) {
-                        $applicant = JobApplication::find($scheduleData->job_id);
-                        $scheduleData = EmpHistory::find($scheduleData->id);
-                        $designation = $applicant->designation->name;
-                        $name = $applicant->name;
-                        $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
-                        $to = $applicant->email;
-                        $data = array('name' => $name,
-                            'date' => $date,
-                            'designation' => $designation,
-                        );
-                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
-                            $message->to($to, $name)->subject('Interview Invitation');
-                            $message->attach($request->file('file_attach')->getRealPath(), [
-                                'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType()]);
-                            $message->from('kash@technerds.com', 'Kashif Shah');
-                            $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
-                        });
-                        return response()->json(['message' => 'Request completed']);
+                if ($request->file_attach) {
+                    if ($request->emailSend == 1) {
+                        if ($scheduleData->call_id == 14) {
+                            $applicant = JobApplication::find($scheduleData->job_id);
+                            $scheduleData = EmpHistory::find($scheduleData->id);
+                            $designation = $applicant->designation->name;
+                            $name = $applicant->name;
+                            $date = Carbon::parse($scheduleData->dateTime)->format("d F Y");
+                            $to = $applicant->email;
+                            $data = array('name' => $name,
+                                'date' => $date,
+                                'designation' => $designation,
+                            );
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                                $message->to($to, $name)->subject('Job Offer Letter');
+                                $message->attach($request->file('file_attach')->getRealPath(), [
+                                    'as' => $request->file('file_attach')->getClientOriginalName(),
+                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                            });
+                            return response()->json(['message' => 'Request completed']);
 
-                    } else {
-                        return redirect()->back();
+                        } else {
+                            return redirect()->back();
+                        }
                     }
                 }
             }
@@ -499,6 +506,11 @@ class EmpHistoryServices
 
     public function interviewDataUpdate($request, $interviewId)
     {
+        if ($request->call_id == 14) {
+            if (empty($request->file_attach)) {
+                return 'Please Attach Offer Given Latter..';
+            }
+        }
         $schedule = EmpHistory::find($interviewId);
         if ($schedule->is_active == 1) {
             $schedule->is_active = 0;
@@ -510,30 +522,31 @@ class EmpHistoryServices
                     'user_id' => auth()->user()->id,
                     'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
-                if ($request->emailSend == 1) {
-                    if ($scheduleData->call_id == 14) {
-                        $applicant = JobApplication::find($scheduleData->job_id);
-                        $scheduleData = EmpHistory::find($scheduleData->id);
-                        $designation = $applicant->designation->name;
-                        $name = $applicant->name;
-                        $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
-                        $to = $applicant->email;
-                        $data = array('name' => $name,
-                            'date' => $date,
-                            'designation' => $designation,
-                        );
-                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
-                            $message->to($to, $name)->subject('Interview Invitation');
-                            $message->attach($request->file('file_attach')->getRealPath(), [
-                                'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType()]);
-                            $message->from('kash@technerds.com', 'Kashif Shah');
-                            $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
-                        });
-                        return response()->json(['message' => 'Request completed']);
+                if ($request->file_attach) {
+                    if ($request->emailSend == 1) {
+                        if ($scheduleData->call_id == 14) {
+                            $applicant = JobApplication::find($scheduleData->job_id);
+                            $scheduleData = EmpHistory::find($scheduleData->id);
+                            $designation = $applicant->designation->name;
+                            $name = $applicant->name;
+                            $date = Carbon::parse($scheduleData->dateTime)->format("d F Y");
+                            $to = $applicant->email;
+                            $data = array('name' => $name,
+                                'date' => $date,
+                                'designation' => $designation,
+                            );
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                                $message->to('vickyrana4433@gmail.com', $name)->subject('Job Offer Letter');
+                                $message->attach($request->file('file_attach')->getRealPath(), [
+                                    'as' => $request->file('file_attach')->getClientOriginalName(),
+                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                            });
+                            return response()->json(['message' => 'Request completed']);
 
-                    } else {
-                        return redirect()->back();
+                        } else {
+                            return redirect()->back();
+                        }
                     }
                 }
             } else {
@@ -542,30 +555,30 @@ class EmpHistoryServices
                     'user_id' => auth()->user()->id,
                     'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]));
-                if ($request->emailSend == 1) {
-                    if ($scheduleData->call_id == 14) {
-                        $applicant = JobApplication::find($scheduleData->job_id);
-                        $scheduleData = EmpHistory::find($scheduleData->id);
-                        $designation = $applicant->designation->name;
-                        $name = $applicant->name;
-                        $date = Carbon::parse($scheduleData->dateTime)->format("l d F Y  h:i A");
-                        $to = $applicant->email;
-                        $data = array('name' => $name,
-                            'date' => $date,
-                            'designation' => $designation,
-                        );
-                        Mail::send('mail', $data, function ($message) use ($to, $name, $request) {
-                            $message->to($to, $name)->subject('Interview Invitation');
-                            $message->attach($request->file('file_attach')->getRealPath(), [
-                                'as' => $request->file('file_attach')->getClientOriginalName(),
-                                'mime' => $request->file('file_attach')->getMimeType()]);
-                            $message->from('kash@technerds.com', 'Kashif Shah');
-                            $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
-                        });
-                        return response()->json(['message' => 'Request completed']);
-
-                    } else {
-                        return redirect()->back();
+                if ($request->file_attach) {
+                    if ($request->emailSend == 1) {
+                        if ($scheduleData->call_id == 14) {
+                            $applicant = JobApplication::find($scheduleData->job_id);
+                            $scheduleData = EmpHistory::find($scheduleData->id);
+                            $designation = $applicant->designation->name;
+                            $name = $applicant->name;
+                            $date = Carbon::parse($scheduleData->dateTime)->format("d F Y");
+                            $to = $applicant->email;
+                            $data = array('name' => $name,
+                                'date' => $date,
+                                'designation' => $designation,
+                            );
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                                $message->to('vickyrana4433@gmail.com', $name)->subject('Job Offer Letter');
+                                $message->attach($request->file('file_attach')->getRealPath(), [
+                                    'as' => $request->file('file_attach')->getClientOriginalName(),
+                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                            });
+                            return response()->json(['message' => 'Request completed']);
+                        } else {
+                            return redirect()->back();
+                        }
                     }
                 }
             }
@@ -694,6 +707,15 @@ class EmpHistoryServices
             $end = Carbon::parse(str_replace('-', '', $request->date2));
             $allApplicants = $allApplicants->whereBetween('created_at', [$start, $end]);
 
+        }
+        if ($request->designation_id) {
+            $designation = $request->designation_id;
+            $allApplicants = $allApplicants->with(['applicant'])->whereHas('applicant', function ($query) use ($designation) {
+                $query->where('designation_id', '=', $designation);;
+            });
+        }
+        if ($request->status_id) {
+            $allApplicants = $allApplicants->where('call_id', '=', $request->status_id);
         }
         $data['allApplicants'] = $allApplicants->paginate($this->allSchedulesPagination);
 

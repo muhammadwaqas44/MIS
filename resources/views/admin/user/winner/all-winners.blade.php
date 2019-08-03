@@ -71,7 +71,6 @@
                                                                            placeholder="Email"
                                                                            class="form-control"
                                                                            id="email"
-                                                                           required
                                                                            name="email"/>
                                                                 </div>
                                                                 <div class="form-group">
@@ -105,10 +104,13 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label">Prize</label>
-                                                                    <input class="form-control placeholder-no-fix"
-                                                                           type="text"
-                                                                           placeholder="Prize"
-                                                                           name="prize"/>
+                                                                    <select class="form-control placeholder-no-fix"
+                                                                              name="prize">
+                                                                        <option value="">Select Prize</option>
+                                                                        @foreach($data['prizes'] as $prize)
+                                                                            <option value="{{$prize->id}}">{{$prize->name}}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label">Social Links</label>
@@ -127,20 +129,21 @@
                                                                            name="address"/>
                                                                 </div>
                                                             </div>
+                                                            {{--<div class="col-md-12">--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label class="control-label ">Status</label>--}}
+                                                                    {{--<select class="form-control placeholder-no-fix"--}}
+                                                                            {{--name="status">--}}
+                                                                        {{--<option value=""> Select Status</option>--}}
+                                                                        {{--@foreach($data['statuses'] as $status)--}}
+                                                                            {{--<option value="{{$status->id}}">{{$status->name}}</option>--}}
+                                                                        {{--@endforeach--}}
+                                                                    {{--</select>--}}
+                                                                {{--</div>--}}
+                                                            {{--</div>--}}
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="control-label ">Status</label>
-                                                                    <select class="form-control placeholder-no-fix"
-                                                                            name="status">
-                                                                        <option value=""> Select Status</option>
-                                                                        <option value="yes"> Yes</option>
-                                                                        <option value="no"> No</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label class="control-label ">Question</label>
+                                                                    <label class="control-label ">Remarks</label>
                                                                     <textarea class="form-control" rows="3"
                                                                               name="question">
                                                                         </textarea>
@@ -220,9 +223,9 @@
                             <th> Name</th>
                             <th> Email</th>
                             <th> Phone</th>
+                            <th> Status</th>
                             <th> Address</th>
                             <th> Social Link</th>
-                            <th> Status</th>
                             <th> Prize</th>
                             <th> Actions</th>
                         </tr>
@@ -232,17 +235,14 @@
 
                             <tr class="odd gradeX">
                                 <td class="center"> {{$winner->id}} </td>
-                                <td> {{$winner->user->first_name}} {{$winner->user->last_name}}</td>
-                                <td>
-                                    <a href="mailto:{{$winner->user->email}}"> {{$winner->user->email}}</a>
-                                </td>
-
-                                <td class="center">{{$winner->user->user_phone}}</td>
-                                <td class="center">{{$winner->user->address}}</td>
+                                <td> {{$winner->first_name}} {{$winner->last_name}}</td>
+                                <td class="center">@if(isset($winner->user->email)){{$winner->user->email}}@endif</td>
+                                <td class="center">{{$winner->user_phone}}</td>
+                                <td class="center">@if(isset($winner->statusName->name)){{$winner->statusName->name}}@endif</td>
+                                <td class="center">{{$winner->address}}</td>
                                 <td class="center"><a href="{{$winner->social_link}} " style="color: black"><i
                                                 class="fa fa-internet-explorer"></i> Social Media Link</a></td>
-                                <td class="center">{{$winner->status}}</td>
-                                <td class="center">{{$winner->prize}}</td>
+                                <td class="center">@if(isset($winner->prizeName->name)){{$winner->prizeName->name}}@endif</td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-xs green dropdown-toggle" type="button"
@@ -279,9 +279,6 @@
                                                               enctype="multipart/form-data">
                                                             @csrf
                                                             <div class="col-md-6">
-
-                                                                <input type="hidden" value="{{$winner->user->id}}"
-                                                                       name="user_id">
                                                                 <div class="form-group">
                                                                     <label class="control-label">First
                                                                         Name</label>
@@ -290,7 +287,7 @@
                                                                            id="first_name"
                                                                            class="form-control"
                                                                            name="first_name"
-                                                                           value="{{$winner->user->first_name}}"
+                                                                           value="{{$winner->first_name}}"
                                                                            required/></div>
                                                                 <div class="form-group">
                                                                     <label class="control-label">Last
@@ -299,7 +296,7 @@
                                                                            placeholder="Last Name"
                                                                            class="form-control"
                                                                            name="last_name"
-                                                                           value="{{$winner->user->last_name}}"
+                                                                           value="{{$winner->last_name}}"
                                                                            id="last_name"/>
                                                                 </div>
                                                                 <div class="form-group">
@@ -307,8 +304,7 @@
                                                                     <input type="text"
                                                                            placeholder="Email"
                                                                            class="form-control"
-                                                                           id="email" value="{{$winner->user->email}}"
-                                                                           required
+                                                                           id="email" @if(isset($winner->user->email))value="{{$winner->user->email}}"@endif
                                                                            name="email"/>
                                                                 </div>
                                                                 <div class="form-group">
@@ -318,7 +314,7 @@
                                                                            type="text"
                                                                            placeholder="Mobile Number"
                                                                            id="user_phone"
-                                                                           value="{{$winner->user->user_phone}}"
+                                                                           value="{{$winner->user_phone}}"
                                                                            name="user_phone"/>
                                                                 </div>
 
@@ -343,10 +339,13 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label">Prize</label>
-                                                                    <input class="form-control placeholder-no-fix"
-                                                                           type="text" value="{{$winner->prize}}"
-                                                                           placeholder="Prize"
-                                                                           name="prize"/>
+                                                                    <select class="form-control placeholder-no-fix"
+                                                                              name="prize">
+                                                                        <option value="{{$winner->prize}}">@if(isset($winner->prizeName->name)){{$winner->prizeName->name}}@endif</option>
+                                                                        @foreach($data['prizes'] as $prize)
+                                                                            <option value="{{$prize->id}}">{{$prize->name}}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label">Social Links</label>
@@ -361,7 +360,7 @@
                                                                     <label class="control-label ">Address</label>
                                                                     <input class="form-control placeholder-no-fix"
                                                                            type="text"
-                                                                           value="{{$winner->user->address}}"
+                                                                           value="{{$winner->address}}"
                                                                            placeholder="Address"
                                                                            name="address"/>
                                                                 </div>
@@ -371,15 +370,16 @@
                                                                     <label class="control-label ">Status</label>
                                                                     <select class="form-control placeholder-no-fix"
                                                                             name="status">
-                                                                        <option value="{{$winner->status}}">{{$winner->status}}</option>
-                                                                        <option value="yes"> Yes</option>
-                                                                        <option value="no"> No</option>
+                                                                        <option value="">Select Status</option>
+                                                                        @foreach($data['statuses'] as $status)
+                                                                        <option value="{{$status->id}}">{{$status->name}}</option>
+                                                                     @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label class="control-label ">Question</label>
+                                                                    <label class="control-label ">Remarkss</label>
                                                                     <textarea class="form-control" rows="3"
                                                                               name="question">{{$winner->question}}
                                                                         </textarea>

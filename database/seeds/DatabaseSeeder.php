@@ -22,5 +22,8 @@ class DatabaseSeeder extends Seeder
          $this->call(MassegeTableSeeder::class);
          $this->call(DepartmentTableSeeder::class);
          $this->call(LocationOfficeTableSeeder::class);
+         $this->call(EmploymentStatusSeeder::class);
+         $this->call(EmployeeReviewTableSeeder::class);
+         $this->call(ReviewAndEmploymentStatusSeeder::class);
     }
 }

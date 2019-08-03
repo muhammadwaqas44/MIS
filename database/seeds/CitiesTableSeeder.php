@@ -47964,7 +47964,8 @@ class CitiesTableSeeder extends Seeder
 (48353,'Vijes',805),
 (48354,'Yotoco',805),
 (48355,'Yumbo',805),
-(48356,'Zarzal',805)
+(48356,'Zarzal',805),
+(48357,'NA',4122)
         ;"));
 
 

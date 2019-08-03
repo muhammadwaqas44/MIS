@@ -13,6 +13,8 @@ use App\EmpHistory;
 use App\Helpers\ImageHelpers;
 use App\JobApplication;
 use Carbon\Carbon;
+use Mail;
+use Illuminate\Support\Facades\Session;
 
 class JobApplicationServices
 {
@@ -53,6 +55,11 @@ class JobApplicationServices
     {
 //        dd($request);
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
+        if ($record) {
+            Session::flash('message', 'Record Already Exist Check all Applicant with email!');
+            Session::flash('alert', 'alert-danger');
+            return redirect()->back();
+        }
         if (!empty($request->channel_id)) {
             $channel_id = $request->channel_id;
         } else {
@@ -180,15 +187,11 @@ class JobApplicationServices
 
     public function jobApplicationsPostApi($request)
     {
+
 //dd($request->all());
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if ($record) {
             return response()->json(["data" => $record, 'message' => 'Data Already Exist']);
-        }
-        if (!empty($request->channel_id)) {
-            $channel_id = $request->channel_id;
-        } else {
-            $channel_id = 1;
         }
         if (!empty($request->designation_id)) {
             $designation_id = $request->designation_id;
@@ -208,7 +211,7 @@ class JobApplicationServices
                 $record1 = JobApplication::create([
                     'resume' => "/project-assets/files/" . $fileName,
                     'is_active' => 1,
-                    'channel_id' => $channel_id,
+                    'channel_id' => 8,
                     'designation_id' => $designation_id,
                     'experience_id' => $experience_id,
                     "apply_for" => $request->apply_for,
@@ -227,8 +230,51 @@ class JobApplicationServices
                         'call_id' => 18,
                         'user_id' => 1,
                     ]));
+
+                    if (!empty($request->resume)) {
+                        $apply_for = $record1->apply_for;
+                        $name1 = $record1->name;
+                        $email = $record1->email;
+                        $phone = $record1->user_phone;
+                        $skype = $record1->skype_id;
+                        $address = $record1->address;
+                        $experience = $record1->experience->name;
+                        $city = $record1->city_name;
+                        $salary = $record1->expected_salary;
+                        $resume = public_path($record1->resume);
+                        $data = array('name' => $name1,
+                            'apply_for' => $apply_for,
+                            'email' => $email,
+                            'phone' => $phone,
+                            'skype' => $skype,
+                            'address' => $address,
+                            'experience' => $experience,
+                            'city' => $city,
+                            'salary' => $salary,
+                        );
+                        Mail::send('mail.job-applicant-mail', $data, function ($message) use ($resume, $request) {
+                            $message->to('ishteeaq@gmail.com', 'Ishtiaq Haider')->subject('Job Application Data Form TechNerds');
+                            $message->attach($resume);
+                        });
+                    }
+////// for email to user
+
+                    $designation = $record1->apply_for;
+                    $name = $record1->name;
+                    $to = $record1->email;
+                    $data = array('name' => $name,
+                        'designation' => $designation,
+                    );
+                    Mail::send('mail.job-portal', $data, function ($message) use ($to, $name) {
+                        $message->to($to, $name)->subject
+                        ('Thank you for applying at Tech Nerds');
+                        $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                    });
+
+                    return response()->json(["data" => $record1, 'message' => 'Form Submit Successfully'], 200);
+
                 }
-                return response()->json(["data" => $record1, 'message' => 'Form Submit Successfully'], 200);
+
             }
         }
     }

@@ -1,5 +1,5 @@
 @extends('admin-layout.app')
-@section('title', "Add Employee")
+@section('title', "Join Employee")
 @section('content')
 
     <div class="row" xmlns="http://www.w3.org/1999/html">
@@ -264,7 +264,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_personal"/>
+                                                    <input type="file" class="form-control" name="other_doc_personal[]" multiple/>
                                                 </div>
                                             </div>
                                         </div>
@@ -287,7 +287,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_official"/>
+                                                    <input type="file" class="form-control" name="other_doc_officials[]" multiple/>
                                                 </div>
                                             </div>
 
@@ -327,7 +327,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Department</label><span style="color:red;">*</span>
-                                                    <select class="form-control" name="department_id" required>
+                                                    <select class="form-control" name="department_id" id="department_id" required>
                                                         <option value="">Select</option>
                                                         @foreach($data['department'] as $department)
                                                             <option value="{{$department->id}}">{{$department->name}}</option>
@@ -336,11 +336,11 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Designation</label><span style="color:red;">*</span>
-                                                    <select class="form-control" name="designation_id" required>
+                                                    <select class="form-control" name="designation_id" id="designation_id" required>
                                                         <option value="{{$data['jobApplicant']->applicant->designation->id}}">{{$data['jobApplicant']->applicant->designation->name}}</option>
-                                                        @foreach($data['designation'] as $designation)
-                                                            <option value="{{$designation->id}}">{{$designation->name}}</option>
-                                                        @endforeach
+                                                        {{--@foreach($data['designation'] as $designation)--}}
+                                                            {{--<option value="{{$designation->id}}">{{$designation->name}}</option>--}}
+                                                        {{--@endforeach--}}
                                                     </select>
                                                 </div>
                                             </div>
@@ -355,9 +355,9 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>Joining Date</label>
+                                                    <label>Joining Date</label><span style="color:red;">*</span>
                                                     <div class="input-append date form_datetime1">
-                                                        <input size="16" type="text" autocomplete="off"
+                                                        <input size="16" type="text" autocomplete="off" required
                                                                name="joining_date" placeholder="Joining Date"
                                                                class="form-control">
                                                         <span class="add-on"><i
@@ -367,6 +367,35 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{--<div class="row">--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--<label>Review</label>--}}
+                                                    {{--<select class="form-control" name="review_id" required>--}}
+                                                        {{--<option value="">Select</option>--}}
+                                                        {{--@foreach($data['employee_reviews'] as $employee_review)--}}
+                                                            {{--<option value="{{$employee_review->id}}">{{$employee_review->name}}</option>--}}
+                                                        {{--@endforeach--}}
+                                                    {{--</select>--}}
+                                                {{--</div>--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--<label>Probation Due On</label>--}}
+                                                    {{--<div class="input-append date form_datetime1">--}}
+                                                        {{--<input size="16" type="text" autocomplete="off"--}}
+                                                               {{--name="probation_due_on" placeholder="Probation Due On"--}}
+                                                               {{--class="form-control">--}}
+                                                        {{--<span class="add-on"><i--}}
+                                                                    {{--class="icon-remove"></i></span>--}}
+                                                        {{--<span class="add-on"><i--}}
+                                                                    {{--class="icon-th"></i></span>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="row">--}}
+                                                {{--<div class="col-md-12">--}}
+                                                    {{--<label>Commitment</label>--}}
+                                                    {{--<textarea class="form-control" rows="2" name="remarks"></textarea>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
                                         </div>
                                     </div>
                                     <br>
@@ -509,6 +538,30 @@
                 });
             } else {
                 $("#permanent_city").empty();
+            }
+        });
+        $('#department_id').change(function () {
+            var department_id = $(this).val();
+            if (department_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{url('get-designation-list')}}?department_id=" + department_id,
+                    success: function (res) {
+                        if (res) {
+                            $("#designation_id").empty();
+                            $("#designation_id").append('<option>Select</option>');
+                            $.each(res, function (id, name) {
+                                $("#designation_id").append('<option value="' + id + '">' + name + '</option>');
+                            });
+
+                        } else {
+                            $("#designation_id").empty();
+                        }
+                    }
+                });
+            } else {
+                $("#designation_id").empty();
+
             }
         });
     </script>

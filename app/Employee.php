@@ -48,6 +48,11 @@ class Employee extends Model
         return $this->belongsTo('App\LocationOffice', 'location_id', 'id');
     }
 
+    public function employeeReview()
+    {
+        return $this->belongsTo('App\EmployeeReview', 'review_id', 'id');
+    }
+
     public function nationalityCountry()
     {
         return $this->belongsTo('App\Country', 'nationality', 'id');
@@ -86,5 +91,15 @@ class Employee extends Model
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
+    }
+
+    public function documentsPersonal()
+    {
+        return $this->hasMany(DocumentsPersonal::class, 'employee_id');
+    }
+
+    public function documentsOfficial()
+    {
+        return $this->hasMany(DocumentsOfficial::class, 'employee_id');
     }
 }

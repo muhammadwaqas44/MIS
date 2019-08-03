@@ -12,6 +12,13 @@
                         <span class="caption-subject bold uppercase"> Job Applications Table</span>
                     </div>
                 </div>
+                @if(Session::has('message') && Session::has('alert'))
+
+                    <div class="alert {{ session('alert') }}" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <div class="portlet-body">
                     <div class="table-toolbar">
                         <div class="row">

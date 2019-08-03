@@ -11,7 +11,7 @@ class ChannelTableSeeder extends Seeder
      */
     public function run()
     {
-        $channels = ['None','Rozee.PK', 'Linkedin','Facebook','Email','WalkIn','Reference'];
+        $channels = ['None','Rozee.PK', 'Linkedin','Facebook','Email','WalkIn','Reference','Job Portal'];
 
         foreach ($channels as $channel) {
             \App\Channel::create(['name' => $channel]);

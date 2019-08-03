@@ -38,7 +38,7 @@ class SMSResponseServices
 
     public function allMessages($request)
     {
-        $allMessages = Massege::orderBy('id', 'desc')->whereNull('deleted_at');
+        $allMessages = Massege::withoutGlobalScopes()->orderBy('id', 'desc')->whereNull('deleted_at');
 
         if ($request->search_title) {
             $allMessages = $allMessages

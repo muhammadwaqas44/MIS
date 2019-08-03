@@ -60,6 +60,7 @@ class JobApplicationController extends Controller
 
     public function jobApplicationsPostApi(Request $request, JobApplicationServices $applicationServices)
     {
+
 //dd($request->all());
         $hello = Validator::make($request->all(), [
             'apply_for' => 'required',

@@ -48,6 +48,11 @@ class EmployeeHistroy extends Model
         return $this->belongsTo('App\Department', 'department_id', 'id');
     }
 
+    public function employeeReview()
+    {
+        return $this->belongsTo('App\EmployeeReview', 'review_id', 'id');
+    }
+
     public function locationName()
     {
         return $this->belongsTo('App\LocationOffice', 'location_id', 'id');

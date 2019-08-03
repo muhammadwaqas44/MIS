@@ -1,5 +1,5 @@
 @extends('admin-layout.app')
-@section('title', "All Employees")
+@section('title', "All Upcoming Reviews")
 @section('content')
 
     <div class="row" xmlns="http://www.w3.org/1999/html">
@@ -9,7 +9,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase"> Employees Table</span>
+                        <span class="caption-subject bold uppercase"> Upcoming Review Table</span>
                     </div>
                 </div>
                 @if(Session::has('message') && Session::has('alert'))
@@ -154,25 +154,28 @@
                                     <td class="center">{{$employee->email}}</td>
                                     <td class="center">
                                         @if($employee->employeePersonalDoc->resume)
-                                        <a href="{{route('admin.download-resume-employee',$employee->id)}}"
-                                           target="_blank">
-                                            <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
-                                        </a>
-                                            @endif
+                                            <a href="{{route('admin.download-resume-employee',$employee->id)}}"
+                                               target="_blank">
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume
+                                                </button>
+                                            </a>
+                                        @endif
                                     </td>
                                     <td class="center">
                                         @if($employee->employeePersonalDoc->id_proof)
-                                        <a href="{{route('admin.download-id-proof-employee',$employee->id)}}"
-                                           target="_blank">
-                                            <button class="btn btn-xs blue"><i class="fa fa-file"></i> ID Proof</button>
-                                        </a>
-                                            @endif
+                                            <a href="{{route('admin.download-id-proof-employee',$employee->id)}}"
+                                               target="_blank">
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> ID Proof
+                                                </button>
+                                            </a>
+                                        @endif
                                     </td>
                                     <td class="center">
                                         @foreach($employee->documentsPersonal as $item)
                                             <a href="{{route('admin.download-other-doc-personal-employee',$item->id)}}"
                                                target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other Personal
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other
+                                                    Personal
                                                     Document
                                                 </button>
                                             </a>
@@ -180,36 +183,40 @@
                                     </td>
                                     <td class="center">
                                         @if($employee->employeeOfficialDoc->official_latter)
-                                        <a href="{{route('admin.download-official-latter-employee',$employee->id)}}"
-                                           target="_blank">
-                                            <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official Latter
-                                            </button>
-                                        </a>
-                                            @endif
+                                            <a href="{{route('admin.download-official-latter-employee',$employee->id)}}"
+                                               target="_blank">
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official
+                                                    Latter
+                                                </button>
+                                            </a>
+                                        @endif
                                     </td>
                                     <td class="center">
                                         @if($employee->employeeOfficialDoc->joining_latter)
-                                        <a href="{{route('admin.download-joining-latter-employee',$employee->id)}}"
-                                           target="_blank">
-                                            <button class="btn btn-xs blue"><i class="fa fa-file"></i> Joining Latter
-                                            </button>
-                                        </a>
-                                            @endif
+                                            <a href="{{route('admin.download-joining-latter-employee',$employee->id)}}"
+                                               target="_blank">
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Joining
+                                                    Latter
+                                                </button>
+                                            </a>
+                                        @endif
                                     </td>
                                     <td class="center">
                                         @if($employee->employeeOfficialDoc->contract_paper)
-                                        <a href="{{route('admin.download-contract-paper-employee',$employee->id)}}"
-                                           target="_blank">
-                                            <button class="btn btn-xs blue"><i class="fa fa-file"></i> Contract Paper
-                                            </button>
-                                        </a>
-                                            @endif
+                                            <a href="{{route('admin.download-contract-paper-employee',$employee->id)}}"
+                                               target="_blank">
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Contract
+                                                    Paper
+                                                </button>
+                                            </a>
+                                        @endif
                                     </td>
                                     <td class="center">
                                         @foreach($employee->documentsOfficial as $item)
                                             <a href="{{route('admin.download-other-doc-official-employee',$item->id)}}"
                                                target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other Official
+                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other
+                                                    Official
                                                     Document
                                                 </button>
                                             </a>
@@ -243,11 +250,11 @@
                                                         <i class="icon-user"></i> View </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{route('admin.status-employee-view',$employee->id)}}" >
-                                                        <i class="icon-tag"></i> Employment Status </a>
+                                                    <a href="{{route('admin.status-employee-review',$employee->id)}}">
+                                                        <i class="icon-tag"></i> Review OutCOme </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{route('admin.next-review-employee',$employee->id)}}" >
+                                                    <a href="{{route('admin.next-review-employee',$employee->id)}}">
                                                         <i class="icon-tag"></i> Next Review </a>
                                                 </li>
                                             </ul>

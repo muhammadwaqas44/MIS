@@ -27,4 +27,14 @@ class Winner extends Model
     {
         return $this->belongsTo('App\Role', 'role_id', 'id');
     }
+
+    public function statusName()
+    {
+        return $this->belongsTo('App\CallStatus', 'status', 'id');
+    }
+
+    public function prizeName()
+    {
+        return $this->belongsTo('App\Prize', 'prize', 'id');
+    }
 }

@@ -117,7 +117,13 @@
                     <li class="nav-item  ">
                         <a href="{{route('admin.all-employees')}}" class="nav-link ">
                             <i class="icon-briefcase"></i>
-                            <span class="title">All Employees</span>
+                            <span class="title">Employees</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('admin.all-upcoming-reviews-employment')}}" class="nav-link ">
+                            <i class="icon-briefcase"></i>
+                            <span class="title">Upcoming Reviews</span>
                         </a>
                     </li>
                 </ul>
@@ -125,7 +131,7 @@
             <li class="nav-item ">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-envelope"></i>
-                    <span class="title">SMS Response</span>
+                    <span class="title">SMS</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">

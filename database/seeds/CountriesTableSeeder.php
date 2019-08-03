@@ -4173,7 +4173,8 @@ class CountriesTableSeeder extends Seeder
 (4117, 'Masvingo', 246),
 (4118, 'Matabeleland North', 246),
 (4119, 'Matabeleland South', 246),
-(4120, 'Midlands', 246)
+(4120, 'Midlands', 246),
+(4122,'NA',247)
 
 
 
@@ -4428,7 +4429,8 @@ class CountriesTableSeeder extends Seeder
 (243, 'YE', 'Yemen', 967),
 (244, 'YU', 'Yugoslavia', 38),
 (245, 'ZM', 'Zambia', 260),
-(246, 'ZW', 'Zimbabwe', 263);"));
+(246, 'ZW', 'Zimbabwe', 263),
+(247,'NA','NA',000);"));
 
 
     }

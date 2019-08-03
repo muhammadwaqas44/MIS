@@ -11,6 +11,7 @@
                         <span class="caption-subject bold uppercase">All Applicant History </span>
                     </div>
                 </div>
+
                 <div class="portlet-body">
                     <div class="table-toolbar">
                         <div class="row">
@@ -54,6 +55,28 @@
                                                        placeholder="To Date ..">
                                     <span class="add-on"><i class="icon-th"></i></span>
                                             </span>
+
+
+                                <select id="channel" name="designation_id"
+                                        class="form-control input-sm input-small input-inline">
+                                    <option value="">Select Position</option>
+                                    @foreach( $data['designation'] as  $designation)
+                                        <option value="{{$designation->id}}">
+                                            {{$designation->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+
+                                <select id="channel" name="status_id"
+                                        class="form-control input-sm input-small input-inline">
+                                    <option value="">Select Status</option>
+                                    @foreach( $data['statuses'] as  $designation)
+                                        <option value="{{$designation->id}}">
+                                            {{$designation->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 <input type="submit" value="Search" class="btn btn-sm green">
                             </form>
 
@@ -139,6 +162,10 @@
                                                     <a href="#" data-toggle="modal"
                                                        data-target="#myModalApplication2_{{$interview->id}}">
                                                         <i class="icon-tag"></i> Add  </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{route('admin.join-employee',$interview->id)}}">
+                                                        <i class="icon-user"></i> Join</a>
                                                 </li>
                                             </ul>
 

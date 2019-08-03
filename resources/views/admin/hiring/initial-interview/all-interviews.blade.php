@@ -374,9 +374,9 @@
                                                                             <input type="checkbox" name="emailSend"
                                                                                    value="1" CHECKED
                                                                                    class="checkbox-inline">
-                                                                            {{--<label style="padding: 2px;"><input type="file" style="display: none;"--}}
-                                                                                                                {{--name="file_attach"--}}
-                                                                                                                {{--class="form-control"><i class="icon-paper-clip"></i></label>--}}
+                                                                            <label style="padding: 2px;"><input type="file" style="display: none;"
+                                                                                                                name="file_attach"
+                                                                                                                class="form-control"><i class="icon-paper-clip"></i></label>
                                                                         </div>
 
                                                                     </div>

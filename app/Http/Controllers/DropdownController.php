@@ -4,28 +4,38 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+
 class DropdownController extends Controller
 {
     public function getStateList(Request $request)
     {
         $states = DB::table("states")
-            ->where("country_id",$request->country_id)
-            ->pluck("name","id");
+            ->where("country_id", $request->country_id)
+            ->pluck("name", "id");
         return response()->json($states);
     }
 
     public function getCityList(Request $request)
     {
         $cities = DB::table("cities")
-            ->where("state_id",$request->state_id)
-            ->pluck("name","id");
+            ->where("state_id", $request->state_id)
+            ->pluck("name", "id");
         return response()->json($cities);
     }
+
     public function getCallStatusList(Request $request)
     {
         $callStatuses = DB::table("call_statuses")
-            ->where("parent_id",$request->parent_id)
-            ->pluck("name","id");
+            ->where("parent_id", $request->parent_id)
+            ->pluck("name", "id");
         return response()->json($callStatuses);
+    }
+
+    public function getDesignationList(Request $request)
+    {
+        $designations = DB::table("designations")
+            ->where("department_id", $request->department_id)
+            ->pluck("name", "id");
+        return response()->json($designations);
     }
 }

@@ -28,6 +28,7 @@
                             <div class="col-md-12">
                                 <form method="post" action="{{route('admin.update-employee',$employee->id)}}" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" value="{{$employee->job_id}}" name="job_id">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h4>Personal Detail</h4><br>
@@ -232,7 +233,7 @@
                                                 <img id="preview" src="{{asset($employee->profile_image)}}" width="233px"
                                                      height="233px">
                                             </div>
-                                            <input type="file" name="profile_image" id="fileUploader" style="margin-top: 10px;">
+                                            <input type="file" name="profile_image"  value="{{$employee->profile_image}}" id="fileUploader" style="margin-top: 10px;">
                                             <input type="hidden" name="profile_image_hide"  value="{{$employee->profile_image}}">
                                         </div>
                                     </div>
@@ -255,8 +256,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_personal" @if(isset($employee->employeePersonalDoc->other_doc_personal))value="{{$employee->employeePersonalDoc->other_doc_personal}}" @endif/>
-                                                    <input type="hidden" name="other_doc_personal_hide" @if(isset($employee->employeePersonalDoc->other_doc_personal))value="{{$employee->employeePersonalDoc->other_doc_personal}}" @endif/>
+                                                    <input type="file" class="form-control" name="other_doc_personal[]" multiple/>
                                                 </div>
                                             </div>
                                         </div>
@@ -265,25 +265,24 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Official Latter</label>
-                                                    <input type="file" class="form-control" name="official_latter" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->official_latter}}" @endif/>
-                                                    <input type="hidden" class="form-control" name="official_latter_hide" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->official_latter}}" @endif/>
+                                                    <input type="file" class="form-control" name="official_latter" @if(isset($employee->employeeOfficialDoc->official_latter)) value="{{$employee->employeeOfficialDoc->official_latter}}" @endif/>
+                                                    <input type="hidden" class="form-control" name="official_latter_hide" @if(isset($employee->employeeOfficialDoc->official_latter)) value="{{$employee->employeeOfficialDoc->official_latter}}" @endif/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Joining Latter</label>
-                                                    <input type="file" class="form-control" name="joining_latter" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->joining_latter}}" @endif/>
-                                                    <input type="hidden" class="form-control" name="joining_latter_hide" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->joining_latter}}" @endif/>
+                                                    <input type="file" class="form-control" name="joining_latter" @if(isset($employee->employeeOfficialDoc->joining_latter)) value="{{$employee->employeeOfficialDoc->joining_latter}}" @endif/>
+                                                    <input type="hidden" class="form-control" name="joining_latter_hide" @if(isset($employee->employeeOfficialDoc->joining_latter)) value="{{$employee->employeeOfficialDoc->joining_latter}}" @endif/>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Contract Paper</label>
-                                                    <input type="file" class="form-control" name="contract_paper" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->contract_paper}}" @endif/>
-                                                    <input type="hidden" class="form-control" name="contract_paper_hide" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->contract_paper}}" @endif/>
+                                                    <input type="file" class="form-control" name="contract_paper" @if(isset($employee->employeeOfficialDoc->contract_paper)) value="{{$employee->employeeOfficialDoc->contract_paper}}" @endif/>
+                                                    <input type="hidden" class="form-control" name="contract_paper_hide" @if(isset($employee->employeeOfficialDoc->contract_paper)) value="{{$employee->employeeOfficialDoc->contract_paper}}" @endif/>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_official" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->other_doc_official}}" @endif/>
-                                                    <input type="hidden" class="form-control" name="other_doc_official_hide" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeeOfficialDoc->other_doc_official}}" @endif/>
+                                                    <input type="file" class="form-control" name="other_doc_officials[]" multiple/>
                                                 </div>
                                             </div>
 
@@ -323,7 +322,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Department</label><span style="color:red;">*</span>
-                                                    <select class="form-control" name="department_id" required>
+                                                    <select class="form-control" name="department_id" id="department_id" required>
                                                         <option value="{{$employee->department_id}}">@if(isset($employee->departmentName->name)){{$employee->departmentName->name}}@endif</option>
                                                         @foreach($data['department'] as $department)
                                                             <option value="{{$department->id}}">{{$department->name}}</option>
@@ -332,11 +331,11 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Designation</label><span style="color:red;">*</span>
-                                                    <select class="form-control" name="designation_id" required>
+                                                    <select class="form-control" name="designation_id" id="designation_id" required>
                                                         <option value="{{$employee->designation_id}}">@if(isset($employee->designationName->name)){{$employee->designationName->name}}@endif</option>
-                                                        @foreach($data['designation'] as $designation)
-                                                            <option value="{{$designation->id}}">{{$designation->name}}</option>
-                                                        @endforeach
+                                                        {{--@foreach($data['designation'] as $designation)--}}
+                                                            {{--<option value="{{$designation->id}}">{{$designation->name}}</option>--}}
+                                                        {{--@endforeach--}}
                                                     </select>
                                                 </div>
                                             </div>
@@ -346,16 +345,16 @@
 
                                                     <select class="form-control" name="location_id" required>
                                                         <option value="{{$employee->location_id}}">@if(isset($employee->locationName->name)){{$employee->locationName->name}}@endif</option>
-                                                        @foreach($data['location'] as $department)
-                                                            <option value="{{$department->id}}">{{$department->name}}</option>
+                                                        @foreach($data['location'] as $location)
+                                                            <option value="{{$location->id}}">{{$location->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Joining Date</label>
-                                                    <div class="input-append date form_datetime1">
+                                                    <div class="input-append date form_datetime1"><span style="color:red;">*</span>
                                                         <input size="16" type="text" autocomplete="off" value="{{$employee->joining_date}}"
-                                                               name="joining_date" placeholder="Joining Date"
+                                                               name="joining_date" placeholder="Joining Date" required
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>
@@ -364,6 +363,35 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{--<div class="row">--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--<label>Review</label>--}}
+                                                    {{--<select class="form-control" name="review_id">--}}
+                                                        {{--<option value="{{$employee->review_id}}">@if(isset($employee->employeeReview->name)){{$employee->employeeReview->name}}@endif</option>--}}
+                                                        {{--@foreach($data['employee_reviews'] as $employee_review)--}}
+                                                            {{--<option value="{{$employee_review->id}}">{{$employee_review->name}}</option>--}}
+                                                        {{--@endforeach--}}
+                                                    {{--</select>--}}
+                                                {{--</div>--}}
+                                                {{--<div class="col-md-6">--}}
+                                                    {{--<label>Probation Due On</label>--}}
+                                                    {{--<div class="input-append date form_datetime1">--}}
+                                                        {{--<input size="16" type="text" autocomplete="off"  value="{{$employee->probation_due_on}}"--}}
+                                                               {{--name="probation_due_on" placeholder="Probation Due On"--}}
+                                                               {{--class="form-control">--}}
+                                                        {{--<span class="add-on"><i--}}
+                                                                    {{--class="icon-remove"></i></span>--}}
+                                                        {{--<span class="add-on"><i--}}
+                                                                    {{--class="icon-th"></i></span>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="row">--}}
+                                                {{--<div class="col-md-12">--}}
+                                                    {{--<label>Commitment</label>--}}
+                                                    {{--<textarea class="form-control" rows="2" name="remarks">{{$employee->remarks}}</textarea>--}}
+                                                {{--</div>--}}
+                                            {{--</div>--}}
                                         </div>
                                     </div>
                                     <br>
@@ -509,6 +537,30 @@
                 $("#permanent_city").empty();
             }
 
+        });
+        $('#department_id').change(function () {
+            var department_id = $(this).val();
+            if (department_id) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{url('get-designation-list')}}?department_id=" + department_id,
+                    success: function (res) {
+                        if (res) {
+                            $("#designation_id").empty();
+                            $("#designation_id").append('<option>Select</option>');
+                            $.each(res, function (id, name) {
+                                $("#designation_id").append('<option value="' + id + '">' + name + '</option>');
+                            });
+
+                        } else {
+                            $("#designation_id").empty();
+                        }
+                    }
+                });
+            } else {
+                $("#designation_id").empty();
+
+            }
         });
     </script>
 @endsection

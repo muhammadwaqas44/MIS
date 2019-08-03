@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\User;
 use App\Winner;
+use Illuminate\Support\Facades\Auth;
 
 class WinnerServices
 {
@@ -38,7 +39,7 @@ class WinnerServices
         }
         if ($request->filled('search_email')) {
             $email = $request->search_email;
-            $allUsers = $allUsers->where('status', '=', $email );
+            $allUsers = $allUsers->where('status', '=', $email);
         }
         if ($request->filled('search_phone')) {
             $phone = $request->search_phone;
@@ -51,65 +52,143 @@ class WinnerServices
 
     public function addWinnerPost($request)
     {
-        $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
-        if (!$record) {
-            $user = User::create([
-                'is_active' => 1,
-                'role_id' => 4,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'user_phone' => $request->user_phone,
-                'address' => $request->address,
-            ]);
-            Winner::create([
-                'is_active' => 1,
-                'role_id' => 4,
-                'user_id' => $user->id,
-                'cnic' => $request->cnic,
-                'account' => $request->account,
-                'prize' => $request->prize,
-                'social_link' => $request->social_link,
-                'status' => $request->status,
-                'question' => $request->question,
-            ]);
+        if ($request->email) {
+            $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
+            if (!$record) {
+                $user = User::create([
+                    'is_active' => 1,
+                    'role_id' => 4,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'user_phone' => $request->user_phone,
+                    'address' => $request->address,
+                ]);
+                Winner::create([
+                    'is_active' => 1,
+                    'role_id' => 4,
+                    'user_id' => $user->id,
+                    'cnic' => $request->cnic,
+                    'account' => $request->account,
+                    'prize' => $request->prize,
+                    'social_link' => $request->social_link,
+                    'status' => 73,
+                    'question' => $request->question,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'user_phone' => $request->user_phone,
+                    'address' => $request->address,
+                    'created_by' => auth()->user()->id,
+                ]);
+            } else {
+                Winner::create([
+                    'is_active' => 1,
+                    'role_id' => 4,
+                    'user_id' => $record->id,
+                    'cnic' => $request->cnic,
+                    'account' => $request->account,
+                    'prize' => $request->prize,
+                    'social_link' => $request->social_link,
+                    'status' => 73,
+                    'question' => $request->question,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'user_phone' => $request->user_phone,
+                    'address' => $request->address,
+                    'created_by' => auth()->user()->id,
+                ]);
+            }
         } else {
             Winner::create([
                 'is_active' => 1,
                 'role_id' => 4,
-                'user_id' => $record->id,
+                'created_by' => auth()->user()->id,
                 'cnic' => $request->cnic,
                 'account' => $request->account,
                 'prize' => $request->prize,
                 'social_link' => $request->social_link,
-                'status' => $request->status,
+                'status' => 73,
                 'question' => $request->question,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'user_phone' => $request->user_phone,
+                'address' => $request->address,
             ]);
         }
     }
 
     public function editWinnerPost($request, $winnerId)
     {
-        $user = User::withoutGlobalScopes()->find($request->user_id);
         $winner = Winner::find($winnerId);
-        $user->is_active = 1;
-        $user->role_id = 4;
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->user_phone = $request->user_phone;
-        $user->address = $request->address;
-        $user->save();
-        $winner->is_active = 1;
-        $winner->role_id = 4;
-        $winner->user_id = $request->user_id;
-        $winner->cnic = $request->cnic;
-        $winner->account = $request->account;
-        $winner->prize = $request->prize;
-        $winner->social_link = $request->social_link;
-        $winner->status = $request->status;
-        $winner->question = $request->question;
-        $winner->save();
+        if ($request->email) {
+            $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
+            if (!$record) {
+                $user = User::create([
+                    'is_active' => 1,
+                    'role_id' => 4,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'user_phone' => $request->user_phone,
+                    'address' => $request->address,
+                ]);
+                $winner->is_active = 1;
+                $winner->role_id = 4;
+                $winner->first_name = $request->first_name;
+                $winner->last_name = $request->last_name;
+                $winner->user_phone = $request->user_phone;
+                $winner->address = $request->address;
+                $winner->user_id = $request->user_id;
+                $winner->cnic = $request->cnic;
+                $winner->account = $request->account;
+                $winner->prize = $request->prize;
+                $winner->social_link = $request->social_link;
+                $winner->status = $request->status;
+                $winner->question = $request->question;
+                $winner->created_by = auth()->user()->id;
+                $winner->save();
+            } else {
+                $record->is_active = 1;
+                $record->role_id = 4;
+                $record->first_name = $request->first_name;
+                $record->last_name = $request->last_name;
+                $record->email = $request->email;
+                $record->user_phone = $request->user_phone;
+                $record->address = $request->address;
+                $record->save();
+                $winner->is_active = 1;
+                $winner->role_id = 4;
+                $winner->first_name = $request->first_name;
+                $winner->last_name = $request->last_name;
+                $winner->user_phone = $request->user_phone;
+                $winner->address = $request->address;
+                $winner->user_id = $request->user_id;
+                $winner->cnic = $request->cnic;
+                $winner->account = $request->account;
+                $winner->prize = $request->prize;
+                $winner->social_link = $request->social_link;
+                $winner->status = $request->status;
+                $winner->question = $request->question;
+                $winner->created_by = auth()->user()->id;
+                $winner->save();
+            }
+        } else {
+            $winner->is_active = 1;
+            $winner->role_id = 4;
+            $winner->first_name = $request->first_name;
+            $winner->last_name = $request->last_name;
+            $winner->user_phone = $request->user_phone;
+            $winner->address = $request->address;
+            $winner->user_id = $request->user_id;
+            $winner->cnic = $request->cnic;
+            $winner->account = $request->account;
+            $winner->prize = $request->prize;
+            $winner->social_link = $request->social_link;
+            $winner->status = $request->status;
+            $winner->question = $request->question;
+            $winner->created_by = auth()->user()->id;
+            $winner->save();
+        }
     }
 
 }
