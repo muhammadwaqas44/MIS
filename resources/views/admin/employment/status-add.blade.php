@@ -1,8 +1,6 @@
 @extends('admin-layout.app')
 @section('title', "Add Employee Status")
 @section('content')
-
-
     <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -20,7 +18,8 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-                    </div><br/>
+                    </div>
+                    <br/>
                 @endif
                 <div class="portlet-body">
                     <div class="table-toolbar">
@@ -29,21 +28,14 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <img id="preview" src="{{asset($employee->profile_image)}}" width="233px"
-                                             height="233px">
+                                        <img id="preview" src="{{asset($employee->profile_image)}}" width="170px"
+                                             height="170px">
                                     </div>
                                     <div class="col-md-4">
                                         <h5>Name : {{$employee->first_name}}{{$employee->last_name}}</h5>
                                         <h5>Email : {{$employee->email}}</h5>
                                         <h5>Mobile Number : {{$employee->mobile_number}}</h5>
                                         <h5>Current Address : {{$employee->current_address}}</h5>
-                                        <h5>Resume : @if($employee->employeePersonalDoc->resume)
-                                                <a href="{{route('admin.download-resume-employee',$employee->id)}}"
-                                                   target="_blank">
-                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume
-                                                    </button>
-                                                </a>
-                                            @endif</h5>
                                     </div>
                                     <div class="col-md-4">
                                         <h5>Location

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDocumentsOfficialsTable extends Migration
+class CreateEmployeeOfficialDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateDocumentsOfficialsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents_officials', function (Blueprint $table) {
+        Schema::create('employee_official_documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name','500')->nullable();
-            $table->integer('is_active')->default(true);
             $table->integer('employee_id')->unsigned()->nullable();
             $table->foreign(['employee_id'])->references('id')->on('employees')->onDelete('cascade');
+            $table->string('type')->nullable();
+            $table->string('path', '500')->nullable();
+            $table->integer('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class CreateDocumentsOfficialsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents_officials');
+        Schema::dropIfExists('employee_official_documents');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDocumentsPersonalsTable extends Migration
+class CreateProfessionalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateDocumentsPersonalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents_personals', function (Blueprint $table) {
+        Schema::create('professionals', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name','500')->nullable();
+            $table->string('name',"150")->unique();
             $table->integer('is_active')->default(true);
-            $table->integer('employee_id')->unsigned()->nullable();
-            $table->foreign(['employee_id'])->references('id')->on('employees')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +29,6 @@ class CreateDocumentsPersonalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents_personals');
+        Schema::dropIfExists('professionals');
     }
 }

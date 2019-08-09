@@ -13,7 +13,6 @@
                     </div>
                 </div>
                 @if(Session::has('message') && Session::has('alert'))
-
                     <div class="alert {{ session('alert') }}" role="alert">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         {{ session('message') }}
@@ -453,11 +452,9 @@
                                                                                        name="expected_salary" @if(isset($jobApplication->expected_salary))value="{{$jobApplication->expected_salary}}" @endif
                                                                                 />
                                                                             </div>
-
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
                                                                                 <label class="control-label">Position</label>
@@ -558,14 +555,16 @@
                                                                                 <label class="control-label">Remarks</label>
                                                                                 <textarea type="text" rows="2"
                                                                                           name="remarks"
-                                                                                          class="form-control">@if(isset($jobApplication->history->remarks)){{$jobApplication->history->remarks}}@endif</textarea>
+                                                                                          class="form-control">@foreach($jobApplication->history as $histroy)@if(isset($histroy->remarks)){{$histroy->remarks}}@endif @endforeach</textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    @if(isset($jobApplication->history->id))
+                                                                    @foreach($jobApplication->history as $histroy)
+                                                                    @if(isset($histroy->id))
                                                                         <input type="hidden" name="his_id"
-                                                                               value="{{$jobApplication->history->id}}">
+                                                                               value="{{$histroy->id}}">
                                                                     @endif
+                                                                    @endforeach
                                                                     <div class="margiv-top-10">
 
                                                                         <button type="submit"
@@ -777,10 +776,12 @@
                                                                               rows="2"></textarea>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    @if(isset($jobApplication->history->id))
+                                                                    @foreach($jobApplication->history as $history)
+                                                                    @if(isset($history->id))
                                                                         <input type="hidden" name="his_id"
-                                                                               value="{{$jobApplication->history->id}}">
+                                                                               value="{{$history->id}}">
                                                                     @endif
+                                                                        @endforeach
                                                                 </div>
                                                                 <div class="margiv-top-10">
 

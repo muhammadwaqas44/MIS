@@ -249,8 +249,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>ID Proof</label>
-                                                    <input type="file" class="form-control" name="id_proof" @if(isset($employee->employeePersonalDoc->id_proof)) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
-                                                    <input type="hidden" name="id_proof_hie" @if(isset($employee->employeePersonalDoc->id_proof)) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
+                                                    <input type="file" class="form-control" name="id_proof[]" multiple @if(isset($employee->employeePersonalDoc->id_proof)) value="{{$employee->employeePersonalDoc->id_proof}}" @endif/>
                                                 </div>
                                             </div>
                                             <div class="row">

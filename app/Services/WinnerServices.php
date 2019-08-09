@@ -11,7 +11,9 @@ namespace App\Services;
 
 use App\User;
 use App\Winner;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class WinnerServices
 {
@@ -52,6 +54,11 @@ class WinnerServices
 
     public function addWinnerPost($request)
     {
+        if (!empty($request->winning_date)) {
+            $winning_date= Carbon::parse(str_replace('-', '', $request->winning_date))->format('Y-m-d');
+        } else {
+            $winning_date = null;
+        }
         if ($request->email) {
             $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
             if (!$record) {
@@ -63,6 +70,7 @@ class WinnerServices
                     'email' => $request->email,
                     'user_phone' => $request->user_phone,
                     'address' => $request->address,
+                    'password' => Hash::make('12345'),
                 ]);
                 Winner::create([
                     'is_active' => 1,
@@ -78,6 +86,7 @@ class WinnerServices
                     'last_name' => $request->last_name,
                     'user_phone' => $request->user_phone,
                     'address' => $request->address,
+                    'winning_date' =>$winning_date,
                     'created_by' => auth()->user()->id,
                 ]);
             } else {
@@ -95,6 +104,7 @@ class WinnerServices
                     'last_name' => $request->last_name,
                     'user_phone' => $request->user_phone,
                     'address' => $request->address,
+                    'winning_date' => $winning_date,
                     'created_by' => auth()->user()->id,
                 ]);
             }
@@ -112,6 +122,7 @@ class WinnerServices
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'user_phone' => $request->user_phone,
+                'winning_date' => $winning_date,
                 'address' => $request->address,
             ]);
         }
@@ -119,6 +130,11 @@ class WinnerServices
 
     public function editWinnerPost($request, $winnerId)
     {
+        if (!empty($request->winning_date)) {
+            $winning_date= Carbon::parse(str_replace('-', '', $request->winning_date))->format('Y-m-d');
+        } else {
+            $winning_date = null;
+        }
         $winner = Winner::find($winnerId);
         if ($request->email) {
             $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
@@ -131,6 +147,7 @@ class WinnerServices
                     'email' => $request->email,
                     'user_phone' => $request->user_phone,
                     'address' => $request->address,
+                    'password' => Hash::make('12345'),
                 ]);
                 $winner->is_active = 1;
                 $winner->role_id = 4;
@@ -145,6 +162,7 @@ class WinnerServices
                 $winner->social_link = $request->social_link;
                 $winner->status = $request->status;
                 $winner->question = $request->question;
+                $winner->winning_date = $winning_date;
                 $winner->created_by = auth()->user()->id;
                 $winner->save();
             } else {
@@ -169,6 +187,7 @@ class WinnerServices
                 $winner->social_link = $request->social_link;
                 $winner->status = $request->status;
                 $winner->question = $request->question;
+                $winner->winning_date = $winning_date;
                 $winner->created_by = auth()->user()->id;
                 $winner->save();
             }
@@ -186,6 +205,7 @@ class WinnerServices
             $winner->social_link = $request->social_link;
             $winner->status = $request->status;
             $winner->question = $request->question;
+            $winner->winning_date = $winning_date;
             $winner->created_by = auth()->user()->id;
             $winner->save();
         }

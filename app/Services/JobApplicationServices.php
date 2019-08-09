@@ -191,7 +191,8 @@ class JobApplicationServices
 //dd($request->all());
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if ($record) {
-            return response()->json(["data" => $record, 'message' => 'Data Already Exist']);
+            $nameApply =$record->designation->name;
+            return response()->json(["data" => $record,'apply'=>$nameApply, 'message' => 'Data Already Exist']);
         }
         if (!empty($request->designation_id)) {
             $designation_id = $request->designation_id;

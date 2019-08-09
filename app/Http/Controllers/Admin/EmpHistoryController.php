@@ -74,6 +74,11 @@ class EmpHistoryController extends Controller
 
     public function interviewDataPost(Request $request, $scheduleId, EmpHistoryServices $empHistoryServices)
     {
+        if ($request->call_id == 14) {
+            if (empty($request->file_attach)) {
+                return 'Please Attach Offer Given Latter..';
+            }
+        }
         $empHistoryServices->interviewDataPost($request, $scheduleId);
         return redirect()->back();
     }
@@ -89,6 +94,11 @@ class EmpHistoryController extends Controller
 
     public function interviewDataUpdate(Request $request, $interviewId, EmpHistoryServices $empHistoryServices)
     {
+        if ($request->call_id == 14) {
+            if (empty($request->file_attach)) {
+                return 'Please Attach Offer Given Latter..';
+            }
+        }
         $empHistoryServices->interviewDataUpdate($request, $interviewId);
         return redirect()->back();
     }
@@ -134,7 +144,7 @@ class EmpHistoryController extends Controller
         $data['allApplicants'] = $empHistoryServices->allApplicants($request);
         $data['callStatus'] = CallStatus::where('module', '!=', 'Update Employee')->get();
         $data['updatedInterviews'] = EmpHistory::orderBy('id', 'desc')->get();
-        $data['designation'] = Designation::where('id','!=',1)->get();
+        $data['designation'] = Designation::where('id', '!=', 1)->get();
         $data['statuses'] = CallStatus::all();
         return view('admin..hiring.all-applicants.all-applicants', compact('data'));
     }

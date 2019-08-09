@@ -6,11 +6,10 @@ use App\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DocumentsPersonal extends Model
+class EmployeeOfficialDocument extends Model
 {
     protected $guarded = [];
     use SoftDeletes;
-
 
     protected static function boot()
     {

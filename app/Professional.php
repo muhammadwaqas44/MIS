@@ -6,7 +6,7 @@ use App\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DocumentsOfficial extends Model
+class Professional extends Model
 {
     protected $guarded = [];
     use SoftDeletes;

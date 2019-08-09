@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\CallStatus;
+use App\Exports\WinnerExport;
 use App\Prize;
 use App\Services\WinnerServices;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WinnerController extends Controller
 {
@@ -14,7 +16,7 @@ class WinnerController extends Controller
     {
         $data['winners'] = $winnerServices->allWinners($request);
         $data['prizes'] = Prize::all();
-        $data['statuses'] = CallStatus::where([['module','LiveSessionWinners'],['id','!=',73]])->get();
+        $data['statuses'] = CallStatus::where([['module', 'LiveSessionWinners'], ['id', '!=', 73]])->get();
         return view('admin.user.winner.all-winners', compact('data'));
     }
 
@@ -24,9 +26,14 @@ class WinnerController extends Controller
         return redirect()->back();
     }
 
-    public function editWinnerPost(Request $request,$winnerId, WinnerServices $winnerServices)
+    public function editWinnerPost(Request $request, $winnerId, WinnerServices $winnerServices)
     {
         $winnerServices->editWinnerPost($request, $winnerId);
         return redirect()->back();
+    }
+
+    public function exportWinner()
+    {
+        return Excel::download(new WinnerExport, 'All-Winners.xlsx');
     }
 }

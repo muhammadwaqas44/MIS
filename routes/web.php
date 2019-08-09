@@ -59,6 +59,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/all-winners', 'Admin\WinnerController@allWinners')->name('admin.all-winners');
     route::post('/admin/add-data-winner', 'Admin\WinnerController@addWinnerPost')->name('admin.add-data-winner');
     route::post('/admin/edit-data-winner/{winnerId}', 'Admin\WinnerController@editWinnerPost')->name('admin.edit-data-winner');
+    route::get('/admin/export-winner', 'Admin\WinnerController@exportWinner')->name('admin.export-winner');
     /// END WINNER ROUTES
 
     /// JOB APPLICATION FOR HIRING PROCESS
@@ -120,7 +121,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::post('/admin/add-status-employee/{employeeId}', 'Admin\JoinEmployeeController@addStatusEmployee')->name('admin.add-status-employee');
     route::post('/admin/next-review-employee-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewEmployee')->name('admin.next-review-employee-post');
 
-   /// FOR SHOWING FILES FOR EMPLOYMENT
+    /// FOR SHOWING FILES FOR EMPLOYMENT
     route::get('/admin/download-resume-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadResumeEmployee')->name('admin.download-resume-employee');
     route::get('/admin/download-id-proof-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadIDProofEmployee')->name('admin.download-id-proof-employee');
     route::get('/admin/download-other-doc-personal-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadOtherDocPersonalEmployee')->name('admin.download-other-doc-personal-employee');
@@ -136,20 +137,40 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/next-review-employee/{employeeId}', 'Admin\JoinEmployeeController@nextReviewEmployeeView')->name('admin.next-review-employee');
     route::post('/admin/next-review-employee-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewUpcomingEmployee')->name('admin.next-review-upcoming-employee-post');
 
+/////////// ALL EMPLOYMENT CHECK LIST ROUTES
+    route::get('/admin/all-employment-check-list', 'Admin\EmploymentCheckController@allEmploymentCheck')->name('admin.all-employment-check-list');
+    route::get('/admin/view-employment-check-list-page/{employeeId}', 'Admin\EmploymentCheckController@viewEmploymentCheck')->name('admin.view-employment-check-list-page');
+    route::post('/admin/post-employment-check-list-page/{employeeId}', 'Admin\EmploymentCheckController@postEmploymentCheck')->name('admin.post-employment-check-list-page');
+
+/// END EMPLOYMENT CHECK LIST ROUTE
+
+/// VENDORS ROUTES
+    route::get('/admin/all-vendors', 'Admin\VendorController@allVendor')->name('admin.all-vendors');
+    route::get('/admin/add-vendor', 'Admin\VendorController@addVendor')->name('admin.add-vendor');
+    route::post('/admin/add-vendor-post', 'Admin\VendorController@addVendorPost')->name('admin.add-vendor-post');
+    route::get('/admin/update-vendor-view/{vendorId}', 'Admin\VendorController@updateVendor')->name('admin.update-vendor-view');
+    route::post('/admin/update-vendor-post/{vendorId}', 'Admin\VendorController@updateVendorPost')->name('admin.update-vendor-post');
+    route::get('/admin/download-attach-file/{vendorId}', 'Admin\VendorController@downloadAttachFile')->name('admin.download-attach-file');
+    route::get('/admin/export-vendor', 'Admin\VendorController@exportVendor')->name('admin.export-vendor');
+/// END VENDORS ROUTES
+///
+/// CONTENT MANAGEMENT ROUTES
+/// NEW CONTENT ROUTES
+    route::get('/admin/new-contents', 'Admin\ContentController@newContent')->name('admin.new-contents');
 
 
 });
 
 
-Route::group(['middleware' => 'CheckEmpolyee'], function () {
-
-
-});
-
-
-Route::group(['middleware' => 'CheckGuest'], function () {
-
-
-});
+//Route::group(['middleware' => 'CheckEmpolyee'], function () {
+//
+//
+//});
+//
+//
+//Route::group(['middleware' => 'CheckGuest'], function () {
+//
+//
+//});
 
 

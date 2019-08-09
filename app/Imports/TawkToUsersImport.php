@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class TawkToUsersImport implements ToCollection
@@ -36,6 +37,7 @@ class TawkToUsersImport implements ToCollection
                         'email' => $row[2],
                         'user_phone' => $row[3],
                         'role_id' => 3,
+                        'password' => Hash::make('12345'),
                     ]);
                 }
             }

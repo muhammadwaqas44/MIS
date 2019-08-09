@@ -25,5 +25,10 @@ class DatabaseSeeder extends Seeder
          $this->call(EmploymentStatusSeeder::class);
          $this->call(EmployeeReviewTableSeeder::class);
          $this->call(ReviewAndEmploymentStatusSeeder::class);
+         $this->call(LiveSessionWinnersSeeder::class);
+         $this->call(PrizeTableSeeder::class);
+         $this->call(ProfessionalTableSeeder::class);
+         $this->call(ContactTypeTableSeeder::class);
+
     }
 }

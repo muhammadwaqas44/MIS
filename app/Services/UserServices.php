@@ -135,7 +135,7 @@ class UserServices
     {
         $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if (!$record) {
-            User::create(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,]));
+            User::create(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,'password' => Hash::make('12345'),]));
         } else {
             return redirect()->back();
         }
@@ -145,7 +145,7 @@ class UserServices
     {
         $userId = $request->id;
         $user = User::withoutGlobalScopes()->find($userId);
-        $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,]));
+        $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,'password' => Hash::make('12345')]));
 
     }
 

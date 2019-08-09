@@ -12,7 +12,9 @@ use App\EmpHistory;
 use App\Employee;
 use App\EmployeeHistroy;
 use App\EmployeeOfficialDoc;
+use App\EmployeeOfficialDocument;
 use App\EmployeePersonalDoc;
+use App\EmployeePersonalDocument;
 use App\EmployeeReview;
 use App\JobApplication;
 use App\LocationOffice;
@@ -215,9 +217,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadResumeEmployee($employeeId)
     {
-        $employee = EmployeePersonalDoc::where('employee_id', $employeeId)->firstOrFail();
-        if ($employee->resume) {
-            $file = public_path() . $employee->resume;
+        $employee = EmployeePersonalDocument::find($employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';
@@ -226,9 +228,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadIDProofEmployee($employeeId)
     {
-        $employee = EmployeePersonalDoc::where('employee_id', $employeeId)->firstOrFail();
-        if ($employee->id_proof) {
-            $file = public_path() . $employee->id_proof;
+        $employee = EmployeePersonalDocument::find($employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';
@@ -238,9 +240,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadOtherDocPersonalEmployee($employeeId)
     {
-        $employee = DocumentsPersonal::where('id', $employeeId)->firstOrFail();
-        if ($employee->name) {
-            $file = public_path() . $employee->name;
+        $employee = EmployeePersonalDocument::where('id', $employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';
@@ -249,9 +251,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadOfficialLatterEmployee($employeeId)
     {
-        $employee = EmployeeOfficialDoc::where('employee_id', $employeeId)->firstOrFail();
-        if ($employee->official_latter) {
-            $file = public_path() . $employee->official_latter;
+        $employee = EmployeeOfficialDocument::find($employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';
@@ -260,9 +262,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadJoiningLatterEmployee($employeeId)
     {
-        $employee = EmployeeOfficialDoc::where('employee_id', $employeeId)->firstOrFail();
-        if ($employee->joining_latter) {
-            $file = public_path() . $employee->joining_latter;
+        $employee = EmployeeOfficialDocument::find($employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';
@@ -271,9 +273,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadContractPaperEmployee($employeeId)
     {
-        $employee = EmployeeOfficialDoc::where('employee_id', $employeeId)->firstOrFail();
-        if ($employee->contract_paper) {
-            $file = public_path() . $employee->contract_paper;
+        $employee = EmployeeOfficialDocument::find($employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';
@@ -282,9 +284,9 @@ class JoinEmployeeController extends Controller
 
     public function downloadOtherDocOfficialEmployee($employeeId)
     {
-        $employee = DocumentsOfficial::where('id', $employeeId)->firstOrFail();
-        if ($employee->name) {
-            $file = public_path() . $employee->name;
+        $employee = EmployeeOfficialDocument::find($employeeId)->firstOrFail();
+        if ($employee->path) {
+            $file = public_path() . $employee->path;
             return response()->file($file);
         } else {
             return 'File Does not Exist';

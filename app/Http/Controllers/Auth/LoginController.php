@@ -35,7 +35,8 @@ class LoginController extends Controller
 //        dd($request->all());
         session(['timezone' => $request->timezone]);
         if (Auth::attempt(['email' => $request->email, "password" => $request->password])) {
-            if (Auth::user()->role->name == "Admin") {
+//            dd('okkk');
+            if (Auth::check()) {
                 return redirect()->route('admin-dashboard');
             } else{
                 return redirect()->route('home');

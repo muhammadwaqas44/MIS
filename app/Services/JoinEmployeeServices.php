@@ -8,14 +8,11 @@
 
 namespace App\Services;
 
-
-use App\DocumentsOfficial;
-use App\DocumentsPersonal;
 use App\EmpHistory;
 use App\Employee;
 use App\EmployeeHistroy;
-use App\EmployeeOfficialDoc;
-use App\EmployeePersonalDoc;
+use App\EmployeeOfficialDocument;
+use App\EmployeePersonalDocument;
 use App\Helpers\ImageHelpers;
 use App\JobApplication;
 use Carbon\Carbon;
@@ -48,7 +45,7 @@ class JoinEmployeeServices
         if ($request->date1 && $request->date2) {
             $start = Carbon::parse(str_replace('-', '', $request->date1));
             $end = Carbon::parse(str_replace('-', '', $request->date2));
-            $allEmployees = $allEmployees->whereBetween('dateTime', [$start, $end]);
+            $allEmployees = $allEmployees->whereBetween('created_at', [$start, $end]);
 
         }
         $data['allEmployees'] = $allEmployees->paginate($this->allEmployeesPagination);
@@ -72,14 +69,6 @@ class JoinEmployeeServices
             $resume = "/project-assets/files/" . $fileName;
         } else {
             $resume = $request->resume_hide;
-        }
-        if (!empty($request->id_proof)) {
-            $extension = $request->id_proof->getClientOriginalExtension();
-            $fileName = time() . "-" . 'id_proof.' . $extension;
-            ImageHelpers::uploadFile('/project-assets/files/', $request->file('id_proof'), $fileName);
-            $id_proof = "/project-assets/files/" . $fileName;
-        } else {
-            $id_proof = null;
         }
         if (!empty($request->official_latter)) {
             $extension = $request->official_latter->getClientOriginalExtension();
@@ -228,39 +217,73 @@ class JoinEmployeeServices
             'user_id' => auth()->user()->id,
             "is_active" => 1,
         ]);
-        if (!empty($request->other_doc_official)) {
-            foreach ($request->other_doc_official as $other_doc) {
-                $extension = $other_doc->getClientOriginalExtension();
-                $fileName = time() . "-." . $extension;
-                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
-                DocumentsOfficial::create(['name' => '/project-assets/files/' . $fileName, 'employee_id' => $employee->id]);
+
+        if ($employee) {
+            if (!empty($request->resume)) {
+                EmployeePersonalDocument::create([
+                    'path' => $resume,
+                    'employee_id' => $employee->id,
+                    'type' => 'resume'
+                ]);
+            }
+            if (!empty($request->other_doc_personal)) {
+                foreach ($request->other_doc_personal as $other_doc) {
+                    $extension = $other_doc->getClientOriginalExtension();
+                    $fileName = time() . "-." . $extension;
+                    ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                    EmployeePersonalDocument::create([
+                        'path' => '/project-assets/files/' . $fileName,
+                        'employee_id' => $employee->id,
+                        'type' => 'other_doc_personal'
+                    ]);
+                }
+            }
+            if (!empty($request->id_proof)) {
+                foreach ($request->id_proof as $other_doc) {
+                    $extension = $other_doc->getClientOriginalExtension();
+                    $fileName = time() . "-." . $extension;
+                    ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                    EmployeePersonalDocument::create([
+                        'path' => '/project-assets/files/' . $fileName,
+                        'employee_id' => $employee->id,
+                        'type' => 'id_proof'
+                    ]);
+                }
+            }
+            if (!empty($request->official_latter)) {
+                EmployeeOfficialDocument::create([
+                    'path' => $official_latter,
+                    'employee_id' => $employee->id,
+                    'type' => 'official_latter'
+                ]);
 
             }
-        }
-        if (!empty($request->other_doc_personal)) {
-            foreach ($request->other_doc_personal as $other_doc) {
-                $extension = $other_doc->getClientOriginalExtension();
-                $fileName = time() . "-." . $extension;
-                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
-                DocumentsPersonal::create(['name' => '/project-assets/files/' . $fileName, 'employee_id' => $employee->id]);
+            if (!empty($request->joining_latter)) {
+                EmployeeOfficialDocument::create([
+                    'path' => $joining_latter,
+                    'employee_id' => $employee->id,
+                    'type' => 'joining_latter'
+                ]);
             }
-        }
-        if ($employee) {
-            $employee_personal_docs = EmployeePersonalDoc::create([
-                'employee_id' => $employee->id,
-                "resume" => $resume,
-                "id_proof" => $id_proof,
-                "is_active" => 1,
-                'created_at' => Carbon::now()->timezone(session('timezone')),
-            ]);
-            $employee_official_docs = EmployeeOfficialDoc::create([
-                'employee_id' => $employee->id,
-                "official_latter" => $official_latter,
-                "joining_latter" => $joining_latter,
-                "contract_paper" => $contract_paper,
-                "is_active" => 1,
-                'created_at' => Carbon::now()->timezone(session('timezone')),
-            ]);
+            if (!empty($request->contract_paper)) {
+                EmployeeOfficialDocument::create([
+                    'path' => $contract_paper,
+                    'employee_id' => $employee->id,
+                    'type' => 'contract_paper'
+                ]);
+            }
+            if (!empty($request->other_doc_official)) {
+                foreach ($request->other_doc_official as $other_doc) {
+                    $extension = $other_doc->getClientOriginalExtension();
+                    $fileName = time() . "-." . $extension;
+                    ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                    EmployeeOfficialDocument::create([
+                        'path' => '/project-assets/files/' . $fileName,
+                        'employee_id' => $employee->id,
+                        'type' => 'other_doc_official'
+                    ]);
+                }
+            }
             $employee_histroy = EmployeeHistroy::create([
                 "first_name" => $request->first_name,
                 "last_name" => $request->last_name,
@@ -295,11 +318,6 @@ class JoinEmployeeServices
                 'created_at' => Carbon::now()->timezone(session('timezone')),
                 "job_id" => $request->job_id,
                 "employee_id" => $employee->id,
-                "resume" => $resume,
-                "id_proof" => $id_proof,
-                "official_latter" => $official_latter,
-                "joining_latter" => $joining_latter,
-                "contract_paper" => $contract_paper,
                 'probation_due_on' => $probation_due_on,
                 'remarks' => $request->remarks,
                 'review_id' => $review_id,
@@ -311,6 +329,7 @@ class JoinEmployeeServices
 
     public function addEmployeePost($request)
     {
+//        dd($request->all());
 
         if (!empty($request->profile_image)) {
             $fileName = time() . "-" . 'profile_image' . ".png";
@@ -326,14 +345,6 @@ class JoinEmployeeServices
             $resume = "/project-assets/files/" . $fileName;
         } else {
             $resume = $request->resume_hide;
-        }
-        if (!empty($request->id_proof)) {
-            $extension = $request->id_proof->getClientOriginalExtension();
-            $fileName = time() . "-" . 'id_proof.' . $extension;
-            ImageHelpers::uploadFile('/project-assets/files/', $request->file('id_proof'), $fileName);
-            $id_proof = "/project-assets/files/" . $fileName;
-        } else {
-            $id_proof = null;
         }
         if (!empty($request->official_latter)) {
             $extension = $request->official_latter->getClientOriginalExtension();
@@ -532,39 +543,72 @@ class JoinEmployeeServices
                         'user_id' => auth()->user()->id,
                         "is_active" => 1,
                     ]);
-                    if (!empty($request->other_doc_official)) {
-                        foreach ($request->other_doc_official as $other_doc) {
-                            $extension = $other_doc->getClientOriginalExtension();
-                            $fileName = time() . "-." . $extension;
-                            ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
-                            DocumentsOfficial::create(['name' => '/project-assets/files/' . $fileName, 'employee_id' => $employee->id]);
+                    if ($employee) {
+                        if (!empty($request->resume)) {
+                            EmployeePersonalDocument::create([
+                                'path' => $resume,
+                                'employee_id' => $employee->id,
+                                'type' => 'resume'
+                            ]);
+                        }
+                        if (!empty($request->other_doc_personal)) {
+                            foreach ($request->other_doc_personal as $other_doc) {
+                                $extension = $other_doc->getClientOriginalExtension();
+                                $fileName = time() . "-." . $extension;
+                                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                                EmployeePersonalDocument::create([
+                                    'path' => '/project-assets/files/' . $fileName,
+                                    'employee_id' => $employee->id,
+                                    'type' => 'other_doc_personal'
+                                ]);
+                            }
+                        }
+                        if (!empty($request->id_proof)) {
+                            foreach ($request->id_proof as $other_doc) {
+                                $extension = $other_doc->getClientOriginalExtension();
+                                $fileName = time() . "-." . $extension;
+                                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                                EmployeePersonalDocument::create([
+                                    'path' => '/project-assets/files/' . $fileName,
+                                    'employee_id' => $employee->id,
+                                    'type' => 'id_proof'
+                                ]);
+                            }
+                        }
+                        if (!empty($request->official_latter)) {
+                            EmployeeOfficialDocument::create([
+                                'path' => $official_latter,
+                                'employee_id' => $employee->id,
+                                'type' => 'official_latter'
+                            ]);
 
                         }
-                    }
-                    if (!empty($request->other_doc_personal)) {
-                        foreach ($request->other_doc_personal as $other_doc) {
-                            $extension = $other_doc->getClientOriginalExtension();
-                            $fileName = time() . "-." . $extension;
-                            ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
-                            DocumentsPersonal::create(['name' => '/project-assets/files/' . $fileName, 'employee_id' => $employee->id]);
+                        if (!empty($request->joining_latter)) {
+                            EmployeeOfficialDocument::create([
+                                'path' => $joining_latter,
+                                'employee_id' => $employee->id,
+                                'type' => 'joining_latter'
+                            ]);
                         }
-                    }
-                    if ($employee) {
-                        $employee_personal_docs = EmployeePersonalDoc::create([
-                            'employee_id' => $employee->id,
-                            "resume" => $resume,
-                            "id_proof" => $id_proof,
-                            "is_active" => 1,
-                            'created_at' => Carbon::now()->timezone(session('timezone')),
-                        ]);
-                        $employee_official_docs = EmployeeOfficialDoc::create([
-                            'employee_id' => $employee->id,
-                            "official_latter" => $official_latter,
-                            "joining_latter" => $joining_latter,
-                            "contract_paper" => $contract_paper,
-                            "is_active" => 1,
-                            'created_at' => Carbon::now()->timezone(session('timezone')),
-                        ]);
+                        if (!empty($request->contract_paper)) {
+                            EmployeeOfficialDocument::create([
+                                'path' => $contract_paper,
+                                'employee_id' => $employee->id,
+                                'type' => 'contract_paper'
+                            ]);
+                        }
+                        if (!empty($request->other_doc_official)) {
+                            foreach ($request->other_doc_official as $other_doc) {
+                                $extension = $other_doc->getClientOriginalExtension();
+                                $fileName = time() . "-." . $extension;
+                                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                                EmployeeOfficialDocument::create([
+                                    'path' => '/project-assets/files/' . $fileName,
+                                    'employee_id' => $employee->id,
+                                    'type' => 'other_doc_official'
+                                ]);
+                            }
+                        }
                         $employee_histroy = EmployeeHistroy::create([
                             "first_name" => $request->first_name,
                             "last_name" => $request->last_name,
@@ -599,11 +643,6 @@ class JoinEmployeeServices
                             'created_at' => Carbon::now()->timezone(session('timezone')),
                             "job_id" => $job_id_app,
                             "employee_id" => $employee->id,
-                            "resume" => $resume,
-                            "id_proof" => $id_proof,
-                            "official_latter" => $official_latter,
-                            "joining_latter" => $joining_latter,
-                            "contract_paper" => $contract_paper,
                             'probation_due_on' => $probation_due_on,
                             'remarks' => $request->remarks,
                             'review_id' => $review_id,
@@ -621,9 +660,6 @@ class JoinEmployeeServices
     {
 //        dd($request->all());
         $employee = Employee::find($employeeId);
-        $employeePersonalDoc = EmployeePersonalDoc::where('employee_id', $employeeId)->first();
-        $employeeOfficialDoc = EmployeeOfficialDoc::where('employee_id', $employeeId)->first();
-
         if (!empty($request->profile_image)) {
             $fileName = time() . "-" . 'profile_image' . ".png";
             ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
@@ -638,14 +674,6 @@ class JoinEmployeeServices
             $resume = "/project-assets/files/" . $fileName;
         } else {
             $resume = $request->resume_hide;
-        }
-        if (!empty($request->id_proof)) {
-            $extension = $request->id_proof->getClientOriginalExtension();
-            $fileName = time() . "-" . 'id_proof.' . $extension;
-            ImageHelpers::uploadFile('/project-assets/files/', $request->file('id_proof'), $fileName);
-            $id_proof = "/project-assets/files/" . $fileName;
-        } else {
-            $id_proof = $request->id_proof_hie;
         }
         if (!empty($request->official_latter)) {
             $extension = $request->official_latter->getClientOriginalExtension();
@@ -1520,9 +1548,7 @@ class JoinEmployeeServices
                 }
             }
         }
-        if ($employee->resume == $request->resume) {
-            $resume_status = null;
-        } else {
+        if ($request->resume) {
             $resume_status = 45;
             $empHis = EmpHistory::where([['job_id', '=', $request->job_id], ['is_active', '=', 1]])->first();
             if ($empHis) {
@@ -1547,9 +1573,7 @@ class JoinEmployeeServices
                 }
             }
         }
-        if ($employee->id_proof == $request->id_proof) {
-            $id_proof_status = null;
-        } else {
+        if ($request->id_proof) {
             $id_proof_status = 46;
             $empHis = EmpHistory::where([['job_id', '=', $request->job_id], ['is_active', '=', 1]])->first();
             if ($empHis) {
@@ -1574,9 +1598,7 @@ class JoinEmployeeServices
                 }
             }
         }
-        if ($employee->official_latter == $request->official_latter) {
-            $official_latter_status = null;
-        } else {
+        if ($request->official_latter) {
             $official_latter_status = 48;
             $empHis = EmpHistory::where([['job_id', '=', $request->job_id], ['is_active', '=', 1]])->first();
             if ($empHis) {
@@ -1601,9 +1623,7 @@ class JoinEmployeeServices
                 }
             }
         }
-        if ($employee->contract_paper == $request->contract_paper) {
-            $contract_paper_status = null;
-        } else {
+        if ($request->contract_paper) {
             $contract_paper_status = 50;
             $empHis = EmpHistory::where([['job_id', '=', $request->job_id], ['is_active', '=', 1]])->first();
             if ($empHis) {
@@ -1628,9 +1648,7 @@ class JoinEmployeeServices
                 }
             }
         }
-        if ($employee->joining_latter == $request->joining_latter) {
-            $joining_latter_status = null;
-        } else {
+        if ($request->joining_latter) {
             $joining_latter_status = 49;
             $empHis = EmpHistory::where([['job_id', '=', $request->job_id], ['is_active', '=', 1]])->first();
             if ($empHis) {
@@ -1695,40 +1713,73 @@ class JoinEmployeeServices
             'user_id' => auth()->user()->id,
             "is_active" => 1,
         ]);
-        if (!empty($request->other_doc_officials)) {
-            foreach ($request->other_doc_official as $other_doc) {
-//                dd($other_doc);
-                $extension = $other_doc->getClientOriginalExtension();
-                $fileName = time() . "-." . $extension;
-                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
-                DocumentsOfficial::create(['name' => '/project-assets/files/' . $fileName, 'employee_id' => $employee->id]);
+
+        if ($employee) {
+            if (!empty($request->resume)) {
+                EmployeePersonalDocument::create([
+                    'path' => $resume,
+                    'employee_id' => $employee->id,
+                    'type' => 'resume'
+                ]);
+            }
+            if (!empty($request->other_doc_personal)) {
+                foreach ($request->other_doc_personal as $other_doc) {
+                    $extension = $other_doc->getClientOriginalExtension();
+                    $fileName = time() . "-." . $extension;
+                    ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                    EmployeePersonalDocument::create([
+                        'path' => '/project-assets/files/' . $fileName,
+                        'employee_id' => $employee->id,
+                        'type' => 'other_doc_personal'
+                    ]);
+                }
+            }
+            if (!empty($request->id_proof)) {
+                foreach ($request->id_proof as $other_doc) {
+                    $extension = $other_doc->getClientOriginalExtension();
+                    $fileName = time() . "-." . $extension;
+                    ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                    EmployeePersonalDocument::create([
+                        'path' => '/project-assets/files/' . $fileName,
+                        'employee_id' => $employee->id,
+                        'type' => 'id_proof'
+                    ]);
+                }
+            }
+            if (!empty($request->official_latter)) {
+                EmployeeOfficialDocument::create([
+                    'path' => $official_latter,
+                    'employee_id' => $employee->id,
+                    'type' => 'official_latter'
+                ]);
 
             }
-        }
-        if (!empty($request->other_doc_personal)) {
-            foreach ($request->other_doc_personal as $other_doc) {
-                $extension = $other_doc->getClientOriginalExtension();
-                $fileName = time() . "-." . $extension;
-                ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
-                DocumentsPersonal::create(['name' => '/project-assets/files/' . $fileName, 'employee_id' => $employee->id]);
+            if (!empty($request->joining_latter)) {
+                EmployeeOfficialDocument::create([
+                    'path' => $joining_latter,
+                    'employee_id' => $employee->id,
+                    'type' => 'joining_latter'
+                ]);
             }
-        }
-        if ($employee) {
-            $employee_personal_docs = $employeePersonalDoc->update([
-                'employee_id' => $employee->id,
-                "resume" => $resume,
-                "id_proof" => $id_proof,
-                "is_active" => 1,
-                'created_at' => Carbon::now()->timezone(session('timezone')),
-            ]);
-            $employee_official_docs = $employeeOfficialDoc->update([
-                'employee_id' => $employee->id,
-                "official_latter" => $official_latter,
-                "joining_latter" => $joining_latter,
-                "contract_paper" => $contract_paper,
-                "is_active" => 1,
-                'created_at' => Carbon::now()->timezone(session('timezone')),
-            ]);
+            if (!empty($request->contract_paper)) {
+                EmployeeOfficialDocument::create([
+                    'path' => $contract_paper,
+                    'employee_id' => $employee->id,
+                    'type' => 'contract_paper'
+                ]);
+            }
+            if (!empty($request->other_doc_official)) {
+                foreach ($request->other_doc_official as $other_doc) {
+                    $extension = $other_doc->getClientOriginalExtension();
+                    $fileName = time() . "-." . $extension;
+                    ImageHelpers::uploadFile('/project-assets/files/', $other_doc, $fileName);
+                    EmployeeOfficialDocument::create([
+                        'path' => '/project-assets/files/' . $fileName,
+                        'employee_id' => $employee->id,
+                        'type' => 'other_doc_official'
+                    ]);
+                }
+            }
             $employee_histroy = EmployeeHistroy::create([
                 "first_name" => $request->first_name,
                 "last_name" => $request->last_name,
@@ -1763,11 +1814,6 @@ class JoinEmployeeServices
                 'created_at' => Carbon::now()->timezone(session('timezone')),
                 "job_id" => $job_id,
                 "employee_id" => $employee->id,
-                "resume" => $resume,
-                "id_proof" => $id_proof,
-                "official_latter" => $official_latter,
-                "joining_latter" => $joining_latter,
-                "contract_paper" => $contract_paper,
                 'probation_due_on' => $probation_due_on,
                 'remarks' => $request->remarks,
                 'review_id' => $review_id,
@@ -1779,8 +1825,10 @@ class JoinEmployeeServices
 
     public function allUpcomingReviews($request)
     {
-        $allUpcomingReviews = Employee::orderBy('probation_due_on', 'asc')->where('is_active', 1)->whereNull('deleted_at');
-
+        $allUpcomingReviews = Employee::with(['applicant.history'=> function ($query) {
+            $query->orderBy('dateTime', 'asc');
+        }])->whereNull('deleted_at');
+//dd($allUpcomingReviews);
         if ($request->search_title) {
             $title = $request->search_title;
             $allUpcomingReviews = $allUpcomingReviews->where('first_name', 'like', '%' . $title . '%')
@@ -1797,7 +1845,7 @@ class JoinEmployeeServices
         if ($request->date1 && $request->date2) {
             $start = Carbon::parse(str_replace('-', '', $request->date1));
             $end = Carbon::parse(str_replace('-', '', $request->date2));
-            $allUpcomingReviews = $allUpcomingReviews->whereBetween('dateTime', [$start, $end]);
+            $allUpcomingReviews = $allUpcomingReviews->whereBetween('created_at', [$start, $end]);
 
         }
         $data['allEmployees'] = $allUpcomingReviews->paginate($this->allEmployeesPagination);
@@ -1821,7 +1869,7 @@ class JoinEmployeeServices
             EmpHistory::create([
                 'job_id' => $request->job_id,
                 'call_id' => $request->status,
-                'dateTime' =>$date_of_birth,
+                'dateTime' => $date_of_birth,
                 'is_active' => 1,
                 'remarks' => $request->remarks,
                 'user_id' => auth()->user()->id,
@@ -1855,6 +1903,7 @@ class JoinEmployeeServices
             ]);
         }
     }
+
     public function nextReviewEmployee($request)
     {
 //        dd($request->all());

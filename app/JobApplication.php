@@ -27,6 +27,6 @@ class JobApplication extends Model
 
     public function history()
     {
-        return $this->hasOne('App\EmpHistory', 'job_id', 'id');
+        return $this->hasMany('App\EmpHistory', 'job_id', 'id')->where('is_active',1);
     }
 }

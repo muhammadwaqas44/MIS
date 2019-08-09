@@ -21,7 +21,10 @@ class ImageHelpers
 
     public static function uploadFile($folderName = '/files/' , $file , $fileName){
         $filename = $fileName;
+
         $destinationPath = public_path($folderName);
-        $file->move($destinationPath,$filename);
+
+        $thisNmae =$file->move($destinationPath,$filename);
+//        dd($thisNmae);
     }
 }

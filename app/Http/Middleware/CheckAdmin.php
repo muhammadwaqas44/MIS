@@ -12,7 +12,7 @@ class CheckAdmin
     public function handle($request, Closure $next)
     {
         if(Auth::check()){
-            if((Auth::user()->role_id != 1)){
+            if((Auth::check() != true)){
                 Auth::logout();
                 return redirect()->route('login');
             }

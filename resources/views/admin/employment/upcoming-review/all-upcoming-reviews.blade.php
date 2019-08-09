@@ -153,74 +153,86 @@
                                     <td class="center">{{$employee->skype_id}}</td>
                                     <td class="center">{{$employee->email}}</td>
                                     <td class="center">
-                                        @if($employee->employeePersonalDoc->resume)
-                                            <a href="{{route('admin.download-resume-employee',$employee->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume
-                                                </button>
-                                            </a>
+                                        @if($employee->employeePersonalDocument)
+                                            @foreach($employee->employeePersonalDocument()->where('type','=','resume')->get() as $item)
+                                                <a href="{{route('admin.download-resume-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume
+                                                    </button>
+                                                </a>
+                                            @endforeach
                                         @endif
                                     </td>
                                     <td class="center">
-                                        @if($employee->employeePersonalDoc->id_proof)
-                                            <a href="{{route('admin.download-id-proof-employee',$employee->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> ID Proof
-                                                </button>
-                                            </a>
+                                        @if(isset($employee->employeePersonalDocument))
+                                            @foreach($employee->employeePersonalDocument()->where('type','=','id_proof')->get() as $item)
+                                                <a href="{{route('admin.download-id-proof-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Id Proof
+                                                    </button>
+                                                </a>
+                                            @endforeach
                                         @endif
                                     </td>
                                     <td class="center">
-                                        @foreach($employee->documentsPersonal as $item)
-                                            <a href="{{route('admin.download-other-doc-personal-employee',$item->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other
-                                                    Personal
-                                                    Document
-                                                </button>
-                                            </a>
-                                        @endforeach
-                                    </td>
-                                    <td class="center">
-                                        @if($employee->employeeOfficialDoc->official_latter)
-                                            <a href="{{route('admin.download-official-latter-employee',$employee->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official
-                                                    Latter
-                                                </button>
-                                            </a>
+                                        @if(isset($employee->employeePersonalDocument))
+                                            @foreach($employee->employeePersonalDocument()->where('type','=','other_doc_personal')->get() as $item)
+                                                <a href="{{route('admin.download-other-doc-personal-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other Doc
+                                                        Personal
+                                                    </button>
+                                                </a>
+                                            @endforeach
                                         @endif
                                     </td>
                                     <td class="center">
-                                        @if($employee->employeeOfficialDoc->joining_latter)
-                                            <a href="{{route('admin.download-joining-latter-employee',$employee->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Joining
-                                                    Latter
-                                                </button>
-                                            </a>
+                                        @if(isset($employee->employeeOfficialDocument))
+                                            @foreach($employee->employeeOfficialDocument()->where('type','=','official_latter')->get() as $item)
+                                                <a href="{{route('admin.download-official-latter-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official
+                                                        Latter
+                                                    </button>
+                                                </a>
+                                            @endforeach
                                         @endif
                                     </td>
                                     <td class="center">
-                                        @if($employee->employeeOfficialDoc->contract_paper)
-                                            <a href="{{route('admin.download-contract-paper-employee',$employee->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Contract
-                                                    Paper
-                                                </button>
-                                            </a>
+                                        @if(isset($employee->employeeOfficialDocument))
+                                            @foreach($employee->employeeOfficialDocument()->where('type','=','joining_latter')->get() as $item)
+                                                <a href="{{route('admin.download-joining-latter-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official
+                                                        Latter
+                                                    </button>
+                                                </a>
+                                            @endforeach
                                         @endif
                                     </td>
                                     <td class="center">
-                                        @foreach($employee->documentsOfficial as $item)
-                                            <a href="{{route('admin.download-other-doc-official-employee',$item->id)}}"
-                                               target="_blank">
-                                                <button class="btn btn-xs blue"><i class="fa fa-file"></i> Other
-                                                    Official
-                                                    Document
-                                                </button>
-                                            </a>
-                                        @endforeach
+                                        @if(isset($employee->employeeOfficialDocument))
+                                            @foreach($employee->employeeOfficialDocument()->where('type','=','contract_paper')->get() as $item)
+                                                <a href="{{route('admin.download-contract-paper-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official
+                                                        Latter
+                                                    </button>
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if(isset($employee->employeeOfficialDocument))
+                                            @foreach($employee->employeeOfficialDocument()->where('type','=','other_doc_official')->get() as $item)
+                                                <a href="{{route('admin.download-other-doc-official-employee',$item->id)}}"
+                                                   target="_blank">
+                                                    <button class="btn btn-xs blue"><i class="fa fa-file"></i> Official
+                                                        Latter
+                                                    </button>
+                                                </a>
+                                            @endforeach
+                                        @endif
 
                                     </td>
                                     <td class="center">{{$employee->bank_name}}</td>

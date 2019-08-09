@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeePersonalDocsTable extends Migration
+class CreateEmployeePersonalDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateEmployeePersonalDocsTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_personal_docs', function (Blueprint $table) {
+        Schema::create('employee_personal_documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('resume','500')->nullable();
-            $table->string('id_proof','500')->nullable();
-            $table->string('other_doc_personal','500')->nullable();
-            $table->integer('is_active')->default(true);
             $table->integer('employee_id')->unsigned()->nullable();
             $table->foreign(['employee_id'])->references('id')->on('employees')->onDelete('cascade');
+            $table->string('type')->nullable();
+            $table->string('path', '500')->nullable();
+            $table->integer('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ class CreateEmployeePersonalDocsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_personal_docs');
+        Schema::dropIfExists('employee_personal_documents');
     }
 }

@@ -258,7 +258,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>ID Proof</label>
-                                                    <input type="file" class="form-control" name="id_proof"/>
+                                                    <input type="file" class="form-control" name="id_proof[]" multiple/>
                                                 </div>
                                             </div>
                                             <div class="row">

@@ -23,15 +23,16 @@ class EmployeeHistroy extends Model
         return $this->belongsTo('App\Employee', 'employee_id', 'id');
     }
 
-    public function employeePersonalDoc()
+    public function employeePersonalDocument()
     {
-        return $this->belongsTo('App\EmployeePersonalDoc', 'employee_id', 'id');
+        return $this->hasMany('App\EmployeePersonalDocument', 'employee_id', 'id');
     }
 
-    public function employeeOfficialDoc()
+    public function employeeOfficialDocument()
     {
-        return $this->belongsTo('App\EmployeeOfficialDoc', 'employee_id', 'id');
+        return $this->hasMany('App\EmployeeOfficialDocument', 'employee_id', 'id');
     }
+
 
     public function applicant()
     {

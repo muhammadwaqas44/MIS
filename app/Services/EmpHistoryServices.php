@@ -420,11 +420,7 @@ class EmpHistoryServices
 
     public function interviewDataPost($request, $scheduleId)
     {
-        if ($request->call_id == 14) {
-            if (empty($request->file_attach)) {
-                return 'Please Attach Offer Given Latter..';
-            }
-        }
+
 //        dd($request);
         $schedule = EmpHistory::find($scheduleId);
         if ($schedule->is_active == 1) {
@@ -439,7 +435,18 @@ class EmpHistoryServices
                 ]));
                 if ($request->file_attach) {
                     if ($request->emailSend == 1) {
+                        $jobApplication =JobApplication::find($request->job_id);
+
+                        if ($jobApplication){
+                            $extension = $request->file_attach->getClientOriginalExtension();
+                            $fileName = time() . "-" . 'file_attach.' . $extension;
+                            ImageHelpers::uploadFile('/project-assets/files/', $request->file('file_attach'), $fileName);
+                            $jobApplication->joining_latter ='/project-assets/files/'. $fileName;
+                            $jobApplication->save();
+                        }
+
                         if ($scheduleData->call_id == 14) {
+                            $joining_latter= public_path($jobApplication->joining_latter);
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
                             $designation = $applicant->designation->name;
@@ -450,11 +457,9 @@ class EmpHistoryServices
                                 'date' => $date,
                                 'designation' => $designation,
                             );
-                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name,$joining_latter, $request) {
                                 $message->to($to, $name)->subject('Job Offer Letter');
-                                $message->attach($request->file('file_attach')->getRealPath(), [
-                                    'as' => $request->file('file_attach')->getClientOriginalName(),
-                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->attach($joining_latter);
                                 $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                             });
                             return response()->json(['message' => 'Request completed']);
@@ -472,7 +477,16 @@ class EmpHistoryServices
                 ]));
                 if ($request->file_attach) {
                     if ($request->emailSend == 1) {
+                        $jobApplication =JobApplication::find($request->job_id);
+                        if ($jobApplication){
+                            $extension = $request->file_attach->getClientOriginalExtension();
+                            $fileName = time() . "-" . 'file_attach.' . $extension;
+                            ImageHelpers::uploadFile('/project-assets/files/', $request->file('file_attach'), $fileName);
+                            $jobApplication->joining_latter ='/project-assets/files/'. $fileName;
+                            $jobApplication->save();
+                        }
                         if ($scheduleData->call_id == 14) {
+                            $joining_latter= public_path($jobApplication->joining_latter);
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
                             $designation = $applicant->designation->name;
@@ -483,11 +497,9 @@ class EmpHistoryServices
                                 'date' => $date,
                                 'designation' => $designation,
                             );
-                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name,$joining_latter, $request) {
                                 $message->to($to, $name)->subject('Job Offer Letter');
-                                $message->attach($request->file('file_attach')->getRealPath(), [
-                                    'as' => $request->file('file_attach')->getClientOriginalName(),
-                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->attach($joining_latter);
                                 $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                             });
                             return response()->json(['message' => 'Request completed']);
@@ -506,11 +518,6 @@ class EmpHistoryServices
 
     public function interviewDataUpdate($request, $interviewId)
     {
-        if ($request->call_id == 14) {
-            if (empty($request->file_attach)) {
-                return 'Please Attach Offer Given Latter..';
-            }
-        }
         $schedule = EmpHistory::find($interviewId);
         if ($schedule->is_active == 1) {
             $schedule->is_active = 0;
@@ -524,7 +531,17 @@ class EmpHistoryServices
                 ]));
                 if ($request->file_attach) {
                     if ($request->emailSend == 1) {
+                        $jobApplication =JobApplication::find($request->job_id);
+                        if ($jobApplication){
+                            $extension = $request->file_attach->getClientOriginalExtension();
+                            $fileName = time() . "-" . 'file_attach.' . $extension;
+//                            dd($fileName);
+                            ImageHelpers::uploadFile('/project-assets/files/', $request->file('file_attach'), $fileName);
+                            $jobApplication->joining_latter ='/project-assets/files/'. $fileName;
+                            $jobApplication->save();
+                        }
                         if ($scheduleData->call_id == 14) {
+                            $joining_latter= public_path($jobApplication->joining_latter);
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
                             $designation = $applicant->designation->name;
@@ -535,11 +552,9 @@ class EmpHistoryServices
                                 'date' => $date,
                                 'designation' => $designation,
                             );
-                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name,$joining_latter, $request) {
                                 $message->to('vickyrana4433@gmail.com', $name)->subject('Job Offer Letter');
-                                $message->attach($request->file('file_attach')->getRealPath(), [
-                                    'as' => $request->file('file_attach')->getClientOriginalName(),
-                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->attach($joining_latter);
                                 $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                             });
                             return response()->json(['message' => 'Request completed']);
@@ -557,7 +572,16 @@ class EmpHistoryServices
                 ]));
                 if ($request->file_attach) {
                     if ($request->emailSend == 1) {
+                        $jobApplication =JobApplication::find($request->job_id);
+                        if ($jobApplication){
+                            $extension = $request->file_attach->getClientOriginalExtension();
+                            $fileName = time() . "-" . 'file_attach.' . $extension;
+                            ImageHelpers::uploadFile('/project-assets/files/', $request->file('file_attach'), $fileName);
+                            $jobApplication->joining_latter ='/project-assets/files/'. $fileName;
+                            $jobApplication->save();
+                        }
                         if ($scheduleData->call_id == 14) {
+                            $joining_latter= public_path($jobApplication->joining_latter);
                             $applicant = JobApplication::find($scheduleData->job_id);
                             $scheduleData = EmpHistory::find($scheduleData->id);
                             $designation = $applicant->designation->name;
@@ -568,11 +592,9 @@ class EmpHistoryServices
                                 'date' => $date,
                                 'designation' => $designation,
                             );
-                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name, $request) {
+                            Mail::send('mail.offer-mail', $data, function ($message) use ($to, $name,$joining_latter, $request) {
                                 $message->to('vickyrana4433@gmail.com', $name)->subject('Job Offer Letter');
-                                $message->attach($request->file('file_attach')->getRealPath(), [
-                                    'as' => $request->file('file_attach')->getClientOriginalName(),
-                                    'mime' => $request->file('file_attach')->getMimeType()]);
+                                $message->attach($joining_latter);
                                 $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
                             });
                             return response()->json(['message' => 'Request completed']);
