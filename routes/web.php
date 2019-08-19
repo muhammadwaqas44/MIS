@@ -64,6 +64,11 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
 
     /// JOB APPLICATION FOR HIRING PROCESS
     route::get('/admin/all-job-application', 'Admin\JobApplicationController@allJobApplications')->name('admin.all-job-application');
+    route::get('/admin/add-job-application', 'Admin\JobApplicationController@addJobApplications')->name('admin.add-job-application');
+    route::get('/admin/edit-job-application/{jobApplicantId}', 'Admin\JobApplicationController@editJobApplications')->name('admin.edit-job-application');
+    route::get('/admin/add-status-application/{jobApplicantId}', 'Admin\JobApplicationController@addStatusApplication')->name('admin.add-status-application');
+
+
     route::post('/admin/post-job-application', 'Admin\JobApplicationController@jobApplicationsPost')->name('admin.post-job-application');
     route::get('/admin/download-resume/{jobApplicantId}', 'Admin\JobApplicationController@downloadResumeApplicant')->name('admin.download-resume');
     Route::get('/admin/delete-job-application/{jobApplicantId}', 'Admin\JobApplicationController@deleteJobApplication')->name('admin.delete-job-application');
@@ -74,9 +79,12 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/all-schedules', 'Admin\EmpHistoryController@allSchedules')->name('admin.all-schedules');
     route::get('/admin/all-schedules-not-available', 'Admin\EmpHistoryController@allSchedulesNOtAvailable')->name('admin.all-schedules-not-available');
     Route::get('/admin/schedule-activation/{scheduleId}', 'Admin\EmpHistoryController@changeScheduleStatus')->name('admin.change-schedule-status');
+    route::get('/admin//view-status-interview/{scheduleId}', 'Admin\EmpHistoryController@viewStatusInterview')->name('admin.view-status-interview');
+    route::get('/admin//view-status-not-interview/{scheduleId}', 'Admin\EmpHistoryController@viewStatusNotInterview')->name('admin.view-status-not-interview');
     Route::get('/admin/user-schedule/{scheduleId}', 'Admin\EmpHistoryController@deleteSchedule')->name('admin.delete-schedule');
     route::post('/admin/post-interview-schedule', 'Admin\EmpHistoryController@interviewSchedulePost')->name('admin.post-interview-schedule');
     route::post('/admin/update-interview-schedule/{scheduleId}', 'Admin\EmpHistoryController@interviewScheduleUpdate')->name('admin.update-interview-schedule');
+    route::post('/admin/update-interview-not-schedule/{scheduleId}', 'Admin\EmpHistoryController@interviewNotScheduleUpdate')->name('admin.update-interview-not-schedule');
     /// ADD INITIAL INTERVIEW
     route::get('/admin/all-interviews', 'Admin\EmpHistoryController@allInterviews')->name('admin.all-interviews');
     route::post('/admin/post-update-interview-data/{interviewId}', 'Admin\EmpHistoryController@interviewDataUpdate')->name('admin.post-update-interview-data');

@@ -28,10 +28,19 @@ class JobApplicationController extends Controller
         return view('admin.hiring.job_application.all-job-applications', compact('data'));
     }
 
+    public function addJobApplications(Request $request, JobApplicationServices $applicationServices)
+    {
+        $data['channels'] = Channel::where('id', '!=', 1)->get();
+        $data['experience'] = Experience::where('id', '!=', 1)->get();
+        $data['designation'] = Designation::orderBy('name')->where('id', '!=', 1)->get();
+
+        return view('admin.hiring.job_application.add-job-application', compact('data'));
+    }
+
     public function jobApplicationsPost(Request $request, JobApplicationServices $applicationServices)
     {
         $applicationServices->jobApplicationsPost($request);
-        return redirect()->back();
+        return redirect()->route('admin.all-job-application');
     }
 
     public function downloadResumeApplicant($jobApplicantId)
@@ -52,10 +61,30 @@ class JobApplicationController extends Controller
         return redirect()->back();
     }
 
+    public function editJobApplications($jobApplicantId)
+    {
+        $data['channels'] = Channel::where('id', '!=', 1)->get();
+        $data['experience'] = Experience::where('id', '!=', 1)->get();
+        $data['designation'] = Designation::orderBy('name')->where('id', '!=', 1)->get();
+        $data['updatedSchedules'] = EmpHistory::orderBy('id', 'desc')->get();
+        $data['callStatus'] = CallStatus::withoutGlobalScopes()->where('module', '=', 'Call Status')->get();
+        $jobApplication = JobApplication::find($jobApplicantId);
+
+        return view('admin.hiring.job_application.edit-job-application', compact('data', 'jobApplication'));
+    }
+
+    public function addStatusApplication($jobApplicantId)
+    {
+        $data['updatedSchedules'] = EmpHistory::orderBy('id', 'desc')->get();
+        $data['callStatus'] = CallStatus::withoutGlobalScopes()->where('module', '=', 'Call Status')->get();
+        $jobApplication = JobApplication::find($jobApplicantId);
+        return view('admin.hiring.job_application.add-status', compact('data', 'jobApplication'));
+    }
+
     public function jobApplicationsUpdate(Request $request, $jobApplicantId, JobApplicationServices $applicationServices)
     {
         $applicationServices->jobApplicationsUpdate($request, $jobApplicantId);
-        return redirect()->back();
+        return redirect()->route('admin.all-job-application');
     }
 
     public function jobApplicationsPostApi(Request $request, JobApplicationServices $applicationServices)

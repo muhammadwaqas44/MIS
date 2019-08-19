@@ -244,6 +244,13 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Resume</label>
+                                                    @if($employee->employeePersonalDocument)
+                                                        @foreach($employee->employeePersonalDocument()->where('type','=','resume')->get() as $item)
+                                                            <a href="{{route('admin.download-resume-employee',$item->id)}}"
+                                                               target="_blank"><i class="fa fa-file"></i>
+                                                            </a>
+                                                        @endforeach
+                                                    @endif
                                                     <input type="file" class="form-control" name="resume" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeePersonalDoc->resume}}"@endif/>
                                                     <input type="hidden"  name="resume_hide" @if(isset($employee->employeePersonalDoc->resume)) value="{{$employee->employeePersonalDoc->resume}}" @endif/>
                                                 </div>

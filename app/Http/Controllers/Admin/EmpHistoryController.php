@@ -36,12 +36,13 @@ class EmpHistoryController extends Controller
 
     public function interviewSchedulePost(Request $request, EmpHistoryServices $empHistoryServices)
     {
+//        dd($request->all());
         $jobApplication = JobApplication::find($request->job_id);
         if ($jobApplication->designation_id == 1) {
             return "Please Update Applicant's Position";
         } else {
             $empHistoryServices->interviewSchedulePost($request);
-            return redirect()->back();
+            return redirect()->route('admin.all-job-application');
         }
     }
 
@@ -66,17 +67,41 @@ class EmpHistoryController extends Controller
         return response()->json($schedule);
     }
 
+    public function viewStatusInterview($scheduleId)
+    {
+        $schedule = EmpHistory::find($scheduleId);
+        $data['callStatus'] = CallStatus::where('module', '=', 'Call Status')->get();
+        $data['updatedSchedules'] = EmpHistory::orderBy('id', 'desc')->get();
+        return view('admin.hiring.schedule.edit-schedule-interview', compact('data', 'schedule'));
+    }
+
+    public function viewStatusNotInterview($scheduleId)
+    {
+        $schedule = EmpHistory::find($scheduleId);
+        $data['callStatus'] = CallStatus::where('module', '=', 'Call Status')->get();
+        $data['updatedSchedules'] = EmpHistory::orderBy('id', 'desc')->get();
+        return view('admin.hiring.schedule.edit-schedule-not-interview', compact('data', 'schedule'));
+    }
+
     public function interviewScheduleUpdate(Request $request, $scheduleId, EmpHistoryServices $empHistoryServices)
     {
         $empHistoryServices->interviewScheduleUpdate($request, $scheduleId);
-        return redirect()->back();
+        return redirect()->route('admin.all-schedules');
+    }
+
+    public function interviewNotScheduleUpdate(Request $request, $scheduleId, EmpHistoryServices $empHistoryServices)
+    {
+        $empHistoryServices->interviewScheduleUpdate($request, $scheduleId);
+        return redirect()->route('admin.all-schedules-not-available');
     }
 
     public function interviewDataPost(Request $request, $scheduleId, EmpHistoryServices $empHistoryServices)
     {
-        if ($request->call_id == 14) {
-            if (empty($request->file_attach)) {
-                return 'Please Attach Offer Given Latter..';
+        if ($request->emailSend == 1) {
+            if ($request->call_id == 14) {
+                if (empty($request->file_attach)) {
+                    return 'Please Attach Offer Given Latter..';
+                }
             }
         }
         $empHistoryServices->interviewDataPost($request, $scheduleId);
@@ -94,9 +119,11 @@ class EmpHistoryController extends Controller
 
     public function interviewDataUpdate(Request $request, $interviewId, EmpHistoryServices $empHistoryServices)
     {
-        if ($request->call_id == 14) {
-            if (empty($request->file_attach)) {
-                return 'Please Attach Offer Given Latter..';
+        if ($request->emailSend == 1) {
+            if ($request->call_id == 14) {
+                if (empty($request->file_attach)) {
+                    return 'Please Attach Offer Given Latter..';
+                }
             }
         }
         $empHistoryServices->interviewDataUpdate($request, $interviewId);
