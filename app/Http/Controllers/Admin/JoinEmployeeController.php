@@ -38,6 +38,7 @@ class JoinEmployeeController extends Controller
         $data['department'] = Department::orderBy('name')->where('id', '!=', 1)->get();
         $data['location'] = LocationOffice::orderBy('name')->where('id', '!=', 1)->get();
         $data['designation'] = Designation::orderBy('name')->where('id', '!=', 1)->get();
+        $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
         return view('admin.employment.add-employee', compact('data'));
     }
 
@@ -49,6 +50,7 @@ class JoinEmployeeController extends Controller
         $data['location'] = LocationOffice::orderBy('name')->where('id', '!=', 1)->get();
         $data['department'] = Department::orderBy('name')->where('id', '!=', 1)->get();
         $data['designation'] = Designation::orderBy('name')->where('id', '!=', 1)->get();
+        $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
         return view('admin.employment.join-employee', compact('data'));
     }
 
@@ -131,6 +133,7 @@ class JoinEmployeeController extends Controller
         $data['department'] = Department::orderBy('name')->where('id', '!=', 1)->get();
         $data['location'] = LocationOffice::orderBy('name')->where('id', '!=', 1)->get();
         $data['designation'] = Designation::orderBy('name')->where('id', '!=', 1)->get();
+        $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
         $employee = Employee::find($employeeId);
         return view('admin.employment.update-employee', compact('employee', 'data'));
     }
@@ -138,6 +141,8 @@ class JoinEmployeeController extends Controller
     public function statusEmployeeView($employeeId)
     {
         $data['callStatus'] = CallStatus::where('module', '=', 'EmploymentStatus')->get();
+        $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
+//        dd( $data['empHis']);
         $employee = Employee::find($employeeId);
         return view('admin.employment.status-add', compact('employee', 'data'));
     }
@@ -145,6 +150,7 @@ class JoinEmployeeController extends Controller
     public function statusEmployeeReview($employeeId)
     {
         $data['callStatus'] = CallStatus::where('module', '=', 'Review')->get();
+        $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
         $employee = Employee::find($employeeId);
         return view('admin.employment.upcoming-review.add-status-review', compact('employee', 'data'));
     }
@@ -164,6 +170,7 @@ class JoinEmployeeController extends Controller
     public function nextReviewEmployeeView($employeeId)
     {
         $data['callStatus'] = CallStatus::where('module', '=', 'NextReview')->get();
+        $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
         $employee = Employee::find($employeeId);
         return view('admin.employment.upcoming-review.next-review-employee', compact('employee', 'data'));
 

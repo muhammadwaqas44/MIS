@@ -187,9 +187,9 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="{{route('admin.all-vendors')}}" class="nav-link ">
+                            <a href="{{route('admin.create-plan')}}" class="nav-link ">
                                 <i class="icon-anchor"></i>
-                                <span class="title">New Content</span>
+                                <span class="title">Plan</span>
                             </a>
                         </li>
                         <li class="nav-item">

@@ -187,7 +187,7 @@
                                                         <div class="portlet-body">
                                                             <div class="tab-content">
                                                                 <form id="myformSchedule"
-                                                                      action="{{route('admin.update-interview-schedule',$interview->id)}}"
+                                                                      action="{{route('admin.update-interview-schedule-all',$interview->id)}}"
                                                                       method="post"
                                                                       enctype="multipart/form-data">
                                                                     @csrf
@@ -278,7 +278,7 @@
                                                                                 <label class="control-label">Conneted
                                                                                     Call
                                                                                     Status</label>
-                                                                                <select id="callStatus" name="call_id1"
+                                                                                <select id="callStatus" name="call_id"
                                                                                         class="form-control callStatusSub">
                                                                                     <option value="">Select Call Status
                                                                                     </option>
@@ -439,7 +439,6 @@
                         </table>
                     </div>
                     <div class="row">
-
                         <div class="col-md-7 col-sm-7">
                             <div class="dataTables_paginate paging_bootstrap_full_number" id="sample_1_paginate">
                                 {{$data['allApplicants']['allApplicants']->links()}}

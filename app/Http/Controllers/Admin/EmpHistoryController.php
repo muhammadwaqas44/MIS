@@ -89,6 +89,12 @@ class EmpHistoryController extends Controller
         return redirect()->route('admin.all-schedules');
     }
 
+    public function interviewScheduleUpdateAll(Request $request, $scheduleId, EmpHistoryServices $empHistoryServices)
+    {
+        $empHistoryServices->interviewScheduleUpdate($request, $scheduleId);
+        return redirect()->route('admin.all-applicants');
+    }
+
     public function interviewNotScheduleUpdate(Request $request, $scheduleId, EmpHistoryServices $empHistoryServices)
     {
         $empHistoryServices->interviewScheduleUpdate($request, $scheduleId);

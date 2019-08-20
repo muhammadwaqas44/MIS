@@ -112,6 +112,43 @@
                         </div>
 
                     </div>
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover"
+                               id="sample_1">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th> Name</th>
+                                <th> Status</th>
+                                <th> Position</th>
+                                <th> Date & Time</th>
+                                <th> Remarks</th>
+                                <th> Updated by</th>
+                                <th> Updated At</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach( $data['empHis']->where('job_id',$employee->applicant->id) as $updatedSchedule)
+                                <tr class="odd gradeX">
+                                    <td class="center"> {{$updatedSchedule->id}} </td>
+                                    <td> {{$updatedSchedule->applicant->name}}</td>
+                                    @if(isset($updatedSchedule->status->name))
+                                        <td class="center">{{$updatedSchedule->status->name}}</td>
+                                    @else
+                                        <td class="center">No Status</td>
+                                    @endif
+                                    <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
+                                    <td class="center">{{$updatedSchedule->dateTime}}</td>
+                                    <td class="center">{{$updatedSchedule->remarks}}</td>
+                                    <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                    <td class="center">{{$updatedSchedule->created_at}}</td>
+
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->

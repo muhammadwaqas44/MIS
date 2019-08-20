@@ -95,9 +95,12 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label"> Attach File</label> <span
-                                                            id="show" style="color: blue; display:none;">{{$vendor->attech_file}}</span>
-                                                    <input type="file" name="attech_file" class="form-control" id="hover"/>
+                                                    <label class="control-label"> Attach File</label>
+                                                    @if($vendor->attech_file)<span
+                                                            id="show"
+                                                            style="color: blue; display:none;">{{$vendor->attech_file}}</span>@endif
+                                                    <input type="file" name="attech_file" class="form-control"
+                                                           id="hover"/>
                                                     <input type="hidden" name="attech_file_hile" class="form-control"
                                                            value="{{$vendor->attech_file}}"
                                                     />
@@ -136,9 +139,9 @@
     </div>
     <script src="{{asset('assets-admin/assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
     <script type="text/javascript">
-        $("#hover").hover(function(){
+        $("#hover").hover(function () {
             $('#show').show();
-        },function(){
+        }, function () {
             $('#show').hide();
         });
     </script>

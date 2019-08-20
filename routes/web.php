@@ -103,6 +103,8 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     /// All Applicants Routes
     route::get('/admin/all-applicants', 'Admin\EmpHistoryController@allApplicants')->name('admin.all-applicants');
     route::get('/admin/export-job-applicant', 'Admin\EmpHistoryController@exportJobApplicant')->name('admin.export-job-applicant');
+    route::post('/admin/update-interview-schedule-all/{scheduleId}', 'Admin\EmpHistoryController@interviewScheduleUpdateAll')->name('admin.update-interview-schedule-all');
+
 
     ///End All Applicants Routes
 
@@ -164,7 +166,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
 ///
 /// CONTENT MANAGEMENT ROUTES
 /// NEW CONTENT ROUTES
-    route::get('/admin/new-contents', 'Admin\ContentController@newContent')->name('admin.new-contents');
+    route::get('/admin/create-plan', 'Admin\ContentController@createPlan')->name('admin.create-plan');
 
 
 });

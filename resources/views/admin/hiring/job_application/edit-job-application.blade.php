@@ -193,11 +193,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="control-label">Resume</label>
-                                                <a target="_blank"
-                                                   href="{{route('admin.download-resume',$jobApplication->id)}}"
-                                                   id="hover">
-                                                    <i class="icon-paper-clip"></i>
-                                                </a>
+                                                @if($jobApplication->resume)
+                                                    <a target="_blank"
+                                                       href="{{route('admin.download-resume',$jobApplication->id)}}"
+                                                       id="hover">
+                                                        <i class="icon-paper-clip"></i>
+                                                    </a>
+                                                @endif
                                                 <span
                                                         id="show"
                                                         style="color: blue; display:none;">{{$jobApplication->resume}}</span>

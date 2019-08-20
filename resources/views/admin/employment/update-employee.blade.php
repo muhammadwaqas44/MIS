@@ -369,35 +369,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<label>Review</label>--}}
-                                                    {{--<select class="form-control" name="review_id">--}}
-                                                        {{--<option value="{{$employee->review_id}}">@if(isset($employee->employeeReview->name)){{$employee->employeeReview->name}}@endif</option>--}}
-                                                        {{--@foreach($data['employee_reviews'] as $employee_review)--}}
-                                                            {{--<option value="{{$employee_review->id}}">{{$employee_review->name}}</option>--}}
-                                                        {{--@endforeach--}}
-                                                    {{--</select>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<label>Probation Due On</label>--}}
-                                                    {{--<div class="input-append date form_datetime1">--}}
-                                                        {{--<input size="16" type="text" autocomplete="off"  value="{{$employee->probation_due_on}}"--}}
-                                                               {{--name="probation_due_on" placeholder="Probation Due On"--}}
-                                                               {{--class="form-control">--}}
-                                                        {{--<span class="add-on"><i--}}
-                                                                    {{--class="icon-remove"></i></span>--}}
-                                                        {{--<span class="add-on"><i--}}
-                                                                    {{--class="icon-th"></i></span>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-md-12">--}}
-                                                    {{--<label>Commitment</label>--}}
-                                                    {{--<textarea class="form-control" rows="2" name="remarks">{{$employee->remarks}}</textarea>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
                                         </div>
                                     </div>
                                     <br>
@@ -412,6 +383,43 @@
                         </div>
 
                     </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover"
+                           id="sample_1">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th> Name</th>
+                            <th> Status</th>
+                            <th> Position</th>
+                            <th> Date & Time</th>
+                            <th> Remarks</th>
+                            <th> Updated by</th>
+                            <th> Updated At</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach( $data['empHis']->where('job_id',$employee->applicant->id) as $updatedSchedule)
+                            <tr class="odd gradeX">
+                                <td class="center"> {{$updatedSchedule->id}} </td>
+                                <td> {{$updatedSchedule->applicant->name}}</td>
+                                @if(isset($updatedSchedule->status->name))
+                                    <td class="center">{{$updatedSchedule->status->name}}</td>
+                                @else
+                                    <td class="center">No Status</td>
+                                @endif
+                                <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
+                                <td class="center">{{$updatedSchedule->dateTime}}</td>
+                                <td class="center">{{$updatedSchedule->remarks}}</td>
+                                <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                <td class="center">{{$updatedSchedule->created_at}}</td>
+
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->

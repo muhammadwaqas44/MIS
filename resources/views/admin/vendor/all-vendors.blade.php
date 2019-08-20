@@ -81,6 +81,7 @@
                                 <th> Attach File</th>
                                 <th> Remarks</th>
                                 <th> Created By</th>
+                                <th> Created At</th>
                                 <th> Actions</th>
                             </tr>
                             </thead>
@@ -102,6 +103,7 @@
                                     </td>
                                     <td class="center">{{$vendor->remarks}}</td>
                                     <td class="center">@if(isset($vendor->user)){{$vendor->user->first_name}} {{$vendor->user->last_name}} @endif</td>
+                                    <td class="center">{{$vendor->created_at}} </td>
 
                                     <td>
                                         <div class="btn-group">

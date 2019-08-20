@@ -33,7 +33,6 @@ class EmployeeHistroy extends Model
         return $this->hasMany('App\EmployeeOfficialDocument', 'employee_id', 'id');
     }
 
-
     public function applicant()
     {
         return $this->belongsTo('App\JobApplication', 'job_id', 'id');
@@ -49,14 +48,14 @@ class EmployeeHistroy extends Model
         return $this->belongsTo('App\Department', 'department_id', 'id');
     }
 
-    public function employeeReview()
-    {
-        return $this->belongsTo('App\EmployeeReview', 'review_id', 'id');
-    }
-
     public function locationName()
     {
         return $this->belongsTo('App\LocationOffice', 'location_id', 'id');
+    }
+
+    public function employeeReview()
+    {
+        return $this->belongsTo('App\EmployeeReview', 'review_id', 'id');
     }
 
     public function nationalityCountry()
@@ -86,16 +85,17 @@ class EmployeeHistroy extends Model
 
     public function permanentCity()
     {
-        return $this->belongsTo('App\Country', 'permanent_city', 'id');
+        return $this->belongsTo('App\City', 'permanent_city', 'id');
     }
 
     public function permanentState()
     {
-        return $this->belongsTo('App\Country', 'permanent_state', 'id');
+        return $this->belongsTo('App\State', 'permanent_state', 'id');
     }
 
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
+
 }
