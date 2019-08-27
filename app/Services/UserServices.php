@@ -111,7 +111,8 @@ class UserServices
 
     public function allTawkToUsers($request)
     {
-        $allUsers = User::withoutGlobalScopes()->orderBy('id', 'desc')->where('role_id', '=', 3)->whereNull('deleted_at');
+        $roleId = [3, 5];
+        $allUsers = User::withoutGlobalScopes()->orderBy('id', 'desc')->whereIn('role_id', $roleId)->whereNull('deleted_at');
         if ($request->search_title) {
             $full_name = $request->search_title;
             $splitName = explode(' ', $full_name, 2);
@@ -135,7 +136,7 @@ class UserServices
     {
         $record = User::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if (!$record) {
-            User::create(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,'password' => Hash::make('12345'),]));
+            User::create(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3, 'password' => Hash::make('12345'),]));
         } else {
             return redirect()->back();
         }
@@ -145,7 +146,7 @@ class UserServices
     {
         $userId = $request->id;
         $user = User::withoutGlobalScopes()->find($userId);
-        $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3,'password' => Hash::make('12345')]));
+        $user->update(array_merge($request->except('_token'), ['is_active' => 1, 'role_id' => 3, 'password' => Hash::make('12345')]));
 
     }
 
@@ -177,7 +178,8 @@ class UserServices
 
     public function smsTawkToAllUsers($massegeId)
     {
-        $allUsers = User::withoutGlobalScopes()->where('role_id', '=', 3)->whereNull('deleted_at')->get();
+        $roleId = [3, 5];
+        $allUsers = User::withoutGlobalScopes()->whereIn('role_id', $roleId)->whereNull('deleted_at')->get();
         set_time_limit(6000);
         $normalTimeLimit = ini_get('max_execution_time');
         ini_set('max_execution_time', 6000);

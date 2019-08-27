@@ -140,7 +140,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="control-label">Sub Status</label>
+                                                <label class="control-label">Reason</label>
                                                 <select name="call_id"
                                                         id="callStatusSub" required
                                                         class="form-control callStatusSub">
@@ -230,7 +230,7 @@
                                                 <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
                                                 <td class="center">{{$updatedSchedule->dateTime}}</td>
                                                 <td class="center">{{$updatedSchedule->remarks}}</td>
-                                                <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                                <td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>
                                                 <td class="center">{{$updatedSchedule->created_at}}</td>
 
                                             </tr>

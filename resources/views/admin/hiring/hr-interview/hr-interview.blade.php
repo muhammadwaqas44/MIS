@@ -313,7 +313,7 @@
                                                                             <td class="center">{{$updatedInterviews->applicant->designation->name}}</td>
                                                                             <td class="center">{{$updatedInterviews->dateTime}}</td>
                                                                             <td class="center">{{$updatedInterviews->remarks}}</td>
-                                                                            <td class="center">{{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} </td>
+                                                                            <td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>
                                                                             <td class="center">{{$updatedInterviews->created_at}}</td>
 
                                                                         </tr>
@@ -511,7 +511,7 @@
                                                                             <td class="center">{{$updatedInterviews->applicant->designation->name}}</td>
                                                                             <td class="center">{{$updatedInterviews->dateTime}}</td>
                                                                             <td class="center">{{$updatedInterviews->remarks}}</td>
-                                                                            <td class="center">{{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} </td>
+                                                                            <td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>
                                                                             <td class="center">{{$updatedInterviews->created_at}}</td>
 
                                                                         </tr>

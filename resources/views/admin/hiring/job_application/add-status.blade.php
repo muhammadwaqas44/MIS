@@ -143,7 +143,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="control-label">Sub Status</label>
+                                                <label class="control-label">Reason</label>
                                                 <select name="call_id"
                                                         id="callStatusSub" required
                                                         class="form-control callStatusSub">

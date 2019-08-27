@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
          $this->call(PrizeTableSeeder::class);
          $this->call(ProfessionalTableSeeder::class);
          $this->call(ContactTypeTableSeeder::class);
+         $this->call(PlatformTableSeeder::class);
+         $this->call(CStatusesTableSeeder::class);
+         $this->call(InventoryTableSeeder::class);
 
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ContactTypeTableSeeder extends Seeder
+class CStatusesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,11 +11,10 @@ class ContactTypeTableSeeder extends Seeder
      */
     public function run()
     {
-
-        $types= ['None','Video','Text','Audio'];
+        $types= ['Added Plan','Processing','Published'];
 
         foreach ($types as $type) {
-            \App\ContentType::create(['name' => $type]);
+            \App\CStatus::create(['name' => $type]);
         }
     }
 }

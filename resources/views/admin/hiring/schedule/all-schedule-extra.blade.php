@@ -321,7 +321,7 @@
                                                                             <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
                                                                             <td class="center">{{$updatedSchedule->dateTime}}</td>
                                                                             <td class="center">{{$updatedSchedule->remarks}}</td>
-                                                                            <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                                                            <td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>
                                                                             <td class="center">{{$updatedSchedule->created_at}}</td>
 
                                                                         </tr>

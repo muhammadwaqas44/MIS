@@ -1,5 +1,5 @@
 @extends('admin-layout.app')
-@section('title', "All Winners")
+@section('title', "All Messages")
 @section('content')
 
 
@@ -10,7 +10,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">Winners Table</span>
+                        <span class="caption-subject bold uppercase">Messages Table</span>
                     </div>
 
                 </div>

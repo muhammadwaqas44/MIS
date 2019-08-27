@@ -1,7 +1,6 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Sadaf Rana
  * Date: 7/11/2019
  * Time: 8:11 PM
  */

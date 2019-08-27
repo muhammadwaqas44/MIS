@@ -1,5 +1,5 @@
 @extends('admin-layout.app')
-@section('title', "Create Plan")
+@section('title', "Edit Plan")
 @section('content')
 
     <div class="page-bar">
@@ -13,7 +13,7 @@
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                Create Plan
+                Edit Plan
             </li>
 
         </ul>
@@ -25,7 +25,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">Create Plan</span>
+                        <span class="caption-subject bold uppercase">Edit Plan</span>
                     </div>
                 </div>
                 @if ($errors->any())
@@ -41,9 +41,10 @@
                     <div class="table-toolbar">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{route('admin.post-content-plan')}}"
-                                      method="post"
-                                      enctype="multipart/form-data">
+                                <form
+                                        {{--action="{{route('admin.post-content-plan')}}"--}}
+                                        method="post"
+                                        enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-8">
@@ -53,7 +54,7 @@
 
                                                         <label class="control-label">Topic</label>
                                                         <input type="text"
-                                                               class="form-control"
+                                                               class="form-control" VALUE="{{$plan->topic}}"
                                                                name="topic" placeholder="Topic"
                                                                required/>
                                                     </div>
@@ -64,7 +65,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Category</label>
                                                         <select class="form-control" name="category_id">
-                                                            <option>Select Category</option>
+                                                            <option value="{{$plan->category_id}}">{{$plan->category->name}}</option>
                                                             @foreach($data['category'] as $user)
                                                                 <option value="{{$user->id}}">{{$user->name}}</option>
                                                             @endforeach
@@ -74,7 +75,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="control-label">Source</label>
-                                                        <input type="text"
+                                                        <input type="text" VALUE="{{$plan->source}}"
                                                                class="form-control"
                                                                name="source" PLACEHOLDER="Source"/>
                                                     </div>
@@ -86,7 +87,7 @@
                                                         <label class="control-label">Remarks</label>
                                                         <textarea type="text" rows="2" name="remarks"
                                                                   placeholder="Remarks"
-                                                                  class="form-control"></textarea>
+                                                                  class="form-control">{{$plan->c_history->remarks}}</textarea>
                                                     </div>
 
                                                 </div>
@@ -97,6 +98,7 @@
                                                     <label class="control-label">Production Schedule</label>
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off" required
+                                                               VALUE="{{$plan->produce_on}}"
                                                                name="produce_on" placeholder="Production Date"
                                                                class="form-control">
                                                         <span class="add-on"><i
@@ -111,14 +113,14 @@
 
                                                     <label class="control-label">Production BY</label>
                                                     <select class="form-control" name="produce_by">
-                                                        <option>Select User</option>
+                                                        <option value="{{$plan->produce_by}}">{{$plan->produceBy->first_name}} {{$plan->produceBy->last_name}}</option>
                                                         @foreach($data['users'] as $user)
-                                                            <option value="{{$user->id}}">{{$user->first_name}}{{$user->last_name}}</option>
+                                                            <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
                                                         @endforeach
                                                     </select>
-
-
                                                 </div>
+
+
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -126,6 +128,7 @@
                                                     <label class="control-label">Processing Schedule</label>
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off" required
+                                                               VALUE="{{$plan->process_on}}"
                                                                name="process_on" placeholder="Processing Date"
                                                                class="form-control">
                                                         <span class="add-on"><i
@@ -140,9 +143,9 @@
 
                                                     <label class="control-label">Processing BY</label>
                                                     <select class="form-control" name="process_by">
-                                                        <option>Select User</option>
+                                                        <option value="{{$plan->process_by}}">{{$plan->processBy->first_name}} {{$plan->processBy->last_name}}</option>
                                                         @foreach($data['users'] as $user)
-                                                            <option value="{{$user->id}}">{{$user->first_name}}{{$user->last_name}}</option>
+                                                            <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
                                                         @endforeach
                                                     </select>
 
@@ -156,6 +159,7 @@
                                                     <div class="input-append date form_datetime1">
                                                         <input size="16" type="text" autocomplete="off" required
                                                                name="publish_on" placeholder="Publishing Date"
+                                                               VALUE="{{$plan->publish_on}}"
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>
@@ -169,11 +173,12 @@
 
                                                     <label class="control-label">Publishing BY</label>
                                                     <select class="form-control" name="publish_by">
-                                                        <option>Select User</option>
+                                                        <option value="{{$plan->publish_by}}">{{$plan->publishBy->first_name}} {{$plan->publishBy->last_name}}</option>
                                                         @foreach($data['users'] as $user)
-                                                            <option value="{{$user->id}}">{{$user->first_name}}{{$user->last_name}}</option>
+                                                            <option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>
                                                         @endforeach
                                                     </select>
+
 
                                                 </div>
                                             </div>
@@ -181,12 +186,13 @@
                                         <div class="col-md-4">
                                             <h3>Choose PlatForms</h3>
                                             <hr>
-                                            @foreach( $data['platforms'] as $platform)
-                                                <input type="checkbox" value="{{$platform->id}}"
-                                                       id="defaultCheck_{{$platform->id}}" checked name="platform[]"
+                                            @foreach( $plan->c_platformsUsed as $item)
+                                                <input type="checkbox" value="{{$item->c_platforms->id}}"
+                                                       id="defaultCheck_{{$item->c_platforms->id}}" checked
+                                                       name="platform[]"
                                                        class="form-check-input">
                                                 <label class="form-check-label"
-                                                       for="defaultCheck_{{$platform->id}}">{{$platform->name}}</label>
+                                                       for="defaultCheck_{{$item->c_platforms->id}}">{{$item->c_platforms->name}}</label>
                                                 <br>
                                             @endforeach
                                         </div>

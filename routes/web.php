@@ -166,7 +166,22 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
 ///
 /// CONTENT MANAGEMENT ROUTES
 /// NEW CONTENT ROUTES
+    route::get('/admin/all-plans', 'Admin\ContentController@allPlans')->name('admin.all-plans');
     route::get('/admin/create-plan', 'Admin\ContentController@createPlan')->name('admin.create-plan');
+    route::post('/admin/post-content-plan', 'Admin\ContentController@postContentPlan')->name('admin.post-content-plan');
+    route::get('/admin/edit-plan/{planId}', 'Admin\ContentController@editPlan')->name('admin.edit-plan');
+    route::get('/admin/produce-plan/{planId}', 'Admin\ContentController@producePlan')->name('admin.produce-plan');
+    //////
+    /// inventory management
+    route::get('/admin/all-inventories', 'Admin\InventoryController@allInventories')->name('admin.all-inventories');
+    route::get('/admin/add-inventory', 'Admin\InventoryController@createInventory')->name('admin.add-inventory');
+    route::get('/admin/add-inventory/{inventoryId}', 'Admin\InventoryController@editInventory')->name('admin.edit-inventory');
+    route::post('/admin/post-inventory', 'Admin\InventoryController@addInventroyPost')->name('admin.post-inventory-add');
+    route::post('/admin/post-inventory/{inventoryId}', 'Admin\InventoryController@updateInventroyPost')->name('admin.post-inventory-update');
+    route::get('/admin/assign-inventory/{inventoryId}', 'Admin\InventoryController@viewInventroyAssign')->name('admin.view-inventory');
+    route::post('/admin/assign-inventory-post', 'Admin\InventoryController@assignInventroyPost')->name('admin.assign-inventory-post');
+
+    ///
 
 
 });

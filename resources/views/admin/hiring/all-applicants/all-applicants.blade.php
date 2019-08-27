@@ -135,7 +135,7 @@
 
                                     <td class="center"> {{ $interview->remarks}}</td>
                                     <td class="center"> @if(isset($interview->applicant->apply_for)){{ $interview->applicant->apply_for}}@endif</td>
-                                    @if($interview->user_id)
+                                    @if(isset($interview->user))
                                         <td class="center">{{$interview->user->first_name}} {{$interview->user->last_name}}</td>
                                     @else
                                         <td class="center"> None</td>
@@ -355,7 +355,7 @@
                                                                                 <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
                                                                                 <td class="center">{{$updatedSchedule->dateTime}}</td>
                                                                                 <td class="center">{{$updatedSchedule->remarks}}</td>
-                                                                                <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                                                                <td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>
                                                                                 <td class="center">{{$updatedSchedule->created_at}}</td>
 
                                                                             </tr>
@@ -414,7 +414,7 @@
                                                                                 <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
                                                                                 <td class="center">{{$updatedInterviews->dateTime}}</td>
                                                                                 <td class="center">{{$updatedInterviews->remarks}}</td>
-                                                                                <td class="center">{{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} </td>
+                                                                                <td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>
                                                                                 <td class="center">{{$updatedInterviews->created_at}}</td>
 
                                                                             </tr>

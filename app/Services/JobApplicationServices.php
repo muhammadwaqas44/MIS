@@ -1,7 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Sadaf Rana
  * Date: 6/13/2019
  * Time: 2:44 PM
  */
@@ -12,7 +10,9 @@ namespace App\Services;
 use App\EmpHistory;
 use App\Helpers\ImageHelpers;
 use App\JobApplication;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -116,6 +116,17 @@ class JobApplicationServices
                         'user_id' => auth()->user()->id,
                         'created_at' => Carbon::now()->timezone(session('timezone')),
                     ]));
+                    $user = User::where('email', $request->email)->first();
+                    if (!$user) {
+                        User::create([
+                            'is_active' => 1,
+                            'role_id' => 5,
+                            "first_name" => $request->name,
+                            "email" => $request->email,
+                            "user_phone" => $request->user_phone,
+                            'password' => Hash::make('12345'),
+                        ]);
+                    }
                 }
             }
         } else {
@@ -191,8 +202,8 @@ class JobApplicationServices
 //dd($request->all());
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if ($record) {
-            $nameApply =$record->designation->name;
-            return response()->json(["data" => $record,'apply'=>$nameApply, 'message' => 'Data Already Exist']);
+            $nameApply = $record->designation->name;
+            return response()->json(["data" => $record, 'apply' => $nameApply, 'message' => 'Data Already Exist']);
         }
         if (!empty($request->designation_id)) {
             $designation_id = $request->designation_id;
@@ -231,7 +242,17 @@ class JobApplicationServices
                         'call_id' => 18,
                         'user_id' => 1,
                     ]));
-
+                    $user = User::where('email', $request->email)->first();
+                    if (!$user) {
+                        User::create([
+                            'is_active' => 1,
+                            'role_id' => 5,
+                            "first_name" => $request->name,
+                            "email" => $request->email,
+                            "user_phone" => $request->user_phone,
+                            'password' => Hash::make('12345'),
+                        ]);
+                    }
                     if (!empty($request->resume)) {
                         $apply_for = $record1->apply_for;
                         $name1 = $record1->name;

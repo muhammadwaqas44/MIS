@@ -43,7 +43,7 @@
                     </ul>
                 </li>
             @endif
-            @if(Auth::user()->role->hiring_int ==1)
+            @if(Auth::user()->role->hiring_int == 1)
                 <li class="nav-item">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-paper-clip"></i>
@@ -187,9 +187,9 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item">
-                            <a href="{{route('admin.create-plan')}}" class="nav-link ">
+                            <a href="{{route('admin.all-plans')}}" class="nav-link ">
                                 <i class="icon-anchor"></i>
-                                <span class="title">Plan</span>
+                                <span class="title">All Plans</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -207,9 +207,23 @@
                     </ul>
                 </li>
             @endif
-            {{--<li class="heading">--}}
-                {{--<h3 class="uppercase">Logout</h3>--}}
-            {{--</li>--}}
+            @if(Auth::user()->role->inventory_int ==1)
+                <li class="nav-item">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-earphones-alt"></i>
+                        <span class="title">Inventory</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="{{route('admin.all-inventories')}}" class="nav-link">
+                                <i class="icon-earphones-alt"></i>
+                                <span class="title">All Inventories</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
             <li class="nav-item  ">
                 <a href="{{route('logout')}}" class="nav-link nav-toggle">

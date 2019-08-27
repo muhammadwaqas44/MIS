@@ -6,7 +6,7 @@ use App\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class CPlatformUsed extends Model
 {
     protected $guarded = [];
     use SoftDeletes;
@@ -16,5 +16,9 @@ class Category extends Model
         parent::boot();
 
         static::addGlobalScope(new ActiveScope());
+    }
+    public function c_platforms()
+    {
+        return $this->belongsTo('App\CPlatform', 'platform_id', 'id');
     }
 }

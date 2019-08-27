@@ -13,11 +13,11 @@ class AddColumnToEmpHistories extends Migration
      */
     public function up()
     {
-        return;
+//        return;
         Schema::table('emp_histories', function (Blueprint $table) {
-//            $table->string('remarks', '1050')->change();
-//            $table->integer('user_id')->unsigned()->nullable()->after('job_id');
-//            $table->foreign(['user_id'])->references('id')->on('users')->onDelete('cascade');
+            $table->string('remarks', '1050')->change();
+            $table->integer('user_id')->unsigned()->nullable()->after('job_id');
+            $table->foreign(['user_id'])->references('id')->on('users')->onDelete('cascade');
         });
     }
 
