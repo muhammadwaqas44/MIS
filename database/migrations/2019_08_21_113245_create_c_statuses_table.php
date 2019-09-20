@@ -15,9 +15,9 @@ class CreateCStatusesTable extends Migration
     {
         Schema::create('c_statuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name',"150")->unique();
+            $table->string('name',"150");
+            $table->string('module')->nullable();
             $table->integer('is_active')->default(true);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

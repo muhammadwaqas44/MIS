@@ -25,7 +25,17 @@ class JobApplicationServices
 
     public function allJobApplications($request)
     {
-        $allJobApplications = JobApplication::orderBy('id', 'desc')->where('is_active', 1)->whereNull('deleted_at');
+//        $allJobApplications = JobApplication::orderBy('id', 'desc')->where('is_active', 1)->whereNull('deleted_at');
+        $allJobApplications = EmpHistory::with(['status'])->whereHas('status', function ($query) {
+            $query->where('id', '=', 18);
+        })->orderBy('dateTime', 'asc')->where('is_active', 1)->whereNull('deleted_at');
+
+//        with(['history.status' => function ($query) {
+//            $query->where('id', 18);
+//        }])->where('is_active', 1)->whereNull('deleted_at');
+
+//dd($allJobApplications);
+//        orderBy('id', 'desc')->where('is_active', 1)->whereNull('deleted_at');
 
         if ($request->search_title) {
             $allJobApplications = $allJobApplications

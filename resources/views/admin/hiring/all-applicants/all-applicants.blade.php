@@ -124,7 +124,7 @@
                                     <td class="center">{{$interview->applicant->expected_salary}}</td>
                                     <td class="center">{{$interview->applicant->address}}</td>
                                     <td class="center">{{$interview->applicant->city_name}}</td>
-                                    @if($interview->call_id)
+                                    @if(isset($interview->status))
                                         <td class="center">{{$interview->status->name}}</td>
                                     @else
                                         <td class="center">None</td>

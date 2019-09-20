@@ -15,16 +15,18 @@ class CreateCHistoriesTable extends Migration
     {
         Schema::create('c_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('content_id')->unsigned()->nullable();
-            $table->foreign(['content_id'])->references('id')->on('contents')->onDelete('cascade');
+            $table->integer('plan_id')->unsigned()->nullable();
+            $table->foreign(['plan_id'])->references('id')->on('contents')->onDelete('cascade');
             $table->integer('c_status_id')->unsigned()->nullable();
             $table->foreign(['c_status_id'])->references('id')->on('c_statuses')->onDelete('cascade');
-            $table->string('remarks',"1500")->nullable();
-            $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign(['user_id'])->references('id')->on('users')->onDelete('cascade');
+            $table->integer('platform_used_id')->nullable();
+            $table->integer('type_module')->nullable();
+            $table->text('remarks')->nullable();
+            $table->integer('created_by')->unsigned()->nullable();
+            $table->foreign(['created_by'])->references('id')->on('users')->onDelete('cascade');
             $table->integer('is_active')->default(true);
-            $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

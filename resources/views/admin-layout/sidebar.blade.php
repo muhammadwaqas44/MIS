@@ -6,7 +6,7 @@
             data-slide-speed="200" style="padding-top: 20px">
 
 
-            <li class="nav-item start open">
+            <li class="nav-item start">
                 <a href="{{route('admin-dashboard')}}" class="nav-link nav-toggle">
                     <i class="icon-home"></i>
                     <span class="title">Dashboard</span>
@@ -14,7 +14,12 @@
 
             </li>
             @if(Auth::user()->role->user_int ==1)
-                <li class="nav-item">
+                <li @if(Request::route()->getName() == 'admin.all-users') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-user') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-tawk-to-users') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.update-account') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-winners') class="nav-item active open"
+                    @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-user"></i>
                         <span class="title">User</span>
@@ -44,7 +49,23 @@
                 </li>
             @endif
             @if(Auth::user()->role->hiring_int == 1)
-                <li class="nav-item">
+                <li @if(Request::route()->getName() == 'admin.all-job-application') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-job-application') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.edit-job-application') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-status-application') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-schedules') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-schedules-not-available') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.change-schedule-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-status-interview') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-status-not-interview') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-interviews') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.shortlisted') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.tech-interview') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.hr-interview') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.offer-given') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-applicants') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.export-job-applicant') class="nav-item active open"
+                    @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-paper-clip"></i>
                         <span class="title">Hiring</span>
@@ -110,7 +131,19 @@
                 </li>
             @endif
             @if(Auth::user()->role->emp_int ==1)
-                <li class="nav-item">
+                <li @if(Request::route()->getName() == 'admin.all-employees') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-active-inActive-employees') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-employee') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.join-employee') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.update-employee-view') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.status-employee-view') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.change-employee-active') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-upcoming-reviews-employment') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.status-employee-review') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.next-review-employee') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-employment-check-list') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-employment-check-list-page') class="nav-item active open"
+                    @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-briefcase"></i>
                         <span class="title">Employment</span>
@@ -139,7 +172,10 @@
                 </li>
             @endif
             @if(Auth::user()->role->sms_int ==1)
-                <li class="nav-item">
+                <li @if(Request::route()->getName() == 'admin.all-message-responses') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.all-messages') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.change-message-status') class="nav-item active open"
+                    @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-envelope"></i>
                         <span class="title">SMS</span>
@@ -162,7 +198,10 @@
                 </li>
             @endif
             @if(Auth::user()->role->vendor_int ==1)
-                <li class="nav-item">
+                <li @if(Request::route()->getName() == 'admin.all-vendors') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-vendor') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.update-vendor-view') class="nav-item active open"
+                    @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-badge"></i>
                         <span class="title">Vendors</span>
@@ -178,37 +217,98 @@
                     </ul>
                 </li>
             @endif
-            @if(Auth::user()->role->content_int ==1)
-                <li class="nav-item">
-                    <a href="javascript:;" class="nav-link nav-toggle">
-                        <i class="icon-anchor"></i>
-                        <span class="title">Content Management</span>
-                        <span class="arrow"></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="{{route('admin.all-plans')}}" class="nav-link ">
-                                <i class="icon-anchor"></i>
-                                <span class="title">All Plans</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('admin.all-vendors')}}" class="nav-link ">
-                                <i class="icon-anchor"></i>
-                                <span class="title">In progress</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('admin.all-vendors')}}" class="nav-link ">
-                                <i class="icon-anchor"></i>
-                                <span class="title">Edited</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            @endif
+            {{--@if(Auth::user()->role->content_int ==1)--}}
+                {{--<li @if(Request::route()->getName() == 'admin.all-ideas') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.add-idea') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.edit-idea') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.all-plans') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.edit-plan') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.edit-plan-post-update') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.download-source-file') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() =='admin.produce-plan') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.platform-page') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.all-content-generation') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.all-seo') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.all-content-generation-view') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.seo-view') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.all-review') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.all-review-view') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.platform-seo') class="nav-item active open"--}}
+                    {{--@elseif(Request::route()->getName() == 'admin.platform-process') class="nav-item active open"--}}
+                    {{--@else class="nav-item " @endif >--}}
+                    {{--<a href="javascript:;" class="nav-link nav-toggle">--}}
+                        {{--<i class="icon-anchor"></i>--}}
+                        {{--<span class="title">CMT</span>--}}
+                        {{--<span class="arrow"></span>--}}
+                    {{--</a>--}}
+                    {{--<ul class="sub-menu">--}}
+                        {{--<li class="nav-item">--}}
+                            {{--<a href="{{route('admin.all-ideas')}}" class="nav-link ">--}}
+                                {{--<i class="icon-anchor"></i>--}}
+                                {{--<span class="title">ideas</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item">--}}
+                            {{--<a href="{{route('admin.all-plans')}}" class="nav-link ">--}}
+                                {{--<i class="icon-anchor"></i>--}}
+                                {{--<span class="title">Plans</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li @if(Request::route()->getName() == 'admin.all-content-generation') class="nav-item active open"--}}
+                            {{--@elseif(Request::route()->getName() == 'admin.all-content-generation-view') class="nav-item active open"--}}
+                            {{--@elseif(Request::route()->getName() == 'admin.all-seo') class="nav-item active open"--}}
+                            {{--@elseif(Request::route()->getName() == 'admin.platform-seo') class="nav-item active open"--}}
+                            {{--@elseif(Request::route()->getName() == 'admin.platform-process') class="nav-item active open"--}}
+                            {{--@elseif(Request::route()->getName() == 'admin.seo-view') class="nav-item active open"--}}
+                            {{--@else class="nav-item " @endif>--}}
+                            {{--<a href="javascript:;" class="nav-link nav-toggle">--}}
+                                {{--<i class="icon-anchor"></i>--}}
+                                {{--<span class="title">Process Content</span>--}}
+                                {{--<span class="arrow"></span>--}}
+                            {{--</a>--}}
+                            {{--<ul class="sub-menu">--}}
+                                {{--<li class="nav-item ">--}}
+                                    {{--<a href="{{route('admin.all-content-generation')}}" class="nav-link ">--}}
+                                        {{--<i class="icon-anchor"></i>--}}
+                                        {{--<span class="title">Content</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                                {{--<li class="nav-item">--}}
+                                    {{--<a href="{{route('admin.all-seo')}}" class="nav-link ">--}}
+                                        {{--<i class="icon-anchor"></i>--}}
+                                        {{--<span class="title">SEO</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item">--}}
+                            {{--<a href="{{route('admin.all-review')}}" class="nav-link ">--}}
+                                {{--<i class="icon-anchor"></i>--}}
+                                {{--<span class="title">Review</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+
+                        {{--<li class="nav-item">--}}
+                            {{--<a href="#" class="nav-link ">--}}
+                                {{--<i class="icon-anchor"></i>--}}
+                                {{--<span class="title">Publish</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item">--}}
+                            {{--<a href="#" class="nav-link ">--}}
+                                {{--<i class="icon-anchor"></i>--}}
+                                {{--<span class="title">All Contents</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
+                {{--</li>--}}
+            {{--@endif--}}
             @if(Auth::user()->role->inventory_int ==1)
-                <li class="nav-item">
+                <li @if(Request::route()->getName() == 'admin.all-inventories') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-inventory') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.edit-inventory') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-inventory') class="nav-item active open"
+                    @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-earphones-alt"></i>
                         <span class="title">Inventory</span>
@@ -219,6 +319,27 @@
                             <a href="{{route('admin.all-inventories')}}" class="nav-link">
                                 <i class="icon-earphones-alt"></i>
                                 <span class="title">All Inventories</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+            @if(Auth::user()->role->exp_int ==1)
+                <li @if(Request::route()->getName() == 'admin.all-expenses') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-expense') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-expense') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-inventory') class="nav-item active open"
+                    @else class="nav-item " @endif>
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-badge"></i>
+                        <span class="title">Expenses</span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item">
+                            <a href="{{route('admin.all-expenses')}}" class="nav-link">
+                                <i class="icon-badge"></i>
+                                <span class="title">All Expenses</span>
                             </a>
                         </li>
                     </ul>

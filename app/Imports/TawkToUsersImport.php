@@ -11,6 +11,7 @@ class TawkToUsersImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
+
         $skipRows = $rows->slice(1);
 //        dd($skipRows);
         foreach ($skipRows as $row) {

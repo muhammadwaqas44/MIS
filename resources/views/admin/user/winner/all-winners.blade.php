@@ -243,7 +243,7 @@
                             <tr class="odd gradeX">
                                 <td class="center"> {{$winner->id}} </td>
                                 <td> {{$winner->first_name}} {{$winner->last_name}}</td>
-                                <td class="center">@if(isset($winner->user->email)){{$winner->user->email}}@endif</td>
+                                <td class="center">@if(isset($winner->user)){{$winner->user->email}}@endif</td>
                                 <td class="center">{{$winner->user_phone}}</td>
                                 <td class="center">@if(isset($winner->statusName->name)){{$winner->statusName->name}}@endif</td>
                                 <td class="center">{{$winner->address}}</td>
@@ -313,7 +313,7 @@
                                                                            placeholder="Email"
                                                                            class="form-control"
                                                                            id="email"
-                                                                           @if(isset($winner->user->email))value="{{$winner->user->email}}"
+                                                                           @if(isset($winner->user))value="{{$winner->user->email}}"
                                                                            @endif
                                                                            name="email"/>
                                                                 </div>
@@ -406,7 +406,7 @@
                                                                 <div class="form-group">
                                                                     <label class="control-label ">Status</label>
                                                                     <select class="form-control placeholder-no-fix"
-                                                                            name="status">
+                                                                            name="status" required>
                                                                         <option value="">Select Status</option>
                                                                         @foreach($data['statuses'] as $status)
                                                                             <option value="{{$status->id}}">{{$status->name}}</option>

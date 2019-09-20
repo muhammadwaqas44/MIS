@@ -27,11 +27,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="btn-group">
-                                    <a href="{{route('admin.create-plan')}}">
-                                        <button id="sample_editable_1_new" class="btn sbold green"> Add New Plan
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </a>
+                                    {{--<a href="{{route('admin.create-plan')}}">--}}
+                                    {{--<button id="sample_editable_1_new" class="btn sbold green"> Add New Plan--}}
+                                    {{--<i class="fa fa-plus"></i>--}}
+                                    {{--</button>--}}
+                                    {{--</a>--}}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -68,15 +68,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <select name="professional_id"
-                                        class="form-control input-sm input-small input-inline">
-                                    <option value="">Select PlatForms</option>
-                                    @foreach( $data['platforms'] as  $professional)
-                                        <option value="{{$professional->id}}">
-                                            {{$professional->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
 
                                 <input type="submit" value="Search" class="btn btn-sm green">
                             </form>
@@ -91,8 +82,8 @@
                             <tr>
                                 <th> Id</th>
                                 <th> Topic</th>
+                                <th> Status</th>
                                 <th> Category</th>
-                                <th> Source</th>
                                 <th> Production Schedule</th>
                                 <th> Production BY</th>
                                 <th> Processing Schedule</th>
@@ -109,21 +100,22 @@
                             <tbody>
                             @foreach($data['plans'] ['plans'] as $plan)
                                 <tr class="odd gradeX">
-                                    <td class="center"> {{$plan->id}} </td>
-                                    <td> {{$plan->topic}}</td>
-                                    <td>{{$plan->category->name}}</td>
-                                    <td>{{$plan->source}}</td>
-                                    <td class="center">{{$plan->produce_on}}</td>
-                                    <td class="center">{{$plan->produceBy->first_name}} {{$plan->produceBy->last_name}}</td>
-                                    <td class="center">{{$plan->process_on}}</td>
-                                    <td class="center">{{$plan->processBy->first_name}} {{$plan->processBy->last_name}}</td>
-                                    <td class="center">{{$plan->publish_on}}</td>
-                                    <td class="center">{{$plan->publishBy->first_name}} {{$plan->publishBy->last_name}}</td>
+                                    <td class="center"> {{$plan->content->id}} </td>
+                                    <td> {{$plan->content->topic}}</td>
+                                    <td> {{$plan->c_status->name}}</td>
+                                    <td>@if(isset($plan->content->category)){{$plan->content->category->name}}@endif</td>
+                                    <td class="center">{{$plan->content->produce_on}}</td>
+                                    <td class="center">@if(isset($plan->content->produceBy)){{$plan->content->produceBy->first_name}} {{$plan->content->produceBy->last_name}} @endif</td>
+                                    <td class="center">{{$plan->content->process_on}}</td>
+                                    <td class="center">@if(isset($plan->content->processBy)){{$plan->content->processBy->first_name}} {{$plan->content->processBy->last_name}} @endif</td>
+                                    <td class="center">{{$plan->content->publish_on}}</td>
+                                    <td class="center">@if(isset($plan->content->publishBy)){{$plan->content->publishBy->first_name}} {{$plan->content->publishBy->last_name}} @endif</td>
                                     <td class="center">
-                                        @foreach($plan->c_platformsUsed as $item){{$item->c_platforms->name}}
-                                        <br>@endforeach</td>
-                                    <td class="center">{{$plan->c_history->remarks}}</td>
-                                    <td class="center">{{$plan->user->first_name}} {{$plan->user->last_name}} </td>
+                                        @if($plan->content->c_platformsUsed->count() != 0) @foreach($plan->content->c_platformsUsed as $item){{$item->c_platforms->name}}
+                                        <br>@endforeach @endif
+                                    </td>
+                                    <td class="center">{{$plan->remarks}} </td>
+                                    <td class="center">@if(isset($plan->createdByName)){{$plan->createdByName->first_name}} {{$plan->createdByName->last_name}} @endif </td>
                                     <td class="center">{{$plan->created_at}} </td>
 
                                     <td>
@@ -135,12 +127,12 @@
                                             <ul class="dropdown-menu pull-right" role="menu">
 
                                                 <li>
-                                                    <a href="{{route('admin.edit-plan',$plan->id)}}">
-                                                        <i class="icon-user"></i> Edit </a>
+                                                    <a href="{{route('admin.edit-plan',$plan->content->id)}}">
+                                                        <i class="icon-user"></i> Edit Plan </a>
                                                 </li>
                                                 <li>
-                                                    <a href="{{route('admin.produce-plan',$plan->id)}}">
-                                                        <i class="icon-user"></i> View </a>
+                                                    <a href="{{route('admin.produce-plan',$plan->content->id)}}">
+                                                        <i class="icon-user"></i> Upload Content </a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -155,7 +147,7 @@
 
                         <div class="col-md-7 col-sm-7">
                             <div class="dataTables_paginate paging_bootstrap_full_number" id="sample_1_paginate">
-                                {{--                                {{$data['plans'] ['plans']->links()}}--}}
+                                {{$data['plans'] ['plans']->links()}}
                             </div>
                         </div>
                     </div>

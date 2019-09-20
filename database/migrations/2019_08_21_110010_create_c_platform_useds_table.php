@@ -15,13 +15,13 @@ class CreateCPlatformUsedsTable extends Migration
     {
         Schema::create('c_platform_useds', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('content_id')->unsigned()->nullable();
-            $table->foreign(['content_id'])->references('id')->on('contents')->onDelete('cascade');
+            $table->integer('plan_id')->unsigned()->nullable();
+            $table->foreign(['plan_id'])->references('id')->on('contents')->onDelete('cascade');
             $table->integer('platform_id')->unsigned()->nullable();
             $table->foreign(['platform_id'])->references('id')->on('c_platforms')->onDelete('cascade');
             $table->integer('is_active')->default(true);
-            $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

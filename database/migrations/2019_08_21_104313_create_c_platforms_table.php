@@ -19,6 +19,7 @@ class CreateCPlatformsTable extends Migration
             $table->integer('is_active')->default(true);
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

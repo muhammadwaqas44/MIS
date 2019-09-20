@@ -23,6 +23,11 @@ class Winner extends Model
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
+    public function createdByName()
+    {
+        return $this->belongsTo('App\User', 'created_by', 'id');
+    }
+
     public function role()
     {
         return $this->belongsTo('App\Role', 'role_id', 'id');

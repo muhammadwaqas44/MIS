@@ -32,23 +32,32 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="btn-group pull-right">&nbsp;&nbsp;&nbsp;
+                                <div class="btn-group pull-right">
+                                    <a href="{{route('admin.all-active-inActive-employees')}}"
+                                       class="btn green  btn-outline ">
+                                        All Employees
+
+                                    </a>
                                     <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Tools
                                         <i class="fa fa-angle-down"></i>
                                     </button>
                                     <ul class="dropdown-menu pull-right">
                                         <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-print"></i> Print </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
+                                            <a href="{{route('admin.export-employees')}}">
                                                 <i class="fa fa-file-excel-o"></i> Export to Excel </a>
                                         </li>
+                                        {{--<li>--}}
+                                        {{--<a href="javascript:;">--}}
+                                        {{--<i class="fa fa-print"></i> Print </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                        {{--<a href="javascript:;">--}}
+                                        {{--<i class="fa fa-file-pdf-o"></i> Save as PDF </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                        {{--<a href="javascript:;">--}}
+                                        {{--<i class="fa fa-file-excel-o"></i> Export to Excel </a>--}}
+                                        {{--</li>--}}
                                     </ul>
                                 </div>
                             </div>
@@ -89,6 +98,9 @@
                             <tr>
                                 <th> Id</th>
                                 <th> Name</th>
+                                <th> Status</th>
+                                <th> Review Due On</th>
+                                <th> Remarks</th>
                                 <th> Data Of Birth</th>
                                 <th> Gender</th>
                                 <th> Marital Status</th>
@@ -133,6 +145,11 @@
                                 <tr class="odd gradeX">
                                     <td class="center"> {{$employee->id}} </td>
                                     <td> {{$employee->first_name}} {{$employee->last_name}}</td>
+                                    @foreach($employee->applicant->history as $histroy)
+                                        <td class="center">@if(isset($histroy->status)){{$histroy->status->name}} @endif</td>
+                                    @endforeach
+                                    <td>{{$employee->probation_due_on}}</td>
+                                    <td>{{$employee->remarks}}</td>
                                     <td>{{$employee->date_of_birth}}</td>
                                     <td class="center">{{$employee->gender}}</td>
                                     <td class="center">{{$employee->marital_status}}</td>
@@ -245,7 +262,7 @@
                                     <td class="center">{{$employee->joining_date}}</td>
                                     <td class="center">{{$employee->created_at}}</td>
                                     <td class="center">
-                                        @if($employee->user()->get()->count()>0){{$employee->user->first_name}}{{$employee->user->last_name}}
+                                        @if($employee->user()->get()->count()>0){{$employee->user->first_name}} {{$employee->user->last_name}}
                                         @endif
                                     </td>
 

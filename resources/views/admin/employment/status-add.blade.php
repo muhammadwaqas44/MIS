@@ -32,7 +32,7 @@
                                              height="170px">
                                     </div>
                                     <div class="col-md-4">
-                                        <h5>Name : {{$employee->first_name}}{{$employee->last_name}}</h5>
+                                        <h5>Name : {{$employee->first_name}} {{$employee->last_name}}</h5>
                                         <h5>Email : {{$employee->email}}</h5>
                                         <h5>Mobile Number : {{$employee->mobile_number}}</h5>
                                         <h5>Current Address : {{$employee->current_address}}</h5>
@@ -57,13 +57,14 @@
                                       enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" value="{{$employee->job_id}}" name="job_id">
+                                    <input type="hidden" value="{{$employee->id}}" name="emp_id">
                                     <div class="row">
                                         <div class="col-md-6">
 
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label>Add Status</label>
-                                                    <select name="status" class="form-control">
+                                                    <label>Add Status</label><span style="color:red;">*</span>
+                                                    <select name="status" class="form-control" required>
                                                         <option value="">Select</option>
                                                         @foreach($data['callStatus'] as $callStatus)
                                                             <option value="{{$callStatus->id}}">{{$callStatus->name}}</option>
@@ -74,9 +75,9 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label>Leave Date</label>
+                                                    <label>Leave Date</label><span style="color:red;">*</span>
                                                     <div class="input-append date form_datetime1">
-                                                        <input size="16" type="text" autocomplete="off"
+                                                        <input size="16" type="text" autocomplete="off" required
                                                                name="date_of_birth" placeholder="Leave Data"
                                                                class="form-control">
                                                         <span class="add-on"><i
@@ -104,7 +105,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <button TYPE="submit" class="btn green-dark">Save</button>
-                                            <button class="btn btn-outline-info">Cancel</button>
+                                            <a href="{{ URL::previous() }}">
+                                                <button type="button" class="btn btn-outline-info">Cancel</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </form>
@@ -132,16 +135,16 @@
                             @foreach( $data['empHis']->where('job_id',$employee->applicant->id) as $updatedSchedule)
                                 <tr class="odd gradeX">
                                     <td class="center"> {{$updatedSchedule->id}} </td>
-                                    <td> {{$updatedSchedule->applicant->name}}</td>
+                                    <td> @if(isset($updatedSchedule->applicant)){{$updatedSchedule->applicant->name}} @endif</td>
                                     @if(isset($updatedSchedule->status->name))
                                         <td class="center">{{$updatedSchedule->status->name}}</td>
                                     @else
                                         <td class="center">No Status</td>
                                     @endif
-                                    <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
+                                    <td class="center">@if(isset($updatedSchedule->applicant->designation)){{$updatedSchedule->applicant->designation->name}} @endif</td>
                                     <td class="center">{{$updatedSchedule->dateTime}}</td>
                                     <td class="center">{{$updatedSchedule->remarks}}</td>
-                                    <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                    <td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>
                                     <td class="center">{{$updatedSchedule->created_at}}</td>
 
                                 </tr>

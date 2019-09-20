@@ -93,4 +93,9 @@ class Employee extends Model
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
+    public function checkList()
+    {
+        return $this->hasMany('App\EmploymentCheckList', 'employee_id', 'id');
+    }
+
 }

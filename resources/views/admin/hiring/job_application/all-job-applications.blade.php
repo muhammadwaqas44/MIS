@@ -33,7 +33,7 @@
                             <div class="col-md-6">
                                 <div class="btn-group pull-right">
                                     <a href="{{route('admin.all-schedules-not-available')}}"
-                                       class="btn green  btn-outline">All Schedules</a> &nbsp;&nbsp;&nbsp;
+                                       class="btn green  btn-outline">Not Connected</a> &nbsp;&nbsp;&nbsp;
                                     <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Tools
                                         <i class="fa fa-angle-down"></i>
                                     </button>
@@ -102,110 +102,112 @@
                         </div>
 
                     </div>
-<div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover table-checkable order-column"
-                           id="sample_1">
-                        <thead>
-                        <tr>
-                            <th> Id</th>
-                            <th> Name</th>
-                            <th> Email</th>
-                            <th> Phone</th>
-                            <th> Skype ID</th>
-                            <th> Expected Salary</th>
-                            <th> Channel</th>
-                            <th> Position</th>
-                            <th> Experience</th>
-                            <th> Apply For</th>
-                            <th> Resume</th>
-                            <th> Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($data['allJobApplications'] ['allJobApplications'] as $jobApplication)
-                            <tr class="odd gradeX">
-                                <td class="center"> {{$jobApplication->id}} </td>
-                                <td> {{$jobApplication->name}}</td>
-                                <td>
-                                    <a href="mailto:{{$jobApplication->email}}"> {{$jobApplication->email}}</a>
-                                </td>
-                                <td class="center">{{$jobApplication->user_phone}}</td>
-                                <td class="center">{{$jobApplication->skype_id}}</td>
-                                <td class="center">{{$jobApplication->expected_salary}}</td>
-                                @if($jobApplication->channel_id)
-                                    <td class="center">{{$jobApplication->channel->name}}</td>
-                                @else
-                                    <td class="center">No Channel</td>
-                                @endif
-                                @if($jobApplication->designation_id)
-                                    <td class="center">{{$jobApplication->designation->name}}</td>
-                                @else
-                                    <td class="center">No Designation</td>
-                                @endif
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column"
+                               id="sample_1">
+                            <thead>
+                            <tr>
+                                <th> Id</th>
+                                <th> Name</th>
+                                <th> Email</th>
+                                <th> Phone</th>
+                                <th> Skype ID</th>
+                                <th> Expected Salary</th>
+                                <th> Channel</th>
+                                <th> Position</th>
+                                <th> Experience</th>
+                                <th> Apply For</th>
+                                <th> Resume</th>
+                                <th> Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($data['allJobApplications'] ['allJobApplications'] as $jobApplication)
+                                <tr class="odd gradeX">
+                                    <td class="center"> {{$jobApplication->applicant->id}} </td>
+                                    <td> {{$jobApplication->applicant->name}}</td>
+                                    <td>
+                                        <a href="mailto:{{$jobApplication->applicant->email}}"> {{$jobApplication->applicant->email}}</a>
+                                    </td>
+                                    <td class="center">{{$jobApplication->applicant->user_phone}}</td>
 
-                                @if($jobApplication->experience_id)
-                                    <td class="center">{{$jobApplication->experience->name}}</td>
-                                @else
-                                    <td class="center">No Experience</td>
-                                @endif
+                                    <td class="center">{{$jobApplication->applicant->skype_id}}</td>
+                                    <td class="center">{{$jobApplication->applicant->expected_salary}}</td>
+                                    @if($jobApplication->applicant->channel_id)
+                                        <td class="center">{{$jobApplication->applicant->channel->name}}</td>
+                                    @else
+                                        <td class="center">No Channel</td>
+                                    @endif
+                                    @if($jobApplication->applicant->designation_id)
+                                        <td class="center">{{$jobApplication->applicant->designation->name}}</td>
+                                    @else
+                                        <td class="center">No Designation</td>
+                                    @endif
 
-                                <td class="center"> @if(isset($jobApplication->apply_for)){{ $jobApplication->apply_for}}@endif</td>
-                                <td class="center">
-                                    <a target="_blank" href="{{route('admin.download-resume',$jobApplication->id)}}">
-                                        <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-xs green dropdown-toggle" type="button"
-                                                data-toggle="dropdown" aria-expanded="false"> Actions
-                                            <i class="fa fa-angle-down"></i>
-                                        </button>
-                                        <ul class="dropdown-menu pull-right" role="menu">
+                                    @if($jobApplication->applicant->experience_id)
+                                        <td class="center">{{$jobApplication->applicant->experience->name}}</td>
+                                    @else
+                                        <td class="center">No Experience</td>
+                                    @endif
 
-                                            <li>
-                                                <a href="{{route('admin.edit-job-application',$jobApplication->id)}}" >
-                                                    <i class="icon-user"></i> View </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{route('admin.add-status-application',$jobApplication->id)}}">
-                                                    <i class="icon-tag"></i> Add </a>
-                                            </li>
-                                        </ul>
+                                    <td class="center"> @if(isset($jobApplication->applicant->apply_for)){{ $jobApplication->applicant->apply_for}}@endif</td>
+                                    <td class="center">
+                                        <a target="_blank"
+                                           href="{{route('admin.download-resume',$jobApplication->applicant->id)}}">
+                                            <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-xs green dropdown-toggle" type="button"
+                                                    data-toggle="dropdown" aria-expanded="false"> Actions
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
 
-
-                                        <div class="modal fade bs-modal-lg"
-                                             id="myModalApplication2_{{$jobApplication->id}}"
-                                             tabindex="-1" role="dialog" style="width: auto">
-                                            <div class="modal-dialog modal-lg">
-                                                <!-- Modal content-->
+                                                <li>
+                                                    <a href="{{route('admin.edit-job-application',$jobApplication->applicant->id)}}">
+                                                        <i class="icon-user"></i> View </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{route('admin.add-status-application',$jobApplication->applicant->id)}}">
+                                                        <i class="icon-tag"></i> Add </a>
+                                                </li>
+                                            </ul>
 
 
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title tabbable-line">
-                                                        <div class="caption caption-md">
-                                                            <i class="icon-globe theme-font hide"></i>
-                                                            <span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>
-                                                        </div>
+                                            <div class="modal fade bs-modal-lg"
+                                                 id="myModalApplication2_{{$jobApplication->applicant->id}}"
+                                                 tabindex="-1" role="dialog" style="width: auto">
+                                                <div class="modal-dialog modal-lg">
+                                                    <!-- Modal content-->
 
-                                                    </div>
-                                                    <div class="portlet-body">
-                                                        <div class="tab-content">
+
+                                                    <div class="portlet light ">
+                                                        <div class="portlet-title tabbable-line">
+                                                            <div class="caption caption-md">
+                                                                <i class="icon-globe theme-font hide"></i>
+                                                                <span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>
+                                                            </div>
 
                                                         </div>
+                                                        <div class="portlet-body">
+                                                            <div class="tab-content">
+
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <!-- //Modal content-->
                                                 </div>
-                                                <!-- //Modal content-->
                                             </div>
                                         </div>
-                                    </div>
 
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-</div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="row">
 
                         <div class="col-md-7 col-sm-7">

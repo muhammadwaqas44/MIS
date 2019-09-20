@@ -4,13 +4,11 @@ namespace App;
 
 use App\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class CHistory extends Model
 {
     protected $guarded = [];
-    use SoftDeletes;
-
     protected static function boot()
     {
         parent::boot();
@@ -25,12 +23,12 @@ class CHistory extends Model
 
     public function content()
     {
-        return $this->belongsTo('App\Content', 'content_id', 'id');
+        return $this->belongsTo('App\Content', 'plan_id', 'id');
     }
 
-    public function user()
+    public function createdByName()
     {
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo('App\User', 'created_by', 'id');
     }
 
 }

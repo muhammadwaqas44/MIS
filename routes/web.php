@@ -19,6 +19,7 @@ Route::get('get-state-list', 'DropdownController@getStateList');
 Route::get('get-city-list', 'DropdownController@getCityList');
 Route::get('get-call-status-list', 'DropdownController@getCallStatusList');
 Route::get('get-designation-list', 'DropdownController@getDesignationList');
+Route::get('category-list', 'DropdownController@getCategoryList');
 ////End Dropdown
 
 Route::group(['middleware' => 'CheckAdmin'], function () {
@@ -121,6 +122,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
 
     /// ALL EMPLOYEES ROUTES
     route::get('/admin/all-employees', 'Admin\JoinEmployeeController@allEmployees')->name('admin.all-employees');
+    route::get('/admin/all-active-inActive-employees', 'Admin\JoinEmployeeController@allActiveInActiveEmployees')->name('admin.all-active-inActive-employees');
     route::get('/admin/add-employee', 'Admin\JoinEmployeeController@addEmployee')->name('admin.add-employee');
     route::post('/admin/add-employee-post', 'Admin\JoinEmployeeController@addEmployeePost')->name('admin.add-employee-post');
     route::get('/admin/join-employee/{jobApplicantId}', 'Admin\JoinEmployeeController@joinEmployee')->name('admin.join-employee');
@@ -130,6 +132,7 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/status-employee-view/{employeeId}', 'Admin\JoinEmployeeController@statusEmployeeView')->name('admin.status-employee-view');
     route::post('/admin/add-status-employee/{employeeId}', 'Admin\JoinEmployeeController@addStatusEmployee')->name('admin.add-status-employee');
     route::post('/admin/next-review-employee-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewEmployee')->name('admin.next-review-employee-post');
+    route::get('/admin/change-employee-active/{employeeId}', 'Admin\JoinEmployeeController@changeEmployeeStatus')->name('admin.change-employee-active');
 
     /// FOR SHOWING FILES FOR EMPLOYMENT
     route::get('/admin/download-resume-employee/{employeeId}', 'Admin\JoinEmployeeController@downloadResumeEmployee')->name('admin.download-resume-employee');
@@ -145,16 +148,20 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::get('/admin/status-employee-review/{employeeId}', 'Admin\JoinEmployeeController@statusEmployeeReview')->name('admin.status-employee-review');
     route::post('/admin/add-status-employee-review/{employeeId}', 'Admin\JoinEmployeeController@addStatusEmployeeReview')->name('admin.add-status-employee-review');
     route::get('/admin/next-review-employee/{employeeId}', 'Admin\JoinEmployeeController@nextReviewEmployeeView')->name('admin.next-review-employee');
-    route::post('/admin/next-review-employee-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewUpcomingEmployee')->name('admin.next-review-upcoming-employee-post');
+    route::post('/admin/next-review-employee-out-post/{employeeId}', 'Admin\JoinEmployeeController@nextReviewUpcomingEmployee')->name('admin.next-review-upcoming-employee-post');
 
-/////////// ALL EMPLOYMENT CHECK LIST ROUTES
+    //// ALL EMPLOYMENT CHECK LIST ROUTES
     route::get('/admin/all-employment-check-list', 'Admin\EmploymentCheckController@allEmploymentCheck')->name('admin.all-employment-check-list');
     route::get('/admin/view-employment-check-list-page/{employeeId}', 'Admin\EmploymentCheckController@viewEmploymentCheck')->name('admin.view-employment-check-list-page');
     route::post('/admin/post-employment-check-list-page/{employeeId}', 'Admin\EmploymentCheckController@postEmploymentCheck')->name('admin.post-employment-check-list-page');
 
-/// END EMPLOYMENT CHECK LIST ROUTE
+    ////Export Employees
+    route::get('/admin/export-employees', 'Admin\JoinEmployeeController@exportEmployees')->name('admin.export-employees');
 
-/// VENDORS ROUTES
+
+    /// END EMPLOYMENT CHECK LIST ROUTE
+
+    /// VENDORS ROUTES
     route::get('/admin/all-vendors', 'Admin\VendorController@allVendor')->name('admin.all-vendors');
     route::get('/admin/add-vendor', 'Admin\VendorController@addVendor')->name('admin.add-vendor');
     route::post('/admin/add-vendor-post', 'Admin\VendorController@addVendorPost')->name('admin.add-vendor-post');
@@ -162,16 +169,8 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::post('/admin/update-vendor-post/{vendorId}', 'Admin\VendorController@updateVendorPost')->name('admin.update-vendor-post');
     route::get('/admin/download-attach-file/{vendorId}', 'Admin\VendorController@downloadAttachFile')->name('admin.download-attach-file');
     route::get('/admin/export-vendor', 'Admin\VendorController@exportVendor')->name('admin.export-vendor');
-/// END VENDORS ROUTES
-///
-/// CONTENT MANAGEMENT ROUTES
-/// NEW CONTENT ROUTES
-    route::get('/admin/all-plans', 'Admin\ContentController@allPlans')->name('admin.all-plans');
-    route::get('/admin/create-plan', 'Admin\ContentController@createPlan')->name('admin.create-plan');
-    route::post('/admin/post-content-plan', 'Admin\ContentController@postContentPlan')->name('admin.post-content-plan');
-    route::get('/admin/edit-plan/{planId}', 'Admin\ContentController@editPlan')->name('admin.edit-plan');
-    route::get('/admin/produce-plan/{planId}', 'Admin\ContentController@producePlan')->name('admin.produce-plan');
-    //////
+    /// END VENDORS ROUTES
+
     /// inventory management
     route::get('/admin/all-inventories', 'Admin\InventoryController@allInventories')->name('admin.all-inventories');
     route::get('/admin/add-inventory', 'Admin\InventoryController@createInventory')->name('admin.add-inventory');
@@ -182,8 +181,63 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     route::post('/admin/assign-inventory-post', 'Admin\InventoryController@assignInventroyPost')->name('admin.assign-inventory-post');
 
     ///
+    /// inventory management
+    route::get('/admin/all-expenses', 'Admin\ExpenseController@allExpenses')->name('admin.all-expenses');
+    route::get('/admin/add-expense', 'Admin\ExpenseController@addExpense')->name('admin.add-expense');
+    route::get('/admin/view-expense/{expId}', 'Admin\ExpenseController@editExpenseView')->name('admin.view-expense');
+    route::post('/admin/post-expense-add', 'Admin\ExpenseController@postExpense')->name('admin.post-expense-add');
+    route::post('/admin/post-edit-expense-add/{expId}', 'Admin\ExpenseController@postEditExpense')->name('admin.post-edit-expense-add');
+    route::get('/admin/download--file/{expId}', 'Admin\ExpenseController@downloadFile')->name('admin.download-exp-file');
+    route::get('/admin/export-expenses', 'Admin\ExpenseController@exportExpenses')->name('admin.export-expenses');
+
+    /// CONTENT MANAGEMENT ROUTES
+    /// NEW CONTENT ROUTES
+    route::get('/admin/all-ideas', 'Admin\ContentController@allIdeas')->name('admin.all-ideas');
+    route::get('/admin/add-idea', 'Admin\ContentController@addIdea')->name('admin.add-idea');
+    route::post('/admin/post-idea', 'Admin\ContentController@postIdea')->name('admin.post-idea');
+    route::get('/admin/edit-idea/{ideaId}', 'Admin\ContentController@editIdea')->name('admin.edit-idea');
+    route::post('/admin/post-update-idea/{ideaId}', 'Admin\ContentController@updateIdea')->name('admin.post-update-idea');
+
+    route::get('/admin/all-plans', 'Admin\ContentController@allPlans')->name('admin.all-plans');
+    route::get('/admin/create-plan', 'Admin\ContentController@createPlan')->name('admin.create-plan');
+    route::post('/admin/add-content-cat', 'Admin\ContentController@addContentCat')->name('admin.add-content-cat');
+    route::post('/admin/post-content-plan', 'Admin\ContentController@postContentPlan')->name('admin.post-content-plan');
+    route::get('/admin/edit-plan/{planId}', 'Admin\ContentController@editPlan')->name('admin.edit-plan');
+    route::post('/admin/edit-plan-post/{planId}', 'Admin\ContentController@editPlanPost')->name('admin.edit-plan-post-update');
+    route::post('/admin/produce-plan-post/{planId}', 'Admin\ContentController@producePlanPost')->name('admin.produce-plan-post-update');
+
+    route::get('/admin/download-source-file/{mediaId}', 'Admin\ContentController@downloadFile')->name('admin.download-source-file');
+
+    route::get('/admin/produce-plan/{planId}', 'Admin\ContentController@producePlan')->name('admin.produce-plan');
+    route::get('/admin/platform-page/{platFormId}/{planId}', 'Admin\ContentController@producePlanPlatform')->name('admin.platform-page');
+    route::post('/admin/produce-plan-history/{planId}', 'Admin\ContentController@producePlanHistory')->name('admin.produce-plan-history');
+//    route::post('/admin/produce-plan-history/{hisId}', 'Admin\ContentController@planHistory')->name('admin.produce-plan-history');
+
+    // allProcess
+    route::get('/admin/all-process', 'Admin\ContentController@allContentGeneration')->name('admin.all-content-generation');
+    route::get('/admin/all-process-view/{planId}', 'Admin\ContentController@allContentGenerationView')->name('admin.all-content-generation-view');
+
+    //SEO Content
+    route::get('/admin/all-seo', 'Admin\ContentController@allSEOList')->name('admin.all-seo');
+    route::get('/admin/seo-view/{planId}', 'Admin\ContentController@seoView')->name('admin.seo-view');
+
+    //SEO Content
+    route::get('/admin/all-review', 'Admin\ContentController@allReview')->name('admin.all-review');
+    route::get('/admin/all-review-view/{planId}', 'Admin\ContentController@allReviewView')->name('admin.all-review-view');
 
 
+    // Platforms
+    route::get('/admin/platform-seo/{platFormId}/{planId}/{platUsedId}', 'Admin\ContentController@seoPlanPlatform')->name('admin.platform-seo');
+    route::get('/admin/platform-process/{platFormId}/{planId}/{platUsedId}', 'Admin\ContentController@processPlanPlatform')->name('admin.platform-process');
+
+
+    route::post('/admin/post-youtube-add-process', 'Admin\PlatFormController@youTubePlatformProcess')->name('admin.post-youtube-add-process');
+    route::post('/admin/post-youtube-add-seo', 'Admin\PlatFormController@youTubePlatformSEO')->name('admin.post-youtube-add-seo');
+    route::post('/admin/post-youtube-status-seo', 'Admin\PlatFormController@hisStatusSEO')->name('admin.post-youtube-status-seo');
+    route::post('/admin/post-youtube-status-process', 'Admin\PlatFormController@hisStatusProcess')->name('admin.post-youtube-status-process');
+
+
+    //////
 });
 
 

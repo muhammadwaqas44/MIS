@@ -33,22 +33,30 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="btn-group pull-right">&nbsp;&nbsp;&nbsp;
+                                    <a href="{{route('admin.all-active-inActive-employees')}}" class="btn green  btn-outline ">
+                                        All Employees
+
+                                    </a>
                                     <button class="btn green  btn-outline dropdown-toggle" data-toggle="dropdown">Tools
                                         <i class="fa fa-angle-down"></i>
                                     </button>
                                     <ul class="dropdown-menu pull-right">
                                         <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-print"></i> Print </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
+                                            <a href="{{route('admin.export-employees')}}">
                                                 <i class="fa fa-file-excel-o"></i> Export to Excel </a>
                                         </li>
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-print"></i> Print </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-pdf-o"></i> Save as PDF </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-excel-o"></i> Export to Excel </a>--}}
+                                        {{--</li>--}}
                                     </ul>
                                 </div>
                             </div>
@@ -93,6 +101,16 @@
                                 <th> Email</th>
                                 <th> Designation</th>
                                 <th> Status</th>
+                                <th> Employment Form</th>
+                                <th> CNIC copy collected</th>
+                                <th> Photos collected</th>
+                                <th> Educational & Experience Record - Original Seen</th>
+                                <th> Educational & Experience Record - Copy Collected</th>
+                                <th> Latest Original Degree Withheld</th>
+                                <th> NDA Signed</th>
+                                <th> Agreement Signed</th>
+                                <th> Biometric registration</th>
+                                <th> Office Policies Communicated</th>
                                 <th> Joining Date</th>
                                 <th> Actions</th>
                             </tr>
@@ -104,10 +122,163 @@
                                     <td> {{$employee->first_name}} {{$employee->last_name}}</td>
                                     <td class="center">{{$employee->mobile_number}}</td>
                                     <td class="center">{{$employee->email}}</td>
-                                    @foreach($employee->applicant->history as $histroy)
-                                        <td class="center">{{$histroy->status->name}}</td>
-                                    @endforeach
                                     <td class="center"> @if($employee->designationName()->get()->count()>0){{$employee->designationName->name}} @endif</td>
+                                    {{--                                    @if(isset($employee->applicant->history))--}}
+                                    @foreach($employee->applicant->history as $histroy)
+                                        <td class="center">@if(isset($histroy->status)){{$histroy->status->name}} @endif</td>
+                                    @endforeach
+                                    {{--@endif--}}
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_form))
+                                                    @if($check->emp_form==1)
+                                                        <i class="fa fa-check fa-3x"
+                                                           style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                        <i class="fa fa-times fa-3x"
+                                                           style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_cnic))@if($check->emp_cnic==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_photos))@if($check->emp_photos==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_educational_original))@if($check->emp_educational_original==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_educational_copy))@if($check->emp_educational_copy==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_original_deg))@if($check->emp_original_deg==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_nda))@if($check->emp_nda==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_agreement))@if($check->emp_agreement==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_biometric))@if($check->emp_biometric==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
+                                    <td class="center">
+                                        @if($employee->checkList->count()> 0)
+                                            @foreach($employee->checkList->where('is_active', 1) as $check)
+                                                @if(isset($check->emp_office_policies))@if($check->emp_office_policies==1)
+                                                    <i class="fa fa-check fa-3x"
+                                                       style="color: green; margin-top: 10px; margin-left: 14px"></i>  @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif @else
+                                                    <i class="fa fa-times fa-3x"
+                                                       style="color: red; margin-top: 10px; margin-left: 14px"></i> @endif
+                                            @endforeach
+                                        @else <i class="fa fa-times fa-3x"
+                                                 style="color: red; margin-top: 10px; margin-left: 14px"></i>
+                                        @endif
+                                    </td>
                                     <td class="center">{{$employee->joining_date}}</td>
 
                                     <td>

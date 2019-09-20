@@ -26,14 +26,14 @@ class VendorServices
         if ($request->search_title) {
             $title = $request->search_title;
             $allVendor = $allVendor->where('name', 'like', '%' . $title . '%')
-                    ->orWhere('contact_no_primary', 'like', '%' . $title . '%')
-                    ->orWhere('contact_no_secondary', 'like', '%' . $title . '%')
-                    ->orWhere('landline', 'like', '%' . $title . '%')
-                    ->orWhere('address', 'like', '%' . $title . '%')
-                    ->orWhere('user_phone', 'like', '%' . $title . '%');
+                ->orWhere('contact_no_primary', 'like', '%' . $title . '%')
+                ->orWhere('contact_no_secondary', 'like', '%' . $title . '%')
+                ->orWhere('landline', 'like', '%' . $title . '%')
+                ->orWhere('address', 'like', '%' . $title . '%')
+                ->orWhere('user_phone', 'like', '%' . $title . '%');
         }
         if ($request->professional_id) {
-            $professional= $request->professional_id;
+            $professional = $request->professional_id;
             $allVendor = $allVendor->where('professional_id', '=', $professional);
         }
 
@@ -44,11 +44,16 @@ class VendorServices
     public function addVendorPost($request)
     {
 //        dd($request->all());
-        $extension = $request->attech_file->getClientOriginalExtension();
-        $fileName = time() . "-" . 'vendor.' . $extension;
-        ImageHelpers::uploadFile('/project-assets/files/', $request->file('attech_file'), $fileName);
+        if (!empty($request->attech_file)) {
+            $extension = $request->attech_file->getClientOriginalExtension();
+            $fileName = time() . "-" . 'vendor.' . $extension;
+            ImageHelpers::uploadFile('/project-assets/files/', $request->file('attech_file'), $fileName);
+            $attach_file = "/project-assets/files/" . $fileName;
+        } else {
+            $attach_file = null;
+        }
         Vendor::create([
-            'attech_file' => "/project-assets/files/" . $fileName,
+            'attech_file' => $attach_file,
             'is_active' => 1,
             "name" => $request->name,
             "contact_no_primary" => $request->contact_no_primary,

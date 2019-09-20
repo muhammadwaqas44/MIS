@@ -348,7 +348,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <button TYPE="submit" class="btn green-dark">Save</button>
-                                            <button class="btn btn-outline-info">Cancel</button>
+                                            <a href="{{route('admin.all-employment-check-list')}}">
+                                                <button type="button" class="btn btn-outline-info">Cancel</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </form>
@@ -462,7 +464,7 @@
 
     <script type="text/javascript">
         $(".form_datetime1").datepicker({
-            format: "dd/mm/yyyy",
+            format: "mm/dd/yyyy",
             showMeridian: false,
             autoclose: true,
             todayBtn: "linked"

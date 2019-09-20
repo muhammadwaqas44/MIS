@@ -129,6 +129,7 @@ class WinnerServices
 
     public function editWinnerPost($request, $winnerId)
     {
+//        dd($request->all());
         if (!empty($request->winning_date)) {
             $winning_date= Carbon::parse(str_replace('-', '', $request->winning_date))->format('Y-m-d');
         } else {
@@ -154,7 +155,7 @@ class WinnerServices
                 $winner->last_name = $request->last_name;
                 $winner->user_phone = $request->user_phone;
                 $winner->address = $request->address;
-                $winner->user_id = $request->user_id;
+                $winner->user_id = $user->id;
                 $winner->cnic = $request->cnic;
                 $winner->account = $request->account;
                 $winner->prize = $request->prize;
@@ -179,7 +180,6 @@ class WinnerServices
                 $winner->last_name = $request->last_name;
                 $winner->user_phone = $request->user_phone;
                 $winner->address = $request->address;
-                $winner->user_id = $request->user_id;
                 $winner->cnic = $request->cnic;
                 $winner->account = $request->account;
                 $winner->prize = $request->prize;
@@ -197,7 +197,6 @@ class WinnerServices
             $winner->last_name = $request->last_name;
             $winner->user_phone = $request->user_phone;
             $winner->address = $request->address;
-            $winner->user_id = $request->user_id;
             $winner->cnic = $request->cnic;
             $winner->account = $request->account;
             $winner->prize = $request->prize;

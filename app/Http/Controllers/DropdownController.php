@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\CallStatus;
+use App\Designation;
+use App\ExpCategory;
 use Illuminate\Http\Request;
 use DB;
 
@@ -25,17 +28,22 @@ class DropdownController extends Controller
 
     public function getCallStatusList(Request $request)
     {
-        $callStatuses = DB::table("call_statuses")
-            ->where("parent_id", $request->parent_id)
+        $callStatuses = CallStatus::where("parent_id", $request->parent_id)
             ->pluck("name", "id");
         return response()->json($callStatuses);
     }
 
     public function getDesignationList(Request $request)
     {
-        $designations = DB::table("designations")
-            ->where("department_id", $request->department_id)
+        $designations = Designation::where("department_id", $request->department_id)
             ->pluck("name", "id");
         return response()->json($designations);
+    }
+
+    public function getCategoryList(Request $request)
+    {
+        $categories= ExpCategory::where("exp_type_id", $request->exp_type_id)
+            ->pluck("name", "id");
+        return response()->json($categories);
     }
 }

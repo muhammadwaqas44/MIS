@@ -49,7 +49,7 @@ class EmpHistoryServices
     public function allSchedulesNOtAvailable($request)
     {
         $allSchedules = EmpHistory::with(['status'])->whereHas('status', function ($query) {
-            $query->where('module', '=', 'Call Status')->where('id', '!=', 3);
+            $query->where('parent_id', 2);
         })->orderBy('dateTime', 'asc')->where('is_active', 1)->whereNull('deleted_at');
 
         if ($request->search_title) {
@@ -177,12 +177,18 @@ class EmpHistoryServices
     {
 //        dd($request->all());
 
+
         $schedule = EmpHistory::find($scheduleId);
+        $jobApplication = JobApplication::find($schedule->job_id);
+        if ($jobApplication->is_active == 1) {
+            $jobApplication->is_active = 0;
+            $jobApplication->save();
+        }
         if ($schedule->is_active == 1) {
             $schedule->is_active = 0;
             $schedule->save();
         }
-        if ($schedule->is_active == 0) {
+        if ($schedule->is_active == 0 && $jobApplication->is_active == 0) {
 
             if ($request->dateTime == null) {
                 EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1, 'call_id' => $request->call_id, 'user_id' => auth()->user()->id]));
@@ -286,11 +292,16 @@ class EmpHistoryServices
 
 //        dd($request);
         $schedule = EmpHistory::find($scheduleId);
+        $jobApplication = JobApplication::find($schedule->job_id);
+        if ($jobApplication->is_active == 1) {
+            $jobApplication->is_active = 0;
+            $jobApplication->save();
+        }
         if ($schedule->is_active == 1) {
             $schedule->is_active = 0;
             $schedule->save();
         }
-        if ($schedule->is_active == 0) {
+        if ($schedule->is_active == 0 && $jobApplication->is_active == 0) {
             if ($request->dateTime == null) {
                 $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
                     'user_id' => auth()->user()->id,
@@ -382,11 +393,16 @@ class EmpHistoryServices
     public function interviewDataUpdate($request, $interviewId)
     {
         $schedule = EmpHistory::find($interviewId);
+        $jobApplication = JobApplication::find($schedule->job_id);
+        if ($jobApplication->is_active == 1) {
+            $jobApplication->is_active = 0;
+            $jobApplication->save();
+        }
         if ($schedule->is_active == 1) {
             $schedule->is_active = 0;
             $schedule->save();
         }
-        if ($schedule->is_active == 0) {
+        if ($schedule->is_active == 0 && $jobApplication->is_active == 0) {
             if ($request->dateTime == null) {
                 $scheduleData = EmpHistory::create(array_merge($request->except('_token'), ['is_active' => 1,
                     'user_id' => auth()->user()->id,

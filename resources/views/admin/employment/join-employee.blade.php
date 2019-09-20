@@ -19,7 +19,7 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-                    </div><br />
+                    </div><br/>
                 @endif
                 <div class="portlet-body">
                     <div class="table-toolbar">
@@ -36,7 +36,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
 
-                                                    <label class="control-label">First Name</label><span style="color:red;">*</span>
+                                                    <label class="control-label">First Name</label><span
+                                                            style="color:red;">*</span>
                                                     <input type="text" name="first_name" class="form-control"
                                                            value="{{$data['jobApplicant']->applicant->name}}"
                                                            placeholder="First Name" required
@@ -67,7 +68,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label class="control-label">Gender</label>
-                                                    <select class="form-control" name="gender" >
+                                                    <select class="form-control" name="gender">
                                                         <option value="">Select</option>
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
@@ -75,7 +76,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="control-label">Marital Status</label>
-                                                    <select class="form-control" name="marital_status" >
+                                                    <select class="form-control" name="marital_status">
                                                         <option value="">Select</option>
                                                         <option value="Single">Single</option>
                                                         <option value="Married">Married</option>
@@ -108,7 +109,7 @@
                                                 <div class="col-md-6">
 
                                                     <label class="control-label">Nationality Identity Type</label>
-                                                    <select class="form-control" name="n_identity_type" >
+                                                    <select class="form-control" name="n_identity_type">
                                                         <option value="">Select</option>
                                                         <option value="CNIC">CNIC</option>
                                                         <option value="Passport">Passport</option>
@@ -140,7 +141,8 @@
                                                 <div class="col-md-4">
                                                     <label class="control-label">Current Country</label>
 
-                                                    <select id="current_country" name="current_country" class="form-control">
+                                                    <select id="current_country" name="current_country"
+                                                            class="form-control">
                                                         <option value="">Select Country
                                                         </option>
                                                         @foreach($data['countries'] as  $country)
@@ -153,7 +155,8 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="control-label">Current State</label>
-                                                    <select name="current_state" id="current_state" class="form-control">
+                                                    <select name="current_state" id="current_state"
+                                                            class="form-control">
                                                         <option value="">Choose Country first</option>
                                                     </select>
                                                 </div>
@@ -176,7 +179,8 @@
                                                 <div class="col-md-4">
                                                     <label class="control-label">Permanent Country</label>
 
-                                                    <select id="permanent_country" name="permanent_country" class="form-control">
+                                                    <select id="permanent_country" name="permanent_country"
+                                                            class="form-control">
                                                         <option value="">Select Country
                                                         </option>
                                                         @foreach($data['countries'] as  $country)
@@ -189,23 +193,27 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="control-label">Permanent State</label>
-                                                    <select name="permanent_state" id="permanent_state" class="form-control">
+                                                    <select name="permanent_state" id="permanent_state"
+                                                            class="form-control">
                                                         <option value="">Choose Country first</option>
                                                     </select>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <label class="control-label">Permanent City</label>
-                                                    <select name="permanent_city" id="permanent_city" class="form-control">
+                                                    <select name="permanent_city" id="permanent_city"
+                                                            class="form-control">
                                                         <option value="">Choose State first</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Mobile Number</label><span style="color:red;">*</span>
+                                                    <label class="control-label">Mobile Number</label><span
+                                                            style="color:red;">*</span>
                                                     <input type="text" name="mobile_number" class="form-control"
-                                                           required value="{{$data['jobApplicant']->applicant->user_phone}}"
+                                                           required
+                                                           value="{{$data['jobApplicant']->applicant->user_phone}}"
                                                            placeholder="Mobile Number"/>
                                                 </div>
                                                 <div class="col-md-6">
@@ -223,7 +231,8 @@
                                                     />
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="control-label">Email</label><span style="color:red;">*</span>
+                                                    <label class="control-label">Email</label><span
+                                                            style="color:red;">*</span>
                                                     <input type="email" name="email" class="form-control" required
                                                            value="{{$data['jobApplicant']->applicant->email}}"
                                                            placeholder="Email"/>
@@ -264,7 +273,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_personal[]" multiple/>
+                                                    <input type="file" class="form-control" name="other_doc_personal[]"
+                                                           multiple/>
                                                 </div>
                                             </div>
                                         </div>
@@ -287,7 +297,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Other Documents</label>
-                                                    <input type="file" class="form-control" name="other_doc_officials[]" multiple/>
+                                                    <input type="file" class="form-control" name="other_doc_officials[]"
+                                                           multiple/>
                                                 </div>
                                             </div>
 
@@ -321,13 +332,24 @@
                                                            placeholder="Account Number"/>
                                                 </div>
                                             </div>
+                                            <br>
+                                            <label> Active / InActive</label>
+                                            <br>
+                                            <div class="bootstrap-switch "
+                                                 style="width: 100px;">
+                                                <div class="bootstrap-switch-container">
+                                                    <input type="checkbox" checked="" name="is_active" value="1"
+                                                           class="make-switch " data-size="normal">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <h4>Official Status</h4><br>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label>Department</label><span style="color:red;">*</span>
-                                                    <select class="form-control" name="department_id" id="department_id" required>
+                                                    <select class="form-control" name="department_id" id="department_id"
+                                                            required>
                                                         <option value="">Select</option>
                                                         @foreach($data['department'] as $department)
                                                             <option value="{{$department->id}}">{{$department->name}}</option>
@@ -336,10 +358,11 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label>Designation</label><span style="color:red;">*</span>
-                                                    <select class="form-control" name="designation_id" id="designation_id" required>
+                                                    <select class="form-control" name="designation_id"
+                                                            id="designation_id" required>
                                                         <option value="{{$data['jobApplicant']->applicant->designation->id}}">{{$data['jobApplicant']->applicant->designation->name}}</option>
                                                         {{--@foreach($data['designation'] as $designation)--}}
-                                                            {{--<option value="{{$designation->id}}">{{$designation->name}}</option>--}}
+                                                        {{--<option value="{{$designation->id}}">{{$designation->name}}</option>--}}
                                                         {{--@endforeach--}}
                                                     </select>
                                                 </div>
@@ -367,34 +390,40 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                {{--<div class="col-md-6" >--}}
+                                                {{--<label>Review</label>--}}
+                                                {{--<select class="form-control" name="review_id">--}}
+                                                {{--<option value="">Select</option>--}}
+                                                {{--@foreach($data['employee_reviews'] as $employee_review)--}}
+                                                {{--<option value="{{$employee_review->id}}">{{$employee_review->name}}</option>--}}
+                                                {{--@endforeach--}}
+                                                {{--</select>--}}
+                                                {{--</div>--}}
+                                                <div class="col-md-6">
+                                                    <label>Probation Due On</label>
+                                                    <div class="input-append date form_datetime1">
+                                                        <input size="16" type="text" autocomplete="off"
+                                                               name="probation_due_on" placeholder="Probation Due On"
+                                                               class="form-control">
+                                                        <span class="add-on"><i
+                                                                    class="icon-remove"></i></span>
+                                                        <span class="add-on"><i
+                                                                    class="icon-th"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Commitment</label>
+                                                    <textarea class="form-control" rows="1" name="remarks"
+                                                              placeholder="Commitment"></textarea>
+                                                </div>
+                                            </div>
                                             {{--<div class="row">--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<label>Review</label>--}}
-                                                    {{--<select class="form-control" name="review_id" required>--}}
-                                                        {{--<option value="">Select</option>--}}
-                                                        {{--@foreach($data['employee_reviews'] as $employee_review)--}}
-                                                            {{--<option value="{{$employee_review->id}}">{{$employee_review->name}}</option>--}}
-                                                        {{--@endforeach--}}
-                                                    {{--</select>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<label>Probation Due On</label>--}}
-                                                    {{--<div class="input-append date form_datetime1">--}}
-                                                        {{--<input size="16" type="text" autocomplete="off"--}}
-                                                               {{--name="probation_due_on" placeholder="Probation Due On"--}}
-                                                               {{--class="form-control">--}}
-                                                        {{--<span class="add-on"><i--}}
-                                                                    {{--class="icon-remove"></i></span>--}}
-                                                        {{--<span class="add-on"><i--}}
-                                                                    {{--class="icon-th"></i></span>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
+                                            {{--<div class="col-md-12">--}}
+                                            {{--<label>Commitment</label>--}}
+                                            {{--<textarea class="form-control" rows="2" name="remarks"--}}
+                                            {{--placeholder="Commitment"></textarea>--}}
                                             {{--</div>--}}
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-md-12">--}}
-                                                    {{--<label>Commitment</label>--}}
-                                                    {{--<textarea class="form-control" rows="2" name="remarks"></textarea>--}}
-                                                {{--</div>--}}
                                             {{--</div>--}}
                                         </div>
                                     </div>
@@ -402,7 +431,9 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <button TYPE="submit" class="btn green-dark">Save</button>
-                                            <button class="btn btn-outline-info">Cancel</button>
+                                            <a href="{{ URL::previous() }}">
+                                                <button type="button" class="btn btn-outline-info">Cancel</button>
+                                            </a>
                                         </div>
                                     </div>
                                 </form>
@@ -430,16 +461,16 @@
                             @foreach( $data['empHis']->where('job_id',$data['jobApplicant']->applicant->id) as $updatedSchedule)
                                 <tr class="odd gradeX">
                                     <td class="center"> {{$updatedSchedule->id}} </td>
-                                    <td> {{$updatedSchedule->applicant->name}}</td>
+                                    <td> @if(isset($updatedSchedule->applicant)){{$updatedSchedule->applicant->name}} @endif</td>
                                     @if(isset($updatedSchedule->status->name))
                                         <td class="center">{{$updatedSchedule->status->name}}</td>
                                     @else
                                         <td class="center">No Status</td>
                                     @endif
-                                    <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
+                                    <td class="center">@if(isset($updatedSchedule->applicant->designation)){{$updatedSchedule->applicant->designation->name}} @endif</td>
                                     <td class="center">{{$updatedSchedule->dateTime}}</td>
                                     <td class="center">{{$updatedSchedule->remarks}}</td>
-                                    <td class="center">{{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} </td>
+                                    <td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>
                                     <td class="center">{{$updatedSchedule->created_at}}</td>
 
                                 </tr>

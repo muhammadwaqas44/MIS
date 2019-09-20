@@ -16,12 +16,14 @@ use App\EmployeeOfficialDocument;
 use App\EmployeePersonalDoc;
 use App\EmployeePersonalDocument;
 use App\EmployeeReview;
+use App\Exports\EmployeesExport;
 use App\JobApplication;
 use App\LocationOffice;
 use App\Services\JoinEmployeeServices;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JoinEmployeeController extends Controller
 {
@@ -134,7 +136,7 @@ class JoinEmployeeController extends Controller
         $data['location'] = LocationOffice::orderBy('name')->where('id', '!=', 1)->get();
         $data['designation'] = Designation::orderBy('name')->where('id', '!=', 1)->get();
         $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
-        $employee = Employee::find($employeeId);
+        $employee = Employee::withoutGlobalScopes()->find($employeeId);
         return view('admin.employment.update-employee', compact('employee', 'data'));
     }
 
@@ -143,7 +145,7 @@ class JoinEmployeeController extends Controller
         $data['callStatus'] = CallStatus::where('module', '=', 'EmploymentStatus')->get();
         $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
 //        dd( $data['empHis']);
-        $employee = Employee::find($employeeId);
+        $employee = Employee::withoutGlobalScopes()->find($employeeId);
         return view('admin.employment.status-add', compact('employee', 'data'));
     }
 
@@ -151,27 +153,29 @@ class JoinEmployeeController extends Controller
     {
         $data['callStatus'] = CallStatus::where('module', '=', 'Review')->get();
         $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
-        $employee = Employee::find($employeeId);
+        $employee = Employee::withoutGlobalScopes()->find($employeeId);
         return view('admin.employment.upcoming-review.add-status-review', compact('employee', 'data'));
     }
 
     public function addStatusEmployee(Request $request, JoinEmployeeServices $employeeServices)
     {
         $employeeServices->addStatusEmployee($request);
-        return redirect()->route('admin.all-employees');
+        return redirect()->back();
+//            ->route('admin.all-employees');
     }
 
-    public function addStatusEmployeeReview(Request $request, JoinEmployeeServices $employeeServices)
+    public function addStatusEmployeeReview(Request $request, $employeeId, JoinEmployeeServices $employeeServices)
     {
-        $employeeServices->addStatusEmployee($request);
-        return redirect()->route('admin.all-upcoming-reviews-employment');
+        $employeeServices->addStatusEmployeeReview($request, $employeeId);
+        return redirect()->back();
+//            ->route('admin.all-upcoming-reviews-employment');
     }
 
     public function nextReviewEmployeeView($employeeId)
     {
         $data['callStatus'] = CallStatus::where('module', '=', 'NextReview')->get();
         $data['empHis'] = EmpHistory::orderBy('id', 'desc')->get();
-        $employee = Employee::find($employeeId);
+        $employee = Employee::withoutGlobalScopes()->find($employeeId);
         return view('admin.employment.upcoming-review.next-review-employee', compact('employee', 'data'));
 
     }
@@ -179,13 +183,15 @@ class JoinEmployeeController extends Controller
     public function nextReviewEmployee(Request $request, JoinEmployeeServices $employeeServices)
     {
         $employeeServices->nextReviewEmployee($request);
-        return redirect()->route('admin.all-employees');
+        return redirect()->back();
+//            ->route('admin.all-employees');
     }
 
     public function nextReviewUpcomingEmployee(Request $request, JoinEmployeeServices $employeeServices)
     {
         $employeeServices->nextReviewEmployee($request);
-        return redirect()->route('admin.all-upcoming-reviews-employment');
+        return redirect()->back();
+//            ->route('admin.all-upcoming-reviews-employment');
     }
 
     public function updateEmployee(Request $request, $employeeId, JoinEmployeeServices $employeeServices)
@@ -243,7 +249,6 @@ class JoinEmployeeController extends Controller
             return 'File Does not Exist';
         }
     }
-
 
     public function downloadOtherDocPersonalEmployee($employeeId)
     {
@@ -306,4 +311,28 @@ class JoinEmployeeController extends Controller
         return view('admin.employment.upcoming-review.all-upcoming-reviews', compact('data'));
     }
 
+    public function allActiveInActiveEmployees(Request $request, JoinEmployeeServices $employeeServices)
+    {
+        $data['allEmployees'] = $employeeServices->allActiveInActiveEmployees($request);
+        return view('admin.employment.all-employee-active-inActive', compact('data'));
+    }
+
+    public function changeEmployeeStatus($employeeId)
+    {
+//        dd($employeeId);
+        $employee = Employee::find($employeeId);
+        if ($employee->is_active == 0) {
+            $employee->is_active = 1;
+            $employee->save();
+        } else {
+            $employee->is_active = 0;
+            $employee->save();
+        }
+    }
+
+
+    public function exportEmployees()
+    {
+        return Excel::download(new EmployeesExport, 'All-Employees.xlsx');
+    }
 }

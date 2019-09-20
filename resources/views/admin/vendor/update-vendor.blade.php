@@ -10,7 +10,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">Add Vendor</span>
+                        <span class="caption-subject bold uppercase"> Update Vendor </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -26,7 +26,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
 
-                                                    <label class="control-label">Name</label><span
+                                                    <label class="control-label"> Name </label><span
                                                             style="color:red;">*</span>
                                                     <input type="text" name="name" class="form-control" required
                                                            placeholder="Name" value="{{$vendor->name}}"
@@ -35,25 +35,25 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label">Contact Number Primary</label>
+                                                    <label class="control-label"> Contact Number Primary </label>
                                                     <input type="text" name="contact_no_primary" class="form-control"
                                                            placeholder="Contact Number Primary"
+                                                           value="{{$vendor->contact_no_primary}}"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label class="control-label"> Contact Number Secondary </label>
+                                                    <input type="text" name="contact_no_secondary" class="form-control"
+                                                           placeholder="Contact Number Secondary"
                                                            value="{{$vendor->contact_no_secondary}}"
                                                     />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label">Contact Number Secondary</label>
-                                                    <input type="text" name="contact_no_secondary" class="form-control"
-                                                           placeholder="Contact Number Secondary"
-                                                           value="{{$vendor->name}}"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label class="control-label">Land Line</label>
+                                                    <label class="control-label"> Land Line </label>
                                                     <input type="text" name="landline" class="form-control"
                                                            placeholder="Land Line" value="{{$vendor->landline}}"
                                                     />
@@ -64,7 +64,7 @@
                                             <br><br><br>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label"> Address</label>
+                                                    <label class="control-label"> Address </label>
                                                     <input type="text" name="address" class="form-control"
                                                            placeholder="Address" value="{{$vendor->address}}"
                                                     />
@@ -72,7 +72,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label"> City</label>
+                                                    <label class="control-label"> City </label>
                                                     <select name="city_id" class="form-control">
                                                         <option value="{{$vendor->city_id}}">{{$vendor->city->name}}</option>
                                                         @foreach( $data['city']  as $city)
@@ -84,7 +84,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label"> Professional</label>
+                                                    <label class="control-label"> Professional </label>
                                                     <select name="professional_id" class="form-control">
                                                         <option value="{{$vendor->professional_id}}">{{$vendor->professional->name}}</option>
                                                         @foreach( $data['professional']  as $professional)
@@ -95,7 +95,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <label class="control-label"> Attach File</label>
+                                                    <label class="control-label"> Attach File </label>
                                                     @if($vendor->attech_file)<span
                                                             id="show"
                                                             style="color: blue; display:none;">{{$vendor->attech_file}}</span>@endif
@@ -130,7 +130,6 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

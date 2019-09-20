@@ -13,7 +13,8 @@ class TawkToUsersExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        $allUsers = collect(User::withoutGlobalScopes()->where('role_id', '=', 3)->get());
+        $roleId = [3, 5];
+        $allUsers = collect(User::withoutGlobalScopes()->whereIn('role_id', $roleId)->whereNull('deleted_at')->get());
         $valueArray = [];
         foreach ($allUsers as $user) {
             $valueArray[] = [

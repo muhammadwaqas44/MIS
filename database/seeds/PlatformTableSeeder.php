@@ -11,7 +11,7 @@ class PlatformTableSeeder extends Seeder
      */
     public function run()
     {
-        $types= ['Youtube','Facebook','Instagram','Instagram IGTV','Instagram Stories','Instagram Feeds','Twitter','LinkedIn','Pinterest'
+        $types= ['None','Youtube','Facebook','Instagram','Instagram IGTV','Instagram Stories','Instagram Feeds','Twitter','LinkedIn','Pinterest'
         ,'Google Business','Dankash','Blog','Quora','Anchor'];
 
         foreach ($types as $type) {

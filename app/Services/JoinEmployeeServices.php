@@ -53,7 +53,7 @@ class JoinEmployeeServices
 
     public function postJoinEmployee($request)
     {
-//        dd($request->all());
+        dd($request->all());
         if (!empty($request->profile_image)) {
             $fileName = time() . "-" . 'profile_image' . ".png";
             ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
@@ -153,6 +153,11 @@ class JoinEmployeeServices
         } else {
             $remarks_app = 'Added Employee in Employment Module By HR';
         }
+        if (!empty($request->is_active)) {
+            $is_active = 1;
+        } else {
+            $is_active = 0;
+        }
         if (!empty($request->empHis_id)) {
             $empHis = EmpHistory::find($request->empHis_id);
             if ($empHis->is_active == 1) {
@@ -214,7 +219,7 @@ class JoinEmployeeServices
             'review_id' => $review_id,
             'created_at' => Carbon::now()->timezone(session('timezone')),
             'user_id' => auth()->user()->id,
-            "is_active" => 1,
+            "is_active" => $is_active,
         ]);
 
         if ($employee) {
@@ -444,7 +449,11 @@ class JoinEmployeeServices
         } else {
             $remarks_app = 'Added Employee in Employment Module By HR';
         }
-
+        if (!empty($request->is_active)) {
+            $is_active = 1;
+        } else {
+            $is_active = 0;
+        }
         $record = JobApplication::withoutGlobalScopes()->where('email', '=', $request->email)->first();
         if ($record) {
             Session::flash('message', 'Record Already Exist Check all Applicant with email!');
@@ -540,7 +549,7 @@ class JoinEmployeeServices
                         'review_id' => $review_id,
                         'created_at' => Carbon::now()->timezone(session('timezone')),
                         'user_id' => auth()->user()->id,
-                        "is_active" => 1,
+                        "is_active" => $is_active,
                     ]);
                     if ($employee) {
                         if (!empty($request->resume)) {
@@ -658,7 +667,7 @@ class JoinEmployeeServices
     public function updateEmployee($request, $employeeId)
     {
 //        dd($request->all());
-        $employee = Employee::find($employeeId);
+        $employee = Employee::withoutGlobalScopes()->find($employeeId);
         if (!empty($request->profile_image)) {
             $fileName = time() . "-" . 'profile_image' . ".png";
             ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
@@ -757,6 +766,11 @@ class JoinEmployeeServices
             $current_city = $request->current_city;
         } else {
             $current_city = 48357;
+        }
+        if (!empty($request->is_active)) {
+            $is_active = 1;
+        } else {
+            $is_active = 0;
         }
 
         ///// FOR UPDATE STATUSES IN ALL APPLICANT MODULE
@@ -1639,7 +1653,7 @@ class JoinEmployeeServices
             'review_id' => $review_id,
             'created_at' => Carbon::now()->timezone(session('timezone')),
             'user_id' => auth()->user()->id,
-            "is_active" => 1,
+            "is_active" => $is_active,
         ]);
 
         if ($employee) {
@@ -1753,7 +1767,7 @@ class JoinEmployeeServices
 
     public function allUpcomingReviews($request)
     {
-        $allUpcomingReviews = Employee::with(['applicant.history'=> function ($query) {
+        $allUpcomingReviews = Employee::with(['applicant.history' => function ($query) {
             $query->orderBy('dateTime', 'asc');
         }])->whereNull('deleted_at');
 //dd($allUpcomingReviews);
@@ -1780,9 +1794,41 @@ class JoinEmployeeServices
         return $data;
     }
 
+    public function allActiveInActiveEmployees($request)
+    {
+        $allEmployees = Employee::withoutGlobalScopes()->orderBy('id', 'desc');
+//dd($allUpcomingReviews);
+        if ($request->search_title) {
+            $title = $request->search_title;
+            $allEmployees = $allEmployees->where('first_name', 'like', '%' . $title . '%')
+                ->orWhere('last_name', 'like', '%' . $title . '%')
+                ->orWhere('father_name', 'like', '%' . $title . '%')
+                ->orWhere('email', 'like', '%' . $title . '%')
+                ->orWhere('n_identity_no', 'like', '%' . $title . '%')
+                ->orWhere('mobile_number', 'like', '%' . $title . '%')
+                ->orWhere('secondary_number', 'like', '%' . $title . '%')
+                ->orWhere('skype_id', 'like', '%' . $title . '%');
+
+        }
+
+        if ($request->date1 && $request->date2) {
+            $start = Carbon::parse(str_replace('-', '', $request->date1));
+            $end = Carbon::parse(str_replace('-', '', $request->date2));
+            $allEmployees = $allEmployees->whereBetween('created_at', [$start, $end]);
+
+        }
+        $data['allEmployees'] = $allEmployees->paginate($this->allEmployeesPagination);
+        return $data;
+    }
+
     public function addStatusEmployee($request)
     {
 //        dd($request->all());
+        $employee = Employee::withoutGlobalScopes()->find($request->emp_id);
+        if ($employee->is_active == 1) {
+            $employee->is_active = 0;
+            $employee->save();
+        }
         if (!empty($request->date_of_birth)) {
             $date_of_birth = Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d');
         } else {
@@ -1806,13 +1852,27 @@ class JoinEmployeeServices
         }
     }
 
-    public function addStatusEmployeeReview($request)
+    public function addStatusEmployeeReview($request, $employeeId)
     {
-//        dd($request->all());
+//        dd($request->all(), $employeeId);
+//
         if (!empty($request->date_of_birth)) {
             $date_of_birth = Carbon::parse(str_replace('-', '', $request->date_of_birth))->format('Y-m-d');
         } else {
             $date_of_birth = null;
+        }
+
+        $employee = Employee::withoutGlobalScopes()->find($employeeId);
+
+        if ($employee) {
+            if ($request->remarks != null) {
+                $remarks = $request->remarks;
+            } else {
+                $remarks = $employee->remarks;
+            }
+            $employee->probation_due_on = $date_of_birth;
+            $employee->remarks = $remarks;
+            $employee->save();
         }
         $empHis = EmpHistory::where([['job_id', '=', $request->job_id], ['is_active', '=', 1]])->first();
         if ($empHis->is_active == 1) {

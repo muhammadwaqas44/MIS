@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
          $this->call(PlatformTableSeeder::class);
          $this->call(CStatusesTableSeeder::class);
          $this->call(InventoryTableSeeder::class);
+         $this->call(ExpTypeSeeder::class);
+         $this->call(ExpCategorySeeder::class);
 
     }
 }
