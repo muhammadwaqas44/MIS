@@ -1,21 +1,20 @@
 @extends('admin-layout.app')
-@section('title', "Create Expense")
+@section('title', "SEO-YouTube")
 @section('content')
 
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li>
-                Expenses
+                CMT
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                Produce Plan
+                SEO
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                Create YouTube Content
+                YouTube
             </li>
-
         </ul>
     </div>
     <div class="row" xmlns="http://www.w3.org/1999/html">
@@ -25,7 +24,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase">For Youtube</span>
+                        <span class="caption-subject bold uppercase">Youtube</span>
                     </div>
                 </div>
                 @if ($errors->any())
@@ -167,7 +166,7 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label>Media</label>
+                                                <label>Download Files</label>
 
                                                 <a href="#" data-toggle="modal"
                                                    data-target="#myModalForcat_{{$content->id}}">
@@ -188,17 +187,41 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                    <label>Status</label>
+                                                    <select class="form-control" name="c_status_id" required>
+                                                        @if(isset($content->c_history_seo)) @foreach($content->c_history_seo->where('platform_used_id',2) as $status)
+                                                            <option value="{{$status->c_status_id}}">{{$status->c_status->name}}</option>
+                                                        @endforeach
+                                                        @else
+                                                            <option value="">Select status</option>
+                                                        @endif
+
+                                                        @foreach( $data['statuses'] as $licens)
+                                                            <option value="{{$licens->id}}">{{$licens->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12">
                                                     <label>Remarks</label>
-                                                    @if(isset($content->c_history_seo)) @foreach($content->c_history_seo->where('platform_used_id',2) as $status)
-                                                        <textarea type="text" rows="3" name="remarks"
-                                                                  placeholder="Remarks"
-                                                                  class="form-control">{{$status->remarks}}</textarea>
-                                                    @endforeach
+                                                    @if($content->c_history_seo->count() >0)
+                                                        @if(isset($content->c_history_seo))
+
+                                                            @foreach($content->c_history_seo->where('platform_used_id',2) as $status)
+                                                                <textarea type="text" rows="3" name="remarks"
+                                                                          placeholder="Remarks"
+                                                                          class="form-control">{{$status->remarks}}</textarea>
+                                                            @endforeach
+                                                        @else
+                                                            <textarea type="text" rows="3" name="remarks"
+                                                                      placeholder="Remarks"
+                                                                      class="form-control"></textarea>
+                                                        @endif
                                                     @else
                                                         <textarea type="text" rows="3" name="remarks"
                                                                   placeholder="Remarks"
                                                                   class="form-control"></textarea>
                                                     @endif
+
                                                 </div>
                                             </div>
                                         </div>
@@ -210,61 +233,88 @@
                                         <button type="submit"
                                                 class="btn green">Save
                                         </button>
-                                        <a href="{{route('admin.all-seo')}}">
-                                            <button type="button"
-                                                    class="btn red">
-                                                Cancel
-                                            </button>
+                                        <a href="{{ URL::previous() }}">
+                                            <button type="button" class="btn red">Cancel</button>
                                         </a>
 
                                     </div>
                                 </form>
-                                <hr>
-                                <form id="form"
-                                      action="{{route('admin.post-youtube-status-seo')}}"
-                                      method="post"
-                                      enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" name="plan_id" value="{{$content->id}}">
+                                {{--<form id="form"--}}
+                                {{--action="{{route('admin.post-youtube-status-seo')}}"--}}
+                                {{--method="post"--}}
+                                {{--enctype="multipart/form-data">--}}
+                                {{--@csrf--}}
+                                {{--<input type="hidden" name="plan_id" value="{{$content->id}}">--}}
 
 
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>Status</label>
-                                                <select class="form-control" name="c_status_id" required>
-                                                    <option value="">Select status</option>
-                                                    @foreach( $data['statuses'] as $licens)
-                                                        <option value="{{$licens->id}}">{{$licens->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label>Remarks</label>
-                                                <textarea type="text" rows="3" name="remarks"
-                                                          placeholder="Remarks"
-                                                          class="form-control"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+                                {{--<div class="form-group">--}}
+                                {{--<div class="row">--}}
+                                {{--<div class="col-md-12">--}}
+                                {{--<label>Status</label>--}}
+                                {{--<select class="form-control" name="c_status_id" required>--}}
+                                {{--<option value="">Select status</option>--}}
+                                {{--@foreach( $data['statuses'] as $licens)--}}
+                                {{--<option value="{{$licens->id}}">{{$licens->name}}</option>--}}
+                                {{--@endforeach--}}
+                                {{--</select>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-md-12">--}}
+                                {{--<label>Remarks</label>--}}
+                                {{--<textarea type="text" rows="3" name="remarks"--}}
+                                {{--placeholder="Remarks"--}}
+                                {{--class="form-control"></textarea>--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
 
-                                    <div class="margiv-top-10">
+                                {{--<div class="margiv-top-10">--}}
 
-                                        <button type="submit"
-                                                class="btn green">Save
-                                        </button>
-                                        <a href="{{route('admin.all-seo')}}">
-                                            <button type="button"
-                                                    class="btn red">
-                                                Cancel
-                                            </button>
-                                        </a>
+                                {{--<button type="submit"--}}
+                                {{--class="btn green">Save--}}
+                                {{--</button>--}}
+                                {{--<a href="{{route('admin.all-seo')}}">--}}
+                                {{--<button type="button"--}}
+                                {{--class="btn red">--}}
+                                {{--Cancel--}}
+                                {{--</button>--}}
+                                {{--</a>--}}
 
-                                    </div>
-                                </form>
+                                {{--</div>--}}
+                                {{--</form>--}}
                             </div>
                         </div>
 
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column"
+                               id="sample_1">
+                            <thead>
+                            <tr>
+                                <th> Id</th>
+                                <th> Status</th>
+                                {{--<th> Platform</th>--}}
+                                <th> Remarks</th>
+                                <th> Created By</th>
+                                <th> Created At</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach( $data['history'] as $his)
+                                <tr class="odd gradeX">
+                                    <td class="center"> {{$his->id}} </td>
+                                    <td class="center">
+                                        {{$his->c_status->name}}</td>
+                                    {{--<td>@if(isset($his->content->category)){{$his->content->category->name}}@endif</td>--}}
+
+                                    <td class="center">
+                                        {{$his->remarks}} </td>
+                                    <td class="center">{{$his->createdByName->first_name}} {{$his->createdByName->last_name}}  </td>
+                                    <td class="center">{{$his->created_at}} </td>
+
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -291,7 +341,7 @@
                                         @foreach($content->mediaYoutube as $media)
                                             <tr>
 
-                                                <td class="text-center">
+                                                <td class="text-left">
                                                     <a target="_blank"
                                                        href="{{route('admin.download-source-file',$media->id)}}">
                                                         <button class="btn">{{$media->media}}</button>

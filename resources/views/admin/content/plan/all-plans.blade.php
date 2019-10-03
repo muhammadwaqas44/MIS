@@ -59,7 +59,7 @@
                                        class="form-control input-sm input-small input-inline"
                                        @if(!empty(app('request')->input('search_title'))) value="{{app('request')->input('search_title')}}" @endif>
 
-                                <select name="professional_id"
+                                <select name="category_id"
                                         class="form-control input-sm input-small input-inline">
                                     <option value="">Select Category</option>
                                     @foreach( $data['category'] as  $professional)
@@ -68,7 +68,15 @@
                                         </option>
                                     @endforeach
                                 </select>
-
+                                <select name="status_id"
+                                        class="form-control input-sm input-small input-inline">
+                                    <option value="">Select Status</option>
+                                    @foreach( $data['statuses'] as  $professional)
+                                        <option value="{{$professional->id}}">
+                                            {{$professional->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 <input type="submit" value="Search" class="btn btn-sm green">
                             </form>
 
@@ -85,12 +93,12 @@
                                 <th> Status</th>
                                 <th> Category</th>
                                 <th> Production Schedule</th>
-                                <th> Production BY</th>
+                                <th> Production Assign To</th>
                                 <th> Processing Schedule</th>
-                                <th> Processing BY</th>
+                                <th> Processing Assign To</th>
                                 <th> Publishing Schedule</th>
-                                <th> Publishing BY</th>
-                                <th> PlatForms</th>
+                                <th> Publishing Assign To</th>
+                                {{--<th> PlatForms</th>--}}
                                 <th> Remarks</th>
                                 <th> Created By</th>
                                 <th> Created At</th>
@@ -101,7 +109,10 @@
                             @foreach($data['plans'] ['plans'] as $plan)
                                 <tr class="odd gradeX">
                                     <td class="center"> {{$plan->content->id}} </td>
-                                    <td> {{$plan->content->topic}}</td>
+                                    <td>
+                                        <a href="{{route('admin.edit-plan',$plan->content->id)}}" style="color: black">
+                                            {{$plan->content->topic}}</a>
+                                    </td>
                                     <td> {{$plan->c_status->name}}</td>
                                     <td>@if(isset($plan->content->category)){{$plan->content->category->name}}@endif</td>
                                     <td class="center">{{$plan->content->produce_on}}</td>
@@ -110,11 +121,11 @@
                                     <td class="center">@if(isset($plan->content->processBy)){{$plan->content->processBy->first_name}} {{$plan->content->processBy->last_name}} @endif</td>
                                     <td class="center">{{$plan->content->publish_on}}</td>
                                     <td class="center">@if(isset($plan->content->publishBy)){{$plan->content->publishBy->first_name}} {{$plan->content->publishBy->last_name}} @endif</td>
-                                    <td class="center">
-                                        @if($plan->content->c_platformsUsed->count() != 0) @foreach($plan->content->c_platformsUsed as $item){{$item->c_platforms->name}}
-                                        <br>@endforeach @endif
-                                    </td>
-                                    <td class="center">{{$plan->remarks}} </td>
+                                    {{--<td class="center">--}}
+                                        {{--@if($plan->content->c_platformsUsed->count() != 0) @foreach($plan->content->c_platformsUsed->take(2) as $item){{$item->c_platforms->name}}--}}
+                                        {{--<br>@endforeach @endif--}}
+                                    {{--</td>--}}
+                                    <td class="center" title="{{$plan->remarks}}">{{ str_limit($plan->remarks, $limit = 60, $end = '...') }}</td>
                                     <td class="center">@if(isset($plan->createdByName)){{$plan->createdByName->first_name}} {{$plan->createdByName->last_name}} @endif </td>
                                     <td class="center">{{$plan->created_at}} </td>
 
@@ -128,12 +139,12 @@
 
                                                 <li>
                                                     <a href="{{route('admin.edit-plan',$plan->content->id)}}">
-                                                        <i class="icon-user"></i> Edit Plan </a>
+                                                        <i class="icon-user"></i> View </a>
                                                 </li>
-                                                <li>
-                                                    <a href="{{route('admin.produce-plan',$plan->content->id)}}">
-                                                        <i class="icon-user"></i> Upload Content </a>
-                                                </li>
+                                                {{--<li>--}}
+                                                {{--<a href="{{route('admin.produce-plan',$plan->content->id)}}">--}}
+                                                {{--<i class="icon-user"></i> Upload Content </a>--}}
+                                                {{--</li>--}}
                                             </ul>
                                         </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\CHistory;
 use App\CMedia;
 use App\Content;
 use App\ContentType;
@@ -19,12 +20,18 @@ class ContentController extends Controller
 {
     public function addIdea()
     {
-        return view('admin.content.idea.add');
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $data['platforms'] = CPlatform::where('id', '!=', 1)->get();
+        return view('admin.content.idea.add', compact('data'));
     }
 
     public function allIdeas(Request $request, ContentServices $contentServices)
     {
+
         $data['allIdeas'] = $contentServices->allIdeas($request);
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $module = ['addIdea', 'viewIdea'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->where('id', '!=', 3)->get();
         return view('admin.content.idea.list', compact('data'));
     }
 
@@ -38,8 +45,12 @@ class ContentController extends Controller
     public function editIdea($ideaId)
     {
         $stId = [2, 3];
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $data['platforms'] = CPlatform::where('id', '!=', 1)->get();
         $idea = Content::find($ideaId);
         $data['statuses'] = CStatus::withoutGlobalScopes()->whereIn('id', $stId)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $ideaId]])->get();
+
 
         return view('admin.content.idea.view', compact('idea', 'data'));
     }
@@ -47,13 +58,15 @@ class ContentController extends Controller
     public function updateIdea(Request $request, $ideaId, ContentServices $contentServices)
     {
         $contentServices->updateIdea($request, $ideaId);
-        return redirect()->back();
+        return redirect()->route('admin.all-ideas');
     }
 
     public function allPlans(Request $request, ContentServices $contentServices)
     {
         $data['plans'] = $contentServices->allPlans($request);
         $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $module = ['viewIdea', 'addPlan', 'viewPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->where('id', '!=', 2)->get();
         $data['platforms'] = CPlatform::all();
         return view('admin.content.plan.all-plans', compact('data'));
     }
@@ -69,10 +82,14 @@ class ContentController extends Controller
 
     public function editPlan($planId)
     {
+        $stId = [5, 6];
         $plan = Content::find($planId);
         $data['users'] = Employee::all();
         $data['category'] = ContentType::where('id', '!=', 1)->get();
         $data['platforms'] = CPlatform::where('id', '!=', 1)->get();
+        $data['statuses'] = CStatus::withoutGlobalScopes()->whereIn('id', $stId)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $planId]])->get();
+
         return view('admin.content.plan.edit-plan', compact('data', 'plan'));
     }
 
@@ -104,7 +121,7 @@ class ContentController extends Controller
     public function editPlanPost(Request $request, $planId, ContentServices $contentServices)
     {
         $contentServices->editPlanPost($request, $planId);
-        return redirect()->back();
+        return redirect()->route('admin.all-plans');
     }
 
     public function producePlanPost(Request $request, $planId, ContentServices $contentServices)
@@ -119,19 +136,15 @@ class ContentController extends Controller
         return redirect()->back();
     }
 
-//    public function planHistory(Request $request, $hisId, ContentServices $contentServices)
-//    {
-//        $contentServices->planHistory($request, $hisId);
-//        return redirect()->route('admin.all-plans');
-//    }
-
     public function allContentGenerationView($planId)
     {
         $plan = Content::find($planId);
         $data['users'] = Employee::all();
         $data['youtube'] = CYoutube::all();
         $data['category'] = ContentType::where('id', '!=', 1)->get();
-        $data['statuses'] = CStatus::where('id', '=', 9)->get();
+        $module = ['updatePlat', 'rectificationPlat'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $planId]])->get();
         return view('admin.content.process.view', compact('data', 'plan'));
     }
 
@@ -139,7 +152,24 @@ class ContentController extends Controller
     {
         $data['category'] = ContentType::where('id', '!=', 1)->get();
         $data['allContentGeneration'] = $contentServices->allContentGeneration($request);
+        $module = ['processPlan', 'updatePlat', 'rectificationPlat', 'reviewRectificationPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->where([['id', '!=', 8], ['id', '!=', 10]])->get();
         return view('admin.content.process.list', compact('data'));
+    }
+
+    public function editProcessPost(Request $request, $planId, ContentServices $contentServices)
+    {
+        $contentServices->viewContentPost($request, $planId);
+        return redirect()->route('admin.all-content-generation');
+    }
+
+    public function allSEOList(Request $request, ContentServices $contentServices)
+    {
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $data['allContentGeneration'] = $contentServices->allContentGeneration($request);
+        $module = ['processPlan', 'updatePlat', 'rectificationPlat', 'reviewRectificationPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->where([['id', '!=', 8], ['id', '!=', 10]])->get();
+        return view('admin.content.seo.list', compact('data'));
     }
 
     public function seoView($planId)
@@ -148,8 +178,25 @@ class ContentController extends Controller
         $data['users'] = Employee::all();
         $data['youtube'] = CYoutube::all();
         $data['category'] = ContentType::where('id', '!=', 1)->get();
-        $data['statuses'] = CStatus::where('id', '=', 9)->get();
+        $module = ['updatePlat', 'rectificationPlat'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $planId]])->get();
         return view('admin.content.seo.view', compact('data', 'plan'));
+    }
+
+    public function editSeoPost(Request $request, $planId, ContentServices $contentServices)
+    {
+        $contentServices->viewContentPost($request, $planId);
+        return redirect()->route('admin.all-seo');
+    }
+
+    public function allReview(Request $request, ContentServices $contentServices)
+    {
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $data['allReview'] = $contentServices->allReview($request);
+        $module = ['updatePlat', 'rectificationPlat'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->where([['id', '!=', 7], ['id', '!=', 9]])->get();
+        return view('admin.content.review.list', compact('data'));
     }
 
     public function allReviewView($planId)
@@ -158,22 +205,81 @@ class ContentController extends Controller
         $data['users'] = Employee::all();
         $data['youtube'] = CYoutube::all();
         $data['category'] = ContentType::where('id', '!=', 1)->get();
-        $data['statuses'] = CStatus::where('id', '=', 10)->get();
+        $module = ['reviewRectificationPlan', 'reviewPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $planId]])->get();
         return view('admin.content.review.view', compact('data', 'plan'));
     }
 
-    public function allSEOList(Request $request, ContentServices $contentServices)
+    public function editReviewPost(Request $request, $planId, ContentServices $contentServices)
     {
-        $data['category'] = ContentType::where('id', '!=', 1)->get();
-        $data['allContentGeneration'] = $contentServices->allContentGeneration($request);
-        return view('admin.content.seo.list', compact('data'));
+//        dd($request->all());
+        $contentServices->viewContentPost($request, $planId);
+        return redirect()->route('admin.all-review');
     }
 
-    public function allReview(Request $request, ContentServices $contentServices)
+    public function allPublish(Request $request, ContentServices $contentServices)
     {
         $data['category'] = ContentType::where('id', '!=', 1)->get();
-        $data['allReview'] = $contentServices->allReview($request);
-        return view('admin.content.review.list', compact('data'));
+        $data['allPublish'] = $contentServices->allPublish($request);
+        $module = ['reviewPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        return view('admin.content.publish.list', compact('data'));
+    }
+
+    public function allContents(Request $request, ContentServices $contentServices)
+    {
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $module = ['addIdea', 'viewIdea', 'viewIdea', 'addPlan', 'viewPlan', 'processPlan', 'updatePlat', 'rectificationPlat', 'rectificationPlat', 'reviewPlan', 'reviewRectificationPlan', 'publishPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        $data['allContents'] = $contentServices->allContents($request);
+        return view('admin.content.all-content.list', compact('data'));
+    }
+
+    public function allPublishView($planId)
+    {
+        $plan = Content::find($planId);
+        $data['users'] = Employee::all();
+        $data['youtube'] = CYoutube::all();
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $module = ['publishPlan', 'reviewRectificationPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $planId]])->get();
+        return view('admin.content.publish.view', compact('data', 'plan'));
+    }
+
+    public function editPublishPost(Request $request, $planId, ContentServices $contentServices)
+    {
+        $contentServices->viewContentPost($request, $planId);
+        return redirect()->route('admin.all-publish');
+    }
+
+    public function allPublished(Request $request, ContentServices $contentServices)
+    {
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $data['allPublished'] = $contentServices->allPublished($request);
+        $module = ['publishPlan', 'reviewRectificationPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        return view('admin.content.published.list', compact('data'));
+    }
+
+    public function allPublishedView($planId)
+    {
+        $plan = Content::find($planId);
+        $data['users'] = Employee::all();
+        $data['youtube'] = CYoutube::all();
+        $data['category'] = ContentType::where('id', '!=', 1)->get();
+        $module = ['publishedPlan', 'reviewRectificationPlan'];
+        $data['statuses'] = CStatus::whereIn('module', $module)->get();
+        $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', 1], ['plan_id', $planId]])->get();
+//        dd($data);
+        return view('admin.content.published.view', compact('data', 'plan'));
+    }
+
+    public function editPublishedPost(Request $request, $planId, ContentServices $contentServices)
+    {
+        $contentServices->viewContentPost($request, $planId);
+        return redirect()->route('admin.all-published');
     }
 
     public function seoPlanPlatform($platFormId, $planId, $platUsedId)
@@ -182,7 +288,9 @@ class ContentController extends Controller
         if ($platFormId == 2) {
             $data['youtube_licenses'] = CStatus::where('module', '=', 'youtube_license')->get();
             $data['youtube_views'] = CStatus::where('module', '=', 'youtube_view')->get();
-            $data['statuses'] = CStatus::where('id', 8)->get();
+            $module = ['updatePlat', 'rectificationPlat'];
+            $data['statuses'] = CStatus::whereIn('module', $module)->get();
+            $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', $platFormId], ['plan_id', $planId], ['type_module', 2]])->get();
             return view('admin.content.platformSEO.youtube', compact('content', 'data', 'platFormId', 'platUsedId'));
         } elseif ($platFormId == 3) {
             $data['facebook_views'] = CStatus::where('module', '=', 'facebook_view')->get();
@@ -216,11 +324,14 @@ class ContentController extends Controller
 
     public function processPlanPlatform($platFormId, $planId, $platUsedId)
     {
+
         $content = Content::find($planId);
         if ($platFormId == 2) {
             $data['youtube_licenses'] = CStatus::where('module', '=', 'youtube_license')->get();
             $data['youtube_views'] = CStatus::where('module', '=', 'youtube_view')->get();
-            $data['statuses'] = CStatus::where('id', 8)->get();
+            $module = ['updatePlat', 'rectificationPlat'];
+            $data['statuses'] = CStatus::whereIn('module', $module)->get();
+            $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', $platFormId], ['plan_id', $planId], ['type_module', 1]])->get();
             return view('admin.content.platformProcess.youtube', compact('content', 'data', 'platFormId', 'platUsedId'));
         } elseif ($platFormId == 3) {
             $data['facebook_views'] = CStatus::where('module', '=', 'facebook_view')->get();
@@ -252,13 +363,95 @@ class ContentController extends Controller
         }
     }
 
+    public function reviewPlanPlatform($platFormId, $planId, $platUsedId)
+    {
+        $content = Content::find($planId);
+        if ($platFormId == 2) {
+            $data['youtube_licenses'] = CStatus::where('module', '=', 'youtube_license')->get();
+            $data['youtube_views'] = CStatus::where('module', '=', 'youtube_view')->get();
+            $module = ['reviewRectificationPlan', 'reviewPlan'];
+            $data['statuses'] = CStatus::whereIn('module', $module)->get();
+            $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', $platFormId], ['plan_id', $planId], ['type_module', '!=', null]])->get();
+            return view('admin.content.platformReview.youtube', compact('content', 'data', 'platFormId', 'platUsedId'));
+        } elseif ($platFormId == 3) {
+            $data['facebook_views'] = CStatus::where('module', '=', 'facebook_view')->get();
+            return view('admin.content.platformReview.facebook', compact('content', 'data', 'platUsedId'));
+        } elseif ($platFormId == 4) {
+            return view('admin.content.platformReview.instagram', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 5) {
+            return view('admin.content.platformReview.Instagram-IGTV', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 6) {
+            return view('admin.content.platformReview.instagram-stories', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 7) {
+            return view('admin.content.platformReview.instagram-feeds', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 8) {
+            return view('admin.content.platformReview.twitter', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 9) {
+            return view('admin.content.platformReview.linkedIn', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 10) {
+            return view('admin.content.platformReview.pinterest', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 11) {
+            return view('admin.content.platformReview.google-business', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 12) {
+            return view('admin.content.platformReview.dankash', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 13) {
+            return view('admin.content.platformReview.blog', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 14) {
+            return view('admin.content.platformReview.quora', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 15) {
+            return view('admin.content.platformReview.anchor', compact('content', 'platUsedId'));
+        }
+    }
+
+    public function publishPlanPlatform($platFormId, $planId, $platUsedId)
+    {
+        $content = Content::find($planId);
+        if ($platFormId == 2) {
+            $data['youtube_licenses'] = CStatus::where('module', '=', 'youtube_license')->get();
+            $data['youtube_views'] = CStatus::where('module', '=', 'youtube_view')->get();
+            $module = ['publishPlan', 'reviewRectificationPlan'];
+            $data['statuses'] = CStatus::whereIn('module', $module)->get();
+            $data['history'] = CHistory::withoutGlobalScopes()->orderBy('id', 'desc')->where([['platform_used_id', $platFormId], ['plan_id', $planId], ['type_module', '!=', null]])->get();
+            return view('admin.content.platformPublish.youtube', compact('content', 'data', 'platFormId', 'platUsedId'));
+        } elseif ($platFormId == 3) {
+            $data['facebook_views'] = CStatus::where('module', '=', 'facebook_view')->get();
+            return view('admin.content.platformPublish.facebook', compact('content', 'data', 'platUsedId'));
+        } elseif ($platFormId == 4) {
+            return view('admin.content.platformPublish.instagram', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 5) {
+            return view('admin.content.platformPublish.Instagram-IGTV', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 6) {
+            return view('admin.content.platformPublish.instagram-stories', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 7) {
+            return view('admin.content.platformPublish.instagram-feeds', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 8) {
+            return view('admin.content.platformPublish.twitter', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 9) {
+            return view('admin.content.platformPublish.linkedIn', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 10) {
+            return view('admin.content.platformPublish.pinterest', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 11) {
+            return view('admin.content.platformPublish.google-business', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 12) {
+            return view('admin.content.platformPublish.dankash', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 13) {
+            return view('admin.content.platformPublish.blog', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 14) {
+            return view('admin.content.platformPublish.quora', compact('content', 'platUsedId'));
+        } elseif ($platFormId == 15) {
+            return view('admin.content.platformPublish.anchor', compact('content', 'platUsedId'));
+        }
+    }
+
 
     public function downloadFile($expID)
     {
         $expense = CMedia::where('id', $expID)->firstOrFail();
         if ($expense->media) {
             $file = public_path() . $expense->media;
-            return response()->file($file);
+//            $name = $expense->id . '-' . $file;
+//            dd($name);
+            return response()->download($file);
         } else {
             return 'File Does not Exist';
         }

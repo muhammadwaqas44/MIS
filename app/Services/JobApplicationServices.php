@@ -25,35 +25,41 @@ class JobApplicationServices
 
     public function allJobApplications($request)
     {
-//        $allJobApplications = JobApplication::orderBy('id', 'desc')->where('is_active', 1)->whereNull('deleted_at');
         $allJobApplications = EmpHistory::with(['status'])->whereHas('status', function ($query) {
             $query->where('id', '=', 18);
-        })->orderBy('dateTime', 'asc')->where('is_active', 1)->whereNull('deleted_at');
-
-//        with(['history.status' => function ($query) {
-//            $query->where('id', 18);
-//        }])->where('is_active', 1)->whereNull('deleted_at');
-
-//dd($allJobApplications);
-//        orderBy('id', 'desc')->where('is_active', 1)->whereNull('deleted_at');
+        })->orderBy('id', 'desc')->where('is_active', 1);
 
         if ($request->search_title) {
+            $title = $request->search_title;
             $allJobApplications = $allJobApplications
-                ->where('name', 'like', '%' . $request->search_title . '%')
-                ->orWhere('email', 'like', '%' . $request->search_title . '%')
-                ->orWhere('user_phone', 'like', '%' . $request->search_title . '%')
-                ->orWhere('city_name', 'like', '%' . $request->search_title . '%')
-                ->orWhere('address', 'like', '%' . $request->search_title . '%');
+                ->with(['applicant'])->whereHas('applicant', function ($query) use ($title) {
+                    $query->where('name', 'like', '%' . $title . '%')
+                        ->orWhere('email', 'like', '%' . $title . '%')
+                        ->orWhere('user_phone', 'like', '%' . $title . '%');
+                });
         }
 
         if ($request->filled('channel_id')) {
-            $allJobApplications = $allJobApplications->where('channel_id', '=', $request->channel_id);
+            $channal = $request->channel_id;
+            $allJobApplications = $allJobApplications
+                ->with(['applicant'])->whereHas('applicant', function ($query) use ($channal) {
+                    $query->where('channel_id', '=', $channal);
+                });
         }
         if ($request->filled('designation_id')) {
-            $allJobApplications = $allJobApplications->where('designation_id', '=', $request->designation_id);
+            $designation = $request->designation_id;
+            $allJobApplications = $allJobApplications
+                ->with(['applicant'])->whereHas('applicant', function ($query) use ($designation) {
+                    $query->where('designation_id', '=', $designation);
+                });
         }
         if ($request->filled('experience_id')) {
-            $allJobApplications = $allJobApplications->where('experience_id', '=', $request->experience_id);
+            $experience = $request->experience_id;
+            $allJobApplications = $allJobApplications
+                ->with(['applicant'])->whereHas('applicant', function ($query) use ($experience) {
+                    $query->where('experience_id', '=', $experience);
+                });
+
         }
 
 

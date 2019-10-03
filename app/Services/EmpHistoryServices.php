@@ -261,7 +261,6 @@ class EmpHistoryServices
 
     }
 
-
     public function allInterviews($request)
     {
         $allInterviews = EmpHistory::with(['status'])->whereHas('status', function ($query) {
@@ -513,8 +512,7 @@ class EmpHistoryServices
         return $data;
     }
 
-    public
-    function allTechInterviews($request)
+    public function allTechInterviews($request)
     {
         $allTechInterviews = EmpHistory::with(['status'])->whereHas('status', function ($query) {
             $query->where('name', '=', 'Technical Interview Required');

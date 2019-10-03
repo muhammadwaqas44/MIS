@@ -24,6 +24,11 @@ class Content extends Model
         return $this->hasMany('App\CHistory', 'plan_id', 'id')->where('type_module', 2);
     }
 
+    public function c_history_original()
+    {
+        return $this->hasMany('App\CHistory', 'plan_id', 'id')->where('type_module', null);
+    }
+
     public function c_platformsUsed()
     {
         return $this->hasMany('App\CPlatformUsed', 'plan_id', 'id');
@@ -68,4 +73,5 @@ class Content extends Model
     {
         return $this->hasOne('App\CYoutube', 'plan_id', 'id');
     }
+
 }

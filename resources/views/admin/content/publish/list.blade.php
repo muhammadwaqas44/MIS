@@ -1,14 +1,14 @@
 @extends('admin-layout.app')
-@section('title', "Ideas")
+@section('title', "CMT-Publish")
 @section('content')
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li>
-                Content Management Tool
+                CMT
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                Ideas
+                Publish
             </li>
         </ul>
     </div>
@@ -19,7 +19,7 @@
                 <div class="portlet-title">
                     <div class="caption font-dark">
                         <i class="icon-settings font-dark"></i>
-                        <span class="caption-subject bold uppercase"> Ideas Table </span>
+                        <span class="caption-subject bold uppercase"> Publish Table </span>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -27,11 +27,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="btn-group">
-                                    <a href="{{route('admin.add-idea')}}">
-                                        <button id="sample_editable_1_new" class="btn sbold green"> Add New Idea
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </a>
+                                    {{--<a href="{{route('admin.create-content')}}">--}}
+                                    {{--<button id="sample_editable_1_new" class="btn sbold green"> Add New content--}}
+                                    {{--<i class="fa fa-plus"></i>--}}
+                                    {{--</button>--}}
+                                    {{--</a>--}}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -58,6 +58,7 @@
                                 <input type="search" placeholder="Search..." name="search_title"
                                        class="form-control input-sm input-small input-inline"
                                        @if(!empty(app('request')->input('search_title'))) value="{{app('request')->input('search_title')}}" @endif>
+
                                 <select name="category_id"
                                         class="form-control input-sm input-small input-inline">
                                     <option value="">Select Category</option>
@@ -76,6 +77,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+
                                 <input type="submit" value="Search" class="btn btn-sm green">
                             </form>
 
@@ -91,28 +93,60 @@
                                 <th> Topic</th>
                                 <th> Status</th>
                                 <th> Category</th>
-                                <th> Reference Meterial</th>
+                                <th> Production Schedule</th>
+                                <th> Production Assign To</th>
+                                <th> Processing Schedule</th>
+                                <th> Processing Assign To</th>
+                                <th> Publishing Schedule</th>
+                                <th> Publishing Assign To</th>
+                                {{--<th> PlatForms</th>--}}
                                 <th> Remarks</th>
                                 <th> Created By</th>
                                 <th> Created At</th>
+                                <th> Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach( $data['allIdeas']['allIdeas'] as $plan)
+                            @foreach( $data['allPublish']['allPublish'] as $plan)
                                 <tr class="odd gradeX">
                                     <td class="center"> {{$plan->content->id}} </td>
-                                    <td><a href="{{route('admin.edit-idea',$plan->content->id)}}" style="color: black">
-                                            {{$plan->content->topic}}</a></td>
-                                    <td class="center">
-                                        {{$plan->c_status->name}}</td>
-                                    <td>@if(isset($plan->content->category)){{$plan->content->category->name}}@endif</td>
-                                    <td class="center"title="{{$plan->content->reference_material}}">{{ str_limit($plan->content->reference_material, $limit = 60, $end = '...') }}</td>
+                                    <td>
+                                        <a href="{{route('admin.all-publish-view',$plan->content->id)}}"
+                                           style="color: black">
+                                            {{$plan->content->topic}}</a>
+                                    </td>
+                                    <td> {{$plan->c_status->name}}</td>
+                                    <td>@if(isset($plan->content->category)){{$plan->content->category->name}} @endif</td>
+                                    <td class="center">{{$plan->content->produce_on}}</td>
+                                    <td class="center">@if(isset($plan->content->produceBy)){{$plan->content->produceBy->first_name}} {{$plan->content->produceBy->last_name}} @endif</td>
+                                    <td class="center">{{$plan->content->process_on}}</td>
+                                    <td class="center">@if(isset($plan->content->processBy)){{$plan->content->processBy->first_name}} {{$plan->content->processBy->last_name}} @endif</td>
+                                    <td class="center">{{$plan->content->publish_on}}</td>
+                                    <td class="center">@if(isset($plan->content->publishBy)){{$plan->content->publishBy->first_name}} {{$plan->content->publishBy->last_name}} @endif</td>
+                                    {{--<td class="center">--}}
+                                        {{--@foreach($plan->content->c_platformsUsed->take(2) as $item){{$item->c_platforms->name}}--}}
+                                        {{--<br>@endforeach ....--}}
+                                    {{--</td>--}}
+                                    <td class="center" title="{{$plan->remarks}}">{{ str_limit($plan->remarks, $limit = 60, $end = '...') }}</td>
+                                    <td class="center">{{$plan->createdByName->first_name}} {{$plan->createdByName->last_name}}  </td>
+                                    <td class="center">{{$plan->created_at}} </td>
 
-                                    <td class="center" title="{{$plan->remarks}}">{{ str_limit($plan->remarks, $limit = 60, $end = '...') }}
-                                         </td>
-                                    <td class="center">{{$plan->content->user->first_name}} {{$plan->content->user->last_name}}  </td>
-                                    <td class="center">{{$plan->content->created_at}} </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-xs green dropdown-toggle" type="button"
+                                                    data-toggle="dropdown" aria-expanded="false"> Actions
+                                                <i class="fa fa-angle-down"></i>
+                                            </button>
+                                            <ul class="dropdown-menu pull-right" role="menu">
 
+                                                <li>
+                                                    <a href="{{route('admin.all-publish-view',$plan->content->id)}}">
+                                                        <i class="icon-user"></i> View </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -122,7 +156,7 @@
 
                         <div class="col-md-7 col-sm-7">
                             <div class="dataTables_paginate paging_bootstrap_full_number" id="sample_1_paginate">
-                                {{$data['allIdeas']['allIdeas']->links()}}
+                                {{$data['allPublish']['allPublish']->links()}}
                             </div>
                         </div>
                     </div>
@@ -131,4 +165,5 @@
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
     </div>
+
 @endsection

@@ -68,7 +68,6 @@ class UserServices
         }
     }
 
-
     public function myProfileUpdate($request, $userId)
     {
         $user = User::withoutGlobalScopes()->find($userId);

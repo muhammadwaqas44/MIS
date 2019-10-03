@@ -53,7 +53,7 @@ class JoinEmployeeServices
 
     public function postJoinEmployee($request)
     {
-        dd($request->all());
+//        dd($request->all());
         if (!empty($request->profile_image)) {
             $fileName = time() . "-" . 'profile_image' . ".png";
             ImageHelpers::updateProfileImage('/project-assets/images/users/', $request->file('profile_image'), $fileName);
@@ -1917,4 +1917,5 @@ class JoinEmployeeServices
             ]);
         }
     }
+
 }

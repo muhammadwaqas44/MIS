@@ -36,78 +36,100 @@ class CStatusesTableSeeder extends Seeder
             [
                 'id' => 6,
                 'name' => 'Content Produced',
-                'module' => 'viewPlan',
-            ], [
+                'module' => 'processPlan',
+            ],
+            [
                 'id' => 7,
                 'name' => 'In Process',
                 'module' => 'updatePlat',
-            ], [
+            ],
+            [
                 'id' => 8,
                 'name' => 'Processed',
                 'module' => 'updatePlat',
             ],
             [
                 'id' => 9,
-                'name' => 'Reviewed',
-                'module' => 'reviewPlan',
+                'name' => 'Rectification In Process',
+                'module' => 'rectificationPlat',
             ], [
                 'id' => 10,
+                'name' => 'Rectified',
+                'module' => 'rectificationPlat',
+            ],
+            [
+                'id' => 11,
+                'name' => 'Reviewed',
+                'module' => 'reviewPlan',
+            ],
+            [
+                'id' => 12,
+                'name' => 'Rectification Required',
+                'module' => 'reviewRectificationPlan',
+            ],
+            [
+                'id' => 13,
                 'name' => 'Published',
                 'module' => 'publishPlan',
             ],
             [
-                'id' => 11,
+                'id' => 14,
+                'name' => 'Published For Published Module',
+                'module' => 'publishedPlan',
+            ],
+            [
+                'id' => 15,
                 'name' => 'Standard License',
                 'module' => 'youtube_license',
             ],
             [
-                'id' => 12,
+                'id' => 16,
                 'name' => 'Creative Common',
                 'module' => 'youtube_license',
             ],
 
             [
-                'id' => 13,
+                'id' => 17,
                 'name' => 'Public',
                 'module' => 'youtube_view',
             ],
             [
-                'id' => 14,
+                'id' => 18,
                 'name' => 'Unlisted',
                 'module' => 'youtube_view',
             ],
             [
-                'id' => 15,
+                'id' => 19,
                 'name' => 'Private',
                 'module' => 'youtube_view',
             ],
             [
-                'id' => 16,
+                'id' => 20,
                 'name' => 'Public',
                 'module' => 'facebook_view',
             ],
             [
-                'id' => 17,
+                'id' => 21,
                 'name' => 'Friends',
                 'module' => 'facebook_view',
             ],
             [
-                'id' => 18,
+                'id' => 22,
                 'name' => 'Only Me',
                 'module' => 'facebook_view',
             ],
             [
-                'id' => 19,
+                'id' => 23,
                 'name' => 'Added Youtube Content',
                 'module' => 'youtube',
             ],
             [
-                'id' => 20,
+                'id' => 24,
                 'name' => 'Produce Youtube Content',
                 'module' => 'youtube',
             ],
             [
-                'id' => 21,
+                'id' => 25,
                 'name' => 'Publish Youtube Content',
                 'module' => 'youtube',
             ],

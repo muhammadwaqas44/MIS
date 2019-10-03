@@ -43,10 +43,13 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <form action="{{route('admin.produce-plan-post-update',$plan->id)}}"
+                                        <form action="{{route('admin.review-post',$plan->id)}}"
                                               method="post"
                                               enctype="multipart/form-data">
                                             @csrf
+                                            @foreach($plan->c_history_original as $his)
+                                                <input type="hidden" value="{{$his->id}}" name="his_id">
+                                            @endforeach
                                             <div class="form-group">
                                                 <label class="control-label">Topic</label>
                                                 {{--                                                {{$plan->topic}}--}}
@@ -90,14 +93,15 @@
                                                     <div class="form-group">
                                                         <label class="control-label">Category
                                                         </label>
-                                                        <input readonly value="{{$plan->category->name}}"
+                                                        <input readonly
+                                                               value="@if(isset($plan->category)){{$plan->category->name}} @else No Category Selected @endif"
                                                                class="form-control">
                                                         {{--                                                        {{$plan->category->name}}--}}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label">Upload Files</label>
+                                                        <label class="control-label">Download Files</label>
                                                         <a href="#" data-toggle="modal"
                                                            data-target="#myModalForcat_{{$plan->id}}">
                                                             <button id="sample_editable_1_new">
@@ -143,6 +147,10 @@
                                                     <input readonly
                                                            value="@if(isset($plan->produceBy)){{$plan->produceBy->first_name}} {{$plan->produceBy->last_name}} @else No User @endif"
                                                            class="form-control">
+                                                    <input name="produce_by" type="hidden"
+                                                           @if(isset($plan->produceBy)) value="{{$plan->produceBy->id}}"
+                                                           @endif
+                                                           class="form-control">
                                                     {{--<select class="form-control" name="produce_by">--}}
                                                     {{--@if(isset($plan->produceBy))--}}
                                                     {{--<option value="{{$plan->produce_by}}">{{$plan->produceBy->first_name}} {{$plan->produceBy->last_name}}</option>--}}
@@ -161,8 +169,8 @@
                                                     <label class="control-label">Processing Schedule</label>
                                                     <div class="input-append date ">
                                                         <input size="16" type="text" autocomplete="off"
-                                                               VALUE="{{$plan->process_on}}" readonly
-                                                                placeholder="Processing Date"
+                                                               VALUE="{{$plan->process_on}}" readonly name="process_on"
+                                                               placeholder="Processing Date"
                                                                class="form-control">
                                                         <span class="add-on"><i
                                                                     class="icon-remove"></i></span>
@@ -179,15 +187,19 @@
                                                     <input readonly
                                                            value="@if(isset($plan->processBy)){{$plan->processBy->first_name}} {{$plan->processBy->last_name}} @else No User @endif"
                                                            class="form-control">
+                                                    <input name="process_by" type="hidden"
+                                                           @if(isset($plan->processBy)) value="{{$plan->processBy->id}}"
+                                                           @endif
+                                                           class="form-control">
                                                     {{--<select class="form-control" name="process_by">--}}
-                                                        {{--@if(isset($plan->processBy))--}}
-                                                            {{--<option value="{{$plan->process_by}}">{{$plan->processBy->first_name}} {{$plan->processBy->last_name}}</option>--}}
-                                                        {{--@else--}}
-                                                            {{--<option value="">Select User</option>--}}
-                                                        {{--@endif--}}
-                                                        {{--@foreach($data['users'] as $user)--}}
-                                                            {{--<option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>--}}
-                                                        {{--@endforeach--}}
+                                                    {{--@if(isset($plan->processBy))--}}
+                                                    {{--<option value="{{$plan->process_by}}">{{$plan->processBy->first_name}} {{$plan->processBy->last_name}}</option>--}}
+                                                    {{--@else--}}
+                                                    {{--<option value="">Select User</option>--}}
+                                                    {{--@endif--}}
+                                                    {{--@foreach($data['users'] as $user)--}}
+                                                    {{--<option value="{{$user->id}}">{{$user->first_name}} {{$user->last_name}}</option>--}}
+                                                    {{--@endforeach--}}
                                                     {{--</select>--}}
                                                 </div>
                                             </div>
@@ -225,18 +237,56 @@
                                                 </div>
                                             </div>
 
+
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Status</label>
+                                                        <select class="form-control" name="status_id" required>
+                                                            @if($plan->c_history_original->count())
+                                                                @foreach($plan->c_history_original as $his)
+                                                                    <option value="{{$his->c_status->id}}">{{$his->c_status->name}}</option>
+
+                                                                @endforeach
+                                                            @else
+                                                                <option value="">Select Status</option>
+                                                            @endif
+                                                            @foreach($data['statuses'] as $user)
+                                                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Remarks</label>
+                                                        @if($plan->c_history_original->count())
+                                                            @foreach($plan->c_history_original as $his)
+                                                                <textarea type="text" rows="2" name="remarks"
+                                                                          placeholder="Remarks"
+                                                                          class="form-control">{{$his->remarks}}</textarea>
+                                                            @endforeach
+                                                        @else
+                                                            <textarea type="text" rows="2" name="remarks"
+                                                                      placeholder="Remarks"
+                                                                      class="form-control"></textarea>
+                                                        @endif
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
                                             <div class="col-md-8">
                                                 <div class="margiv-top-10">
 
                                                     <button type="submit"
                                                             class="btn green">Save
                                                     </button>
-                                                    <a href="{{route('admin.all-review')}}">
-                                                        <button type="button"
-                                                                class="btn red"
-                                                                data-dismiss="modal">
-                                                            Cancel
-                                                        </button>
+                                                    <a href="{{ route('admin.all-review') }}">
+                                                        <button type="button" class="btn red">Cancel</button>
                                                     </a>
 
                                                 </div>
@@ -246,7 +296,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <h3>Choose PlatForms</h3>
+                                        <h3>Platforms</h3>
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-12">
@@ -254,7 +304,7 @@
                                                     <table class="table">
                                                         <tr>
                                                             <th>
-                                                                Plat Forms
+                                                                Platforms
                                                             </th>
                                                             <th>
                                                                 Process
@@ -268,27 +318,43 @@
                                                             <tr>
 
                                                                 <td>
-                                                                    <a href="{{route('admin.platform-process',['platUsedId'=>$item->id,'planId'=>$item->plan_id,'platFormId'=>$item->platform_id,])}}"
-                                                                       class="btn btn-outline-info">
+                                                                    <a href="{{route('admin.platform-review',['platUsedId'=>$item->id,'planId'=>$item->plan_id,'platFormId'=>$item->platform_id,])}}"
+                                                                       class="btn">
                                                                         {{$item->c_platforms->name}}</a></td>
 
                                                                 <td>
 
-                                                                    @if(isset($plan->youtube))
-                                                                        @foreach($plan->c_history_process->where('platform_used_id',$item->platform_id) as $status)
-
-                                                                            {{$status->c_status->name}}
-                                                                            {{--                                                                        {{$plan->c_history->where([['platform_used_id', $item->platform_id], ['type_module', 1]])->c_status->name}}--}}
-                                                                        @endforeach
+                                                                    @if($plan->c_history_process->count()> 0)
+                                                                        @if($plan->c_history_process->where('platform_used_id',$item->platform_id)->count() >0)
+                                                                            @foreach($plan->c_history_process->where('platform_used_id',$item->platform_id) as $status)
+                                                                                @if(isset($status->c_status))
+                                                                                    {{$status->c_status->name}}
+                                                                                @else
+                                                                                    Pending
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @else
+                                                                            Pending
+                                                                        @endif
+                                                                    @else
+                                                                        Pending
                                                                     @endif
                                                                 </td>
                                                                 <td>
-                                                                    @if(isset($plan->youtube))
-                                                                        @foreach($plan->c_history_seo->where('platform_used_id',$item->platform_id) as $status)
-
-                                                                            {{$status->c_status->name}}
-                                                                            {{--                                                                        {{$plan->c_history->where([['platform_used_id', $item->platform_id], ['type_module', 1]])->c_status->name}}--}}
-                                                                        @endforeach
+                                                                    @if($plan->c_history_seo->count()> 0)
+                                                                        @if($plan->c_history_seo->where('platform_used_id',$item->platform_id)->count() >0)
+                                                                            @foreach($plan->c_history_seo->where('platform_used_id',$item->platform_id) as $status)
+                                                                                @if(isset($status->c_status))
+                                                                                    {{$status->c_status->name}}
+                                                                                @else
+                                                                                    Pending
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @else
+                                                                            Pending
+                                                                        @endif
+                                                                    @else
+                                                                        Pending
                                                                     @endif
                                                                 </td>
                                                             </tr>
@@ -297,63 +363,6 @@
                                                 </div>
                                             </div>
 
-                                            {{--<div class="col-md-4">--}}
-                                            {{--<table class="">--}}
-                                            {{--<tr>--}}
-                                            {{--<th>--}}
-                                            {{--Seo--}}
-                                            {{--</th>--}}
-                                            {{--</tr>--}}
-                                            {{--<tr>--}}
-                                            {{--@if($data['youtube']->where('plan_id',$plan->id)->count()!= 0)--}}
-                                            {{--@foreach( $data['youtube']->where('plan_id',$plan->id) as $item)--}}
-                                            {{--@if($item->title == '' ||$item->tags == '' ||$item->hash_tags == '' ||$item->playlist == '' ||$item->view_access_id == '' ||$item->license_id == '' ||$item->web_links == '' ||$item->end_screen == '' ||$item->description == '' )--}}
-                                            {{--<td>--}}
-                                            {{--In Progress--}}
-                                            {{--</td>--}}
-                                            {{--@else--}}
-                                            {{--<td>--}}
-                                            {{--Done--}}
-                                            {{--</td>--}}
-                                            {{--@endif--}}
-                                            {{--@endforeach--}}
-                                            {{--@else--}}
-                                            {{--<td>--}}
-                                            {{--Upload--}}
-                                            {{--</td>--}}
-                                            {{--@endif--}}
-                                            {{--</tr>--}}
-                                            {{--</table>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="col-md-4">--}}
-                                            {{--<table class="">--}}
-                                            {{--<tr>--}}
-                                            {{--<th>--}}
-                                            {{--Media--}}
-                                            {{--</th>--}}
-                                            {{--</tr>--}}
-                                            {{--<tr>--}}
-                                            {{--@if($data['youtube']->where('plan_id',$plan->id)->count()!= 0)--}}
-                                            {{--@foreach( $data['youtube']->where('plan_id',$plan->id) as $item)--}}
-
-                                            {{--@if($item->thumbnail == '' || $item->media == '' )--}}
-                                            {{--<td>--}}
-                                            {{--In Progress--}}
-                                            {{--</td>--}}
-                                            {{--@else--}}
-                                            {{--<td>--}}
-                                            {{--Done--}}
-                                            {{--</td>--}}
-                                            {{--@endif--}}
-                                            {{--@endforeach--}}
-                                            {{--@else--}}
-                                            {{--<td>--}}
-                                            {{--Upload--}}
-                                            {{--</td>--}}
-                                            {{--@endif--}}
-                                            {{--</tr>--}}
-                                            {{--</table>--}}
-                                            {{--</div>--}}
 
                                         </div>
 
@@ -367,52 +376,38 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <div class="col-md-8">
-                            <form action="{{route('admin.produce-plan-history',$plan->id)}}"
-                                  method="post"
-                                  enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Status</label>
-                                            <select class="form-control" name="status_id" required>
-                                                <option value="">Select Status</option>
-                                                @foreach($data['statuses'] as $user)
-                                                    <option value="{{$user->id}}">{{$user->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Remarks</label>
-                                            <textarea type="text" rows="2" name="remarks"
-                                                      placeholder="Remarks"
-                                                      class="form-control"></textarea>
-                                        </div>
 
-                                    </div>
-                                </div>
-                                <div class="margiv-top-10">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column"
+                               id="sample_1">
+                            <thead>
+                            <tr>
+                                <th> Id</th>
+                                <th> Status</th>
+                                {{--<th> Platform</th>--}}
+                                <th> Remarks</th>
+                                <th> Created By</th>
+                                <th> Created At</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach( $data['history'] as $his)
+                                <tr class="odd gradeX">
+                                    <td class="center"> {{$his->id}} </td>
+                                    <td class="center">
+                                        {{$his->c_status->name}}</td>
+                                    {{--<td>@if(isset($his->content->category)){{$his->content->category->name}}@endif</td>--}}
 
-                                    <button type="submit"
-                                            class="btn green">Save
-                                    </button>
-                                    <a href="{{route('admin.all-review')}}">
-                                        <button type="button"
-                                                class="btn red"
-                                                data-dismiss="modal">
-                                            Cancel
-                                        </button>
-                                    </a>
+                                    <td class="center">
+                                        {{$his->remarks}} </td>
+                                    <td class="center">{{$his->createdByName->first_name}} {{$his->createdByName->last_name}}  </td>
+                                    <td class="center">{{$his->created_at}} </td>
 
-                                </div>
-                            </form>
-                        </div>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -439,7 +434,7 @@
                                         @foreach($plan->media as $media)
                                             <tr>
 
-                                                <td class="text-center">
+                                                <td class="text-left">
                                                     <a target="_blank"
                                                        href="{{route('admin.download-source-file',$media->id)}}">
                                                         <button class="btn">{{$media->media}}</button>

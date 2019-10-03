@@ -2,7 +2,7 @@
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 })->name('welcome');
 
 
@@ -22,7 +22,7 @@ Route::get('get-designation-list', 'DropdownController@getDesignationList');
 Route::get('category-list', 'DropdownController@getCategoryList');
 ////End Dropdown
 
-Route::group(['middleware' => 'CheckAdmin'], function () {
+Route::group(['middleware' => ['CheckAdmin', 'auth']], function () {
 
     //// ADMIN DASHBOARD
     Route::get('/admin-dashboard', 'Admin\DashboardController@dashboardView')->name('admin-dashboard');
@@ -216,23 +216,46 @@ Route::group(['middleware' => 'CheckAdmin'], function () {
     // allProcess
     route::get('/admin/all-process', 'Admin\ContentController@allContentGeneration')->name('admin.all-content-generation');
     route::get('/admin/all-process-view/{planId}', 'Admin\ContentController@allContentGenerationView')->name('admin.all-content-generation-view');
+    route::post('/admin/process-post/{planId}', 'Admin\ContentController@editProcessPost')->name('admin.process-post');
 
     //SEO Content
     route::get('/admin/all-seo', 'Admin\ContentController@allSEOList')->name('admin.all-seo');
     route::get('/admin/seo-view/{planId}', 'Admin\ContentController@seoView')->name('admin.seo-view');
+    route::post('/admin/seo-post/{planId}', 'Admin\ContentController@editSeoPost')->name('admin.seo-post');
 
     //SEO Content
     route::get('/admin/all-review', 'Admin\ContentController@allReview')->name('admin.all-review');
     route::get('/admin/all-review-view/{planId}', 'Admin\ContentController@allReviewView')->name('admin.all-review-view');
+    route::post('/admin/review-post/{planId}', 'Admin\ContentController@editReviewPost')->name('admin.review-post');
+
+    //Publish Content
+    route::get('/admin/all-ready-to-publish', 'Admin\ContentController@allPublish')->name('admin.all-publish');
+    route::get('/admin/all-publish-view/{planId}', 'Admin\ContentController@allPublishView')->name('admin.all-publish-view');
+    route::post('/admin/publish-post/{planId}', 'Admin\ContentController@editPublishPost')->name('admin.content-publish-post');
+
+    ///ALL PUBLISHED
+    route::get('/admin/all-published', 'Admin\ContentController@allPublished')->name('admin.all-published');
+    route::get('/admin/all-published-view/{planId}', 'Admin\ContentController@allPublishedView')->name('admin.all-published-view');
+    route::post('/admin/published-post/{planId}', 'Admin\ContentController@editPublishedPost')->name('admin.content-published-post');
+
+
+    ///ALL CONTENT
+    route::get('/admin/all-contents', 'Admin\ContentController@allContents')->name('admin.all-contents');
 
 
     // Platforms
     route::get('/admin/platform-seo/{platFormId}/{planId}/{platUsedId}', 'Admin\ContentController@seoPlanPlatform')->name('admin.platform-seo');
     route::get('/admin/platform-process/{platFormId}/{planId}/{platUsedId}', 'Admin\ContentController@processPlanPlatform')->name('admin.platform-process');
+    route::get('/admin/platform-review/{platFormId}/{planId}/{platUsedId}', 'Admin\ContentController@reviewPlanPlatform')->name('admin.platform-review');
+    route::get('/admin/platform-publish/{platFormId}/{planId}/{platUsedId}', 'Admin\ContentController@publishPlanPlatform')->name('admin.platform-publish');
 
 
+    ///YouTube
     route::post('/admin/post-youtube-add-process', 'Admin\PlatFormController@youTubePlatformProcess')->name('admin.post-youtube-add-process');
+    route::post('/admin/post-youtube-review-process', 'Admin\PlatFormController@youTubePlatformReviewProcess')->name('admin.post-youtube-review-process');
     route::post('/admin/post-youtube-add-seo', 'Admin\PlatFormController@youTubePlatformSEO')->name('admin.post-youtube-add-seo');
+    route::post('/admin/post-youtube-review-seo', 'Admin\PlatFormController@youTubePlatformReviewSEO')->name('admin.post-youtube-review-seo');
+    route::post('/admin/post-youtube-add-publish', 'Admin\PlatFormController@youTubePlatformPublish')->name('admin.post-youtube-add-publish');
     route::post('/admin/post-youtube-status-seo', 'Admin\PlatFormController@hisStatusSEO')->name('admin.post-youtube-status-seo');
     route::post('/admin/post-youtube-status-process', 'Admin\PlatFormController@hisStatusProcess')->name('admin.post-youtube-status-process');
 

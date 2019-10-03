@@ -26,7 +26,7 @@ class ExpenseController extends Controller
     public function addExpense()
     {
         $data['type'] = ExpType::all();
-        $data['employees'] = Employee::orderBy('first_name')->get();
+        $data['employees'] = User::orderBy('first_name')->get();
         return view('admin.expense.add-expense', compact('data'));
     }
 
@@ -34,7 +34,7 @@ class ExpenseController extends Controller
     {
         $expense = Expense::where('id', $expID)->firstOrFail();
         $data['type'] = ExpType::all();
-        $data['employees'] = Employee::orderBy('first_name')->get();
+        $data['employees'] = User::orderBy('first_name')->get();
         return view('admin.expense.edit-expense', compact('data', 'expense'));
     }
 
@@ -60,7 +60,9 @@ class ExpenseController extends Controller
             return 'File Does not Exist';
         }
     }
-    public function exportExpenses(){
+
+    public function exportExpenses()
+    {
         return Excel::download(new ExpensesExport, 'All-Expenses.xlsx');
     }
 }
