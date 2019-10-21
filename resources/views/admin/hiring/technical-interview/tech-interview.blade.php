@@ -24,17 +24,17 @@
                                     </button>
                                     <ul class="dropdown-menu pull-right">
                                         <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-print"></i> Print </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
+                                            <a href="{{route('admin.export-all-tech-interviews')}}">
                                                 <i class="fa fa-file-excel-o"></i> Export to Excel </a>
                                         </li>
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-pdf-o"></i> Save as PDF </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-excel-o"></i> Export to Excel </a>--}}
+                                        {{--</li>--}}
                                     </ul>
                                 </div>
                             </div>
@@ -117,395 +117,399 @@
                                         </button>
                                         <ul class="dropdown-menu pull-right" role="menu">
                                             <li>
-                                                <a href="#" data-toggle="modal"
-                                                   data-target="#editInterview_{{$interview->id}}">
-                                                    <i class="icon-user"></i> View </a>
+                                                <a href="{{route('admin.view-tech-status',$interview->id)}}" >
+                                                    <i class="icon-user"></i> View</a>
+                                                {{--<a href="#" data-toggle="modal"--}}
+                                                   {{--data-target="#editInterview_{{$interview->id}}">--}}
+                                                    {{--<i class="icon-user"></i> View </a>--}}
                                             </li>
                                             <li>
-                                                <a href="#" data-toggle="modal"
-                                                   data-target="#addDetailsInterview_{{$interview->id}}">
+                                                <a href="{{route('admin.add-tech-status',$interview->applicant->id)}}" >
                                                     <i class="icon-user"></i> Add</a>
+                                                {{--<a href="#" data-toggle="modal"--}}
+                                                   {{--data-target="#addDetailsInterview_{{$interview->id}}">--}}
+                                                    {{--<i class="icon-user"></i> Add</a>--}}
                                             </li>
                                         </ul>
-                                        <div class="modal fade  bs-modal-lg" id="editInterview_{{$interview->id}}"
-                                             tabindex="-1" role="dialog" style="width: auto">
-                                            <div class="modal-dialog modal-lg">
-                                                <!-- Modal content-->
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title tabbable-line">
-                                                        <div class="caption caption-md">
-                                                            <i class="icon-globe theme-font hide"></i>
-                                                            <span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="portlet-body">
-                                                        <div class="tab-content">
-                                                            <form action="{{route('admin.post-update-interview-data',$interview->id)}}"
-                                                                  method="post"
-                                                                  enctype="multipart/form-data">
-                                                                @csrf
-                                                                <div class="form-group">
-                                                                    <input hidden
-                                                                           name="job_id"
-                                                                           value="{{$interview->applicant->id}}"/>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label">Name
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none"
-                                                                                   value="{{$interview->applicant->name}}"/>
-                                                                        </div>
-                                                                        @if($interview->applicant->designation_id)
-                                                                            <div class="col-md-4">
-                                                                                <label class="control-label">Position
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$interview->applicant->designation->name}}"
-                                                                                />
-                                                                            </div>
-                                                                        @endif
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label"> Email Notification
-                                                                                :</label>
-                                                                            <input type="checkbox" name="emailSend"
-                                                                                   value="1" CHECKED
-                                                                                   class="checkbox-inline">
-                                                                            <label style="padding: 2px;"><input type="file" style="display: none;"
-                                                                                                                name="file_attach"
-                                                                                                                class="form-control"><i class="icon-paper-clip"></i></label>
-                                                                        </div>
+                                        {{--<div class="modal fade  bs-modal-lg" id="editInterview_{{$interview->id}}"--}}
+                                             {{--tabindex="-1" role="dialog" style="width: auto">--}}
+                                            {{--<div class="modal-dialog modal-lg">--}}
+                                                {{--<!-- Modal content-->--}}
+                                                {{--<div class="portlet light ">--}}
+                                                    {{--<div class="portlet-title tabbable-line">--}}
+                                                        {{--<div class="caption caption-md">--}}
+                                                            {{--<i class="icon-globe theme-font hide"></i>--}}
+                                                            {{--<span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="portlet-body">--}}
+                                                        {{--<div class="tab-content">--}}
+                                                            {{--<form action="{{route('admin.post-update-interview-data',$interview->id)}}"--}}
+                                                                  {{--method="post"--}}
+                                                                  {{--enctype="multipart/form-data">--}}
+                                                                {{--@csrf--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<input hidden--}}
+                                                                           {{--name="job_id"--}}
+                                                                           {{--value="{{$interview->applicant->id}}"/>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label">Name--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none"--}}
+                                                                                   {{--value="{{$interview->applicant->name}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--@if($interview->applicant->designation_id)--}}
+                                                                            {{--<div class="col-md-4">--}}
+                                                                                {{--<label class="control-label">Position--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none"--}}
+                                                                                       {{--value="{{$interview->applicant->designation->name}}"--}}
+                                                                                {{--/>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--@endif--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label"> Email Notification--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input type="checkbox" name="emailSend"--}}
+                                                                                   {{--value="1" CHECKED--}}
+                                                                                   {{--class="checkbox-inline">--}}
+                                                                            {{--<label style="padding: 2px;"><input type="file" style="display: none;"--}}
+                                                                                                                {{--name="file_attach"--}}
+                                                                                                                {{--class="form-control"><i class="icon-paper-clip"></i></label>--}}
+                                                                        {{--</div>--}}
 
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label">Email
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none; width: 75%"
-                                                                                   value="{{$interview->applicant->email}}"/>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label">Phone
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none"
-                                                                                   value="{{$interview->applicant->user_phone}}"/>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            @if($interview->applicant->city_name)
-                                                                                <label class="control-label">City
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$interview->applicant->city_name}}"/>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            @if($interview->applicant->address)
-                                                                                <label class="control-label">Address
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none;width: 80%"
-                                                                                       value="{{$interview->applicant->address}}"  rows="2" />
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">
-                                                                                Call Status</label>
-                                                                            <select name="call_id"
-                                                                                    class="form-control">
-                                                                                <option value="{{$interview->status->id}}">{{$interview->status->name}}</option>
-                                                                                @foreach($data['interviewStatus'] as  $interviewStatus)
-                                                                                    <option value="{{$interviewStatus->id}}">
-                                                                                        {{$interviewStatus->name}}
-                                                                                    </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Date Time</label>
-                                                                            <div class="input-append date form_datetime">
-                                                                                <input size="16" type="text" autocomplete="off"
-                                                                                       name="dateTime"
-                                                                                       value="{{$interview->dateTime}}"
-                                                                                       class="form-control">
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-remove"></i></span>
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-th"></i></span>
-                                                                            </div>
-                                                                        </div>
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label">Email--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none; width: 75%"--}}
+                                                                                   {{--value="{{$interview->applicant->email}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label">Phone--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none"--}}
+                                                                                   {{--value="{{$interview->applicant->user_phone}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--@if($interview->applicant->city_name)--}}
+                                                                                {{--<label class="control-label">City--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none"--}}
+                                                                                       {{--value="{{$interview->applicant->city_name}}"/>--}}
+                                                                            {{--@endif--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-12">--}}
+                                                                            {{--@if($interview->applicant->address)--}}
+                                                                                {{--<label class="control-label">Address--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none;width: 80%"--}}
+                                                                                       {{--value="{{$interview->applicant->address}}"  rows="2" />--}}
+                                                                            {{--@endif--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">--}}
+                                                                                {{--Call Status</label>--}}
+                                                                            {{--<select name="call_id"--}}
+                                                                                    {{--class="form-control">--}}
+                                                                                {{--<option value="{{$interview->status->id}}">{{$interview->status->name}}</option>--}}
+                                                                                {{--@foreach($data['interviewStatus'] as  $interviewStatus)--}}
+                                                                                    {{--<option value="{{$interviewStatus->id}}">--}}
+                                                                                        {{--{{$interviewStatus->name}}--}}
+                                                                                    {{--</option>--}}
+                                                                                {{--@endforeach--}}
+                                                                            {{--</select>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Date Time</label>--}}
+                                                                            {{--<div class="input-append date form_datetime">--}}
+                                                                                {{--<input size="16" type="text" autocomplete="off"--}}
+                                                                                       {{--name="dateTime"--}}
+                                                                                       {{--value="{{$interview->dateTime}}"--}}
+                                                                                       {{--class="form-control">--}}
+                                                                                {{--<span class="add-on"><i--}}
+                                                                                            {{--class="icon-remove"></i></span>--}}
+                                                                                {{--<span class="add-on"><i--}}
+                                                                                            {{--class="icon-th"></i></span>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--</div>--}}
 
-                                                                    </div>
+                                                                    {{--</div>--}}
 
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Remarks</label>
-                                                                    <textarea name="remarks"
-                                                                              class="form-control"
-                                                                              rows="2"
-                                                                    >{{$interview->remarks}}</textarea>
-                                                                </div>
-                                                                <div class="margiv-top-10">
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label class="control-label">Remarks</label>--}}
+                                                                    {{--<textarea name="remarks"--}}
+                                                                              {{--class="form-control"--}}
+                                                                              {{--rows="2"--}}
+                                                                    {{-->{{$interview->remarks}}</textarea>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="margiv-top-10">--}}
 
-                                                                    <button type="submit"
-                                                                            class="btn green">
-                                                                        Save
-                                                                    </button>
-                                                                    <button type="button"
-                                                                            class="btn red"
-                                                                            data-dismiss="modal">
-                                                                        Cancel
-                                                                    </button>
+                                                                    {{--<button type="submit"--}}
+                                                                            {{--class="btn green">--}}
+                                                                        {{--Save--}}
+                                                                    {{--</button>--}}
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn red"--}}
+                                                                            {{--data-dismiss="modal">--}}
+                                                                        {{--Cancel--}}
+                                                                    {{--</button>--}}
 
-                                                                </div>
-                                                            </form>
-                                                            <br>
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped table-bordered table-hover"
-                                                                       id="sample_1">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th>Id</th>
-                                                                        <th> Name</th>
-                                                                        <th> Status</th>
-                                                                        <th> Position</th>
-                                                                        <th> Date & Time</th>
-                                                                        <th> Remarks</th>
-                                                                        <th> Updated by</th>
-                                                                        <th> Updated At</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    @foreach( $data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterviews)
-                                                                        <tr class="odd gradeX">
-                                                                            <td class="center"> {{$updatedInterviews->id}} </td>
-                                                                            <td> {{$updatedInterviews->applicant->name}}</td>
-                                                                            @if($updatedInterviews->call_id)
-                                                                                <td class="center">{{$updatedInterviews->status->name}}</td>
-                                                                            @else
-                                                                                <td class="center">No Status</td>
-                                                                            @endif
-                                                                            <td class="center">{{$updatedInterviews->applicant->designation->name}}</td>
-                                                                            <td class="center">{{$updatedInterviews->dateTime}}</td>
-                                                                            <td class="center">{{$updatedInterviews->remarks}}</td>
-                                                                            <td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>
-                                                                            <td class="center">{{$updatedInterviews->created_at}}</td>
+                                                                {{--</div>--}}
+                                                            {{--</form>--}}
+                                                            {{--<br>--}}
+                                                            {{--<div class="table-responsive">--}}
+                                                                {{--<table class="table table-striped table-bordered table-hover"--}}
+                                                                       {{--id="sample_1">--}}
+                                                                    {{--<thead>--}}
+                                                                    {{--<tr>--}}
+                                                                        {{--<th>Id</th>--}}
+                                                                        {{--<th> Name</th>--}}
+                                                                        {{--<th> Status</th>--}}
+                                                                        {{--<th> Position</th>--}}
+                                                                        {{--<th> Date & Time</th>--}}
+                                                                        {{--<th> Remarks</th>--}}
+                                                                        {{--<th> Updated by</th>--}}
+                                                                        {{--<th> Updated At</th>--}}
+                                                                    {{--</tr>--}}
+                                                                    {{--</thead>--}}
+                                                                    {{--<tbody>--}}
+                                                                    {{--@foreach( $data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterviews)--}}
+                                                                        {{--<tr class="odd gradeX">--}}
+                                                                            {{--<td class="center"> {{$updatedInterviews->id}} </td>--}}
+                                                                            {{--<td> {{$updatedInterviews->applicant->name}}</td>--}}
+                                                                            {{--@if($updatedInterviews->call_id)--}}
+                                                                                {{--<td class="center">{{$updatedInterviews->status->name}}</td>--}}
+                                                                            {{--@else--}}
+                                                                                {{--<td class="center">No Status</td>--}}
+                                                                            {{--@endif--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->applicant->designation->name}}</td>--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->dateTime}}</td>--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->remarks}}</td>--}}
+                                                                            {{--<td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->created_at}}</td>--}}
 
-                                                                        </tr>
-                                                                    @endforeach
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- //Modal content-->
-                                            </div>
-                                        </div>
-                                        <div class="modal fade  bs-modal-lg" id="addDetailsInterview_{{$interview->id}}"
-                                             tabindex="-1" role="dialog" style="width: auto">
-                                            <div class="modal-dialog modal-lg">
-                                                <!-- Modal content-->
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title tabbable-line">
-                                                        <div class="caption caption-md">
-                                                            <i class="icon-globe theme-font hide"></i>
-                                                            <span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="portlet-body">
-                                                        <div class="tab-content">
-                                                            <form action="{{route('admin.post-add-interview-data',$interview->id)}}"
-                                                                  method="post"
-                                                                  enctype="multipart/form-data">
-                                                                @csrf
-                                                                <div class="form-group">
-                                                                    <input hidden
-                                                                           name="job_id"
-                                                                           value="{{$interview->applicant->id}}"
-                                                                    />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label">Name
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none"
-                                                                                   value="{{$interview->applicant->name}}"/>
-                                                                        </div>
-                                                                        @if($interview->applicant->designation_id)
-                                                                            <div class="col-md-4">
-                                                                                <label class="control-label">Position
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$interview->applicant->designation->name}}"
-                                                                                />
-                                                                            </div>
-                                                                        @endif
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label"> Email Notification
-                                                                                :</label>
-                                                                            <input type="checkbox" name="emailSend"
-                                                                                   value="1" CHECKED
-                                                                                   class="checkbox-inline">
-                                                                            <label style="padding: 2px;"><input type="file" style="display: none;"
-                                                                                                                name="file_attach"
-                                                                                                                class="form-control"><i class="icon-paper-clip"></i></label>
-                                                                        </div>
+                                                                        {{--</tr>--}}
+                                                                    {{--@endforeach--}}
+                                                                    {{--</tbody>--}}
+                                                                {{--</table>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                                {{--<!-- //Modal content-->--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="modal fade  bs-modal-lg" id="addDetailsInterview_{{$interview->id}}"--}}
+                                             {{--tabindex="-1" role="dialog" style="width: auto">--}}
+                                            {{--<div class="modal-dialog modal-lg">--}}
+                                                {{--<!-- Modal content-->--}}
+                                                {{--<div class="portlet light ">--}}
+                                                    {{--<div class="portlet-title tabbable-line">--}}
+                                                        {{--<div class="caption caption-md">--}}
+                                                            {{--<i class="icon-globe theme-font hide"></i>--}}
+                                                            {{--<span class="caption-subject font-blue-madison bold uppercase">Interview Schedule</span>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--<div class="portlet-body">--}}
+                                                        {{--<div class="tab-content">--}}
+                                                            {{--<form action="{{route('admin.post-add-interview-data',$interview->id)}}"--}}
+                                                                  {{--method="post"--}}
+                                                                  {{--enctype="multipart/form-data">--}}
+                                                                {{--@csrf--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<input hidden--}}
+                                                                           {{--name="job_id"--}}
+                                                                           {{--value="{{$interview->applicant->id}}"--}}
+                                                                    {{--/>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label">Name--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none"--}}
+                                                                                   {{--value="{{$interview->applicant->name}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--@if($interview->applicant->designation_id)--}}
+                                                                            {{--<div class="col-md-4">--}}
+                                                                                {{--<label class="control-label">Position--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none"--}}
+                                                                                       {{--value="{{$interview->applicant->designation->name}}"--}}
+                                                                                {{--/>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--@endif--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label"> Email Notification--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input type="checkbox" name="emailSend"--}}
+                                                                                   {{--value="1" CHECKED--}}
+                                                                                   {{--class="checkbox-inline">--}}
+                                                                            {{--<label style="padding: 2px;"><input type="file" style="display: none;"--}}
+                                                                                                                {{--name="file_attach"--}}
+                                                                                                                {{--class="form-control"><i class="icon-paper-clip"></i></label>--}}
+                                                                        {{--</div>--}}
 
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label">Email
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none; width: 75%"
-                                                                                   value="{{$interview->applicant->email}}"/>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <label class="control-label">Phone
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none"
-                                                                                   value="{{$interview->applicant->user_phone}}"/>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            @if($interview->applicant->city_name)
-                                                                                <label class="control-label">City
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$interview->applicant->city_name}}"/>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            @if($interview->applicant->address)
-                                                                                <label class="control-label">Address
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none;width: 80%"
-                                                                                       value="{{$interview->applicant->address}}"  rows="2" />
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">
-                                                                                Call Status</label>
-                                                                            <select name="call_id"
-                                                                                    class="form-control">
-                                                                                <option value="">Select Status
-                                                                                </option>
-                                                                                @foreach($data['interviewStatusAfterInitial'] as  $interviewStatus)
-                                                                                    <option value="{{$interviewStatus->id}}">
-                                                                                        {{$interviewStatus->name}}
-                                                                                    </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Date Time</label>
-                                                                            <div class="input-append date form_datetime">
-                                                                                <input size="16" type="text" autocomplete="off"
-                                                                                       name="dateTime"
-                                                                                       class="form-control">
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-remove"></i></span>
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-th"></i></span>
-                                                                            </div>
-                                                                        </div>
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label">Email--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none; width: 75%"--}}
+                                                                                   {{--value="{{$interview->applicant->email}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--<label class="control-label">Phone--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none"--}}
+                                                                                   {{--value="{{$interview->applicant->user_phone}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-4">--}}
+                                                                            {{--@if($interview->applicant->city_name)--}}
+                                                                                {{--<label class="control-label">City--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none"--}}
+                                                                                       {{--value="{{$interview->applicant->city_name}}"/>--}}
+                                                                            {{--@endif--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-12">--}}
+                                                                            {{--@if($interview->applicant->address)--}}
+                                                                                {{--<label class="control-label">Address--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none;width: 80%"--}}
+                                                                                       {{--value="{{$interview->applicant->address}}"  rows="2" />--}}
+                                                                            {{--@endif--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">--}}
+                                                                                {{--Call Status</label>--}}
+                                                                            {{--<select name="call_id"--}}
+                                                                                    {{--class="form-control">--}}
+                                                                                {{--<option value="">Select Status--}}
+                                                                                {{--</option>--}}
+                                                                                {{--@foreach($data['interviewStatusAfterInitial'] as  $interviewStatus)--}}
+                                                                                    {{--<option value="{{$interviewStatus->id}}">--}}
+                                                                                        {{--{{$interviewStatus->name}}--}}
+                                                                                    {{--</option>--}}
+                                                                                {{--@endforeach--}}
+                                                                            {{--</select>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Date Time</label>--}}
+                                                                            {{--<div class="input-append date form_datetime">--}}
+                                                                                {{--<input size="16" type="text" autocomplete="off"--}}
+                                                                                       {{--name="dateTime"--}}
+                                                                                       {{--class="form-control">--}}
+                                                                                {{--<span class="add-on"><i--}}
+                                                                                            {{--class="icon-remove"></i></span>--}}
+                                                                                {{--<span class="add-on"><i--}}
+                                                                                            {{--class="icon-th"></i></span>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--</div>--}}
 
-                                                                    </div>
+                                                                    {{--</div>--}}
 
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Remarks</label>
-                                                                    <textarea name="remarks"
-                                                                              class="form-control"
-                                                                              rows="2"></textarea>
-                                                                </div>
-                                                                <div class="margiv-top-10">
-                                                                    <button type="submit"
-                                                                            class="btn green">
-                                                                        Save
-                                                                    </button>
-                                                                    <button type="button"
-                                                                            class="btn red"
-                                                                            data-dismiss="modal">
-                                                                        Cancel
-                                                                    </button>
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label class="control-label">Remarks</label>--}}
+                                                                    {{--<textarea name="remarks"--}}
+                                                                              {{--class="form-control"--}}
+                                                                              {{--rows="2"></textarea>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="margiv-top-10">--}}
+                                                                    {{--<button type="submit"--}}
+                                                                            {{--class="btn green">--}}
+                                                                        {{--Save--}}
+                                                                    {{--</button>--}}
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn red"--}}
+                                                                            {{--data-dismiss="modal">--}}
+                                                                        {{--Cancel--}}
+                                                                    {{--</button>--}}
 
-                                                                </div>
-                                                            </form>
-                                                            <br>
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped table-bordered table-hover"
-                                                                       id="sample_1">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th>Id</th>
-                                                                        <th> Name</th>
-                                                                        <th> Status</th>
-                                                                        <th> Position</th>
-                                                                        <th> Date & Time</th>
-                                                                        <th> Remarks</th>
-                                                                        <th> Updated by</th>
-                                                                        <th> Updated At</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    @foreach( $data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterviews)
-                                                                        <tr class="odd gradeX">
-                                                                            <td class="center"> {{$updatedInterviews->id}} </td>
-                                                                            <td> {{$updatedInterviews->applicant->name}}</td>
-                                                                            @if($updatedInterviews->call_id)
-                                                                                <td class="center">{{$updatedInterviews->status->name}}</td>
-                                                                            @else
-                                                                                <td class="center">No Status</td>
-                                                                            @endif
-                                                                            <td class="center">{{$updatedInterviews->applicant->designation->name}}</td>
-                                                                            <td class="center">{{$updatedInterviews->dateTime}}</td>
-                                                                            <td class="center">{{$updatedInterviews->remarks}}</td>
-                                                                            <td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>
-                                                                            <td class="center">{{$updatedInterviews->created_at}}</td>
+                                                                {{--</div>--}}
+                                                            {{--</form>--}}
+                                                            {{--<br>--}}
+                                                            {{--<div class="table-responsive">--}}
+                                                                {{--<table class="table table-striped table-bordered table-hover"--}}
+                                                                       {{--id="sample_1">--}}
+                                                                    {{--<thead>--}}
+                                                                    {{--<tr>--}}
+                                                                        {{--<th>Id</th>--}}
+                                                                        {{--<th> Name</th>--}}
+                                                                        {{--<th> Status</th>--}}
+                                                                        {{--<th> Position</th>--}}
+                                                                        {{--<th> Date & Time</th>--}}
+                                                                        {{--<th> Remarks</th>--}}
+                                                                        {{--<th> Updated by</th>--}}
+                                                                        {{--<th> Updated At</th>--}}
+                                                                    {{--</tr>--}}
+                                                                    {{--</thead>--}}
+                                                                    {{--<tbody>--}}
+                                                                    {{--@foreach( $data['updatedInterviews']->where('job_id', '=', $interview->applicant->id) as $updatedInterviews)--}}
+                                                                        {{--<tr class="odd gradeX">--}}
+                                                                            {{--<td class="center"> {{$updatedInterviews->id}} </td>--}}
+                                                                            {{--<td> {{$updatedInterviews->applicant->name}}</td>--}}
+                                                                            {{--@if($updatedInterviews->call_id)--}}
+                                                                                {{--<td class="center">{{$updatedInterviews->status->name}}</td>--}}
+                                                                            {{--@else--}}
+                                                                                {{--<td class="center">No Status</td>--}}
+                                                                            {{--@endif--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->applicant->designation->name}}</td>--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->dateTime}}</td>--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->remarks}}</td>--}}
+                                                                            {{--<td class="center">@if(isset($updatedInterviews->user)){{$updatedInterviews->user->first_name}} {{$updatedInterviews->user->last_name}} @endif </td>--}}
+                                                                            {{--<td class="center">{{$updatedInterviews->created_at}}</td>--}}
 
-                                                                        </tr>
-                                                                    @endforeach
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- //Modal content-->
-                                            </div>
-                                        </div>
+                                                                        {{--</tr>--}}
+                                                                    {{--@endforeach--}}
+                                                                    {{--</tbody>--}}
+                                                                {{--</table>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+                                                {{--<!-- //Modal content-->--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
                                     </div>
                                 </td>
                             </tr>

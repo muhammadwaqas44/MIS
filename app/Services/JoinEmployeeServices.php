@@ -14,7 +14,10 @@ use App\EmployeeOfficialDocument;
 use App\EmployeePersonalDocument;
 use App\Helpers\ImageHelpers;
 use App\JobApplication;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class JoinEmployeeServices
@@ -165,7 +168,7 @@ class JoinEmployeeServices
                 $empHis->save();
             }
             if ($empHis->is_active == 0) {
-                EmpHistory::create([
+                $empHisJ = EmpHistory::create([
                     'job_id' => $request->job_id,
                     'call_id' => 16,
                     'dateTime' => $joining_date,
@@ -174,6 +177,21 @@ class JoinEmployeeServices
                     'user_id' => auth()->user()->id,
                     'created_at' => Carbon::now()->timezone(session('timezone')),
                 ]);
+                if ($empHisJ) {
+                    $joining_latter = public_path('/joining-latter/Office-Policy-2019.pdf');
+                    $applicant = JobApplication::find($empHisJ->job_id);
+                    $scheduleData = EmpHistory::find($empHisJ->id);
+                    $name = $applicant->name;
+                    $to = $applicant->email;
+                    $data = array('name' => $name,
+                    );
+                    Mail::send('mail.joining-mail-emp', $data, function ($message) use ($to, $name, $joining_latter, $request) {
+                        $message->from('hr@technerds.com', 'Tech Nerds');
+                        $message->to($to, $name)->subject(' RE: Welcome to Tech Nerds');
+                        $message->attach($joining_latter);
+                                $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                    });
+                }
             }
         }
         $record2 = Employee::where('email', $request->email)->first();
@@ -223,6 +241,18 @@ class JoinEmployeeServices
         ]);
 
         if ($employee) {
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                User::create([
+                    'is_active' => 1,
+                    'role_id' => 2,
+                    "first_name" => $request->first_name,
+                    "last_name" => $request->last_name,
+                    "email" => $request->email,
+                    "user_phone" => $request->user_phone,
+                    'password' => Hash::make('12345'),
+                ]);
+            }
             if (!empty($request->resume)) {
                 EmployeePersonalDocument::create([
                     'path' => $resume,
@@ -493,7 +523,7 @@ class JoinEmployeeServices
                     $empHis->save();
                 }
                 if ($empHis->is_active == 0) {
-                    EmpHistory::create([
+                    $empHisJ = EmpHistory::create([
                         'job_id' => $record1->id,
                         'call_id' => 16,
                         'dateTime' => $joining_date,
@@ -502,6 +532,21 @@ class JoinEmployeeServices
                         'user_id' => auth()->user()->id,
                         'created_at' => Carbon::now()->timezone(session('timezone')),
                     ]);
+                    if ($empHisJ) {
+                        $joining_latter = public_path('/joining-latter/Office-Policy-2019.pdf');
+                        $applicant = JobApplication::find($empHisJ->job_id);
+                        $scheduleData = EmpHistory::find($empHisJ->id);
+                        $name = $applicant->name;
+                        $to = $applicant->email;
+                        $data = array('name' => $name,
+                        );
+                        Mail::send('mail.joining-mail-emp', $data, function ($message) use ($to, $name, $joining_latter, $request) {
+                            $message->from('hr@technerds.com', 'Tech Nerds');
+                            $message->to($to, $name)->subject(' RE: Welcome to Tech Nerds');
+                            $message->attach($joining_latter);
+                                $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');
+                        });
+                    }
                 }
                 $job_id_app = $record1->id;
                 $record4 = Employee::withoutGlobalScopes()->where('email', $request->email)->first();
@@ -552,6 +597,18 @@ class JoinEmployeeServices
                         "is_active" => $is_active,
                     ]);
                     if ($employee) {
+                        $user = User::where('email', $request->email)->first();
+                        if (!$user) {
+                            User::create([
+                                'is_active' => 1,
+                                'role_id' => 2,
+                                "first_name" => $request->first_name,
+                                "last_name" => $request->last_name,
+                                "email" => $request->email,
+                                "user_phone" => $request->user_phone,
+                                'password' => Hash::make('12345'),
+                            ]);
+                        }
                         if (!empty($request->resume)) {
                             EmployeePersonalDocument::create([
                                 'path' => $resume,
@@ -1916,6 +1973,12 @@ class JoinEmployeeServices
                 'created_at' => Carbon::now()->timezone(session('timezone')),
             ]);
         }
+    }
+
+
+    public function createUsers()
+    {
+
     }
 
 }

@@ -186,7 +186,6 @@
                                           class="form-control"
                                           rows="2">{{$schedule->remarks}}</textarea>
                             </div>
-
                             <div class="margiv-top-10">
 
                                         <button type="button" id="button1"
@@ -208,7 +207,7 @@
                                            id="sample_1">
                                         <thead>
                                         <tr>
-                                            <th>Id</th>
+                                            <th> Id</th>
                                             <th> Name</th>
                                             <th> Status</th>
                                             <th> Position</th>

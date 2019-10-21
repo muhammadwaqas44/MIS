@@ -20,8 +20,10 @@ use App\Exports\EmployeesExport;
 use App\JobApplication;
 use App\LocationOffice;
 use App\Services\JoinEmployeeServices;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -335,4 +337,24 @@ class JoinEmployeeController extends Controller
     {
         return Excel::download(new EmployeesExport, 'All-Employees.xlsx');
     }
+
+//    public function createUsers()
+//    {
+//        $employees = JobApplication::withoutGlobalScopes()->get();
+////        dd($employees);
+//        foreach ($employees as $employee) {
+//            $user = User::withoutGlobalScopes()->where('email', $employee->email)->first();
+//            if (!$user) {
+//                User::create([
+//                    'is_active' => 1,
+//                    'role_id' => 5,
+//                    "first_name" => $employee->name,
+//                    "email" => $employee->email,
+//                    "user_phone" => $employee->user_phone,
+//                    'password' => Hash::make('12345'),
+//                ]);
+//            }
+//        }
+//        return redirect()->back();
+//    }
 }

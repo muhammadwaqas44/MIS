@@ -80,7 +80,8 @@ Route::group(['middleware' => ['CheckAdmin', 'auth']], function () {
     route::get('/admin/all-schedules', 'Admin\EmpHistoryController@allSchedules')->name('admin.all-schedules');
     route::get('/admin/all-schedules-not-available', 'Admin\EmpHistoryController@allSchedulesNOtAvailable')->name('admin.all-schedules-not-available');
     Route::get('/admin/schedule-activation/{scheduleId}', 'Admin\EmpHistoryController@changeScheduleStatus')->name('admin.change-schedule-status');
-    route::get('/admin//view-status-interview/{scheduleId}', 'Admin\EmpHistoryController@viewStatusInterview')->name('admin.view-status-interview');
+    route::get('/admin/view-status-interview/{scheduleId}', 'Admin\EmpHistoryController@viewStatusInterview')->name('admin.view-status-interview');
+    route::get('/admin/add-status-interview/{scheduleId}', 'Admin\EmpHistoryController@addStatusInterview')->name('admin.add-status-interview');
     route::get('/admin//view-status-not-interview/{scheduleId}', 'Admin\EmpHistoryController@viewStatusNotInterview')->name('admin.view-status-not-interview');
     Route::get('/admin/user-schedule/{scheduleId}', 'Admin\EmpHistoryController@deleteSchedule')->name('admin.delete-schedule');
     route::post('/admin/post-interview-schedule', 'Admin\EmpHistoryController@interviewSchedulePost')->name('admin.post-interview-schedule');
@@ -90,25 +91,55 @@ Route::group(['middleware' => ['CheckAdmin', 'auth']], function () {
     route::get('/admin/all-interviews', 'Admin\EmpHistoryController@allInterviews')->name('admin.all-interviews');
     route::post('/admin/post-update-interview-data/{interviewId}', 'Admin\EmpHistoryController@interviewDataUpdate')->name('admin.post-update-interview-data');
     route::post('/admin/post-add-interview-data', 'Admin\EmpHistoryController@interviewDataPost')->name('admin.post-add-interview-data');
-    //// ADD  INITIAL INTERVIEW FOR OTHER DETAILS
+
+    route::get('/admin/view-initial-interview-status/{interviewId}', 'Admin\EmpHistoryController@viewInitialInterviewStatus')->name('admin.view-initial-interview-status');
+    route::get('/admin/add-initial-interview-status/{interviewId}', 'Admin\EmpHistoryController@addInitialInterviewStatus')->name('admin.add-initial-interview-status');
     route::post('/admin/post-add-interview-data/{scheduleId}', 'Admin\EmpHistoryController@interviewDataPost')->name('admin.post-add-interview-data');
+
+
+    /// offer latter compose
+    route::post('/admin/offer-latter-compose', 'Admin\EmpHistoryController@offerLatterCompose')->name('admin.offer-latter-compose');
+    route::get('/admin/download-offer-latter/{interviewId}', 'Admin\EmpHistoryController@downloadOfferLatter')->name('admin.download-offer-latter');
+
     //// SHORTLISTED ROUTES
     route::get('/admin/shortlisted', 'Admin\EmpHistoryController@allShortlisted')->name('admin.shortlisted');
+    route::get('/admin/add-shortlisted-status/{interviewId}', 'Admin\EmpHistoryController@addShortlistedStatus')->name('admin.add-shortlisted-status');
+    route::get('/admin/view-shortlisted-status/{interviewId}', 'Admin\EmpHistoryController@viewShortlistedStatus')->name('admin.view-shortlisted-status');
+    route::post('/admin/post-add-shortlist-data/{scheduleId}', 'Admin\EmpHistoryController@shortlistDataPost')->name('admin.post-add-shortlist-data');
+
     /////   TECHNICAL INTERVIEWS ROUTES
     route::get('/admin/tech-interview', 'Admin\EmpHistoryController@allTechInterviews')->name('admin.tech-interview');
+    route::get('/admin/add-tech-status/{interviewId}', 'Admin\EmpHistoryController@addTechStatus')->name('admin.add-tech-status');
+    route::get('/admin/view-tech-status/{interviewId}', 'Admin\EmpHistoryController@viewTechStatus')->name('admin.view-tech-status');
+    route::post('/admin/post-add-tech-data/{scheduleId}', 'Admin\EmpHistoryController@techDataPost')->name('admin.post-add-tech-data');
     ///// HR INTERVIEWS ROUTES
     route::get('/admin/hr-interview', 'Admin\EmpHistoryController@allHRInterviews')->name('admin.hr-interview');
+    route::get('/admin/add-hr-status/{interviewId}', 'Admin\EmpHistoryController@addHRStatus')->name('admin.add-hr-status');
+    route::get('/admin/view-hr-status/{interviewId}', 'Admin\EmpHistoryController@viewHRStatus')->name('admin.view-hr-status');
+    route::post('/admin/post-add-hr-data/{scheduleId}', 'Admin\EmpHistoryController@hrDataPost')->name('admin.post-add-hr-data');
     ///// HR INTERVIEWS ROUTES
     route::get('/admin/offer-given', 'Admin\EmpHistoryController@allOfferGiven')->name('admin.offer-given');
+    route::get('/admin/add-offer-status/{interviewId}', 'Admin\EmpHistoryController@addOfferStatus')->name('admin.add-offer-status');
+    route::get('/admin/view-offer-status/{interviewId}', 'Admin\EmpHistoryController@viewOfferStatus')->name('admin.view-offer-status');
+    route::post('/admin/post-add-offer-data/{scheduleId}', 'Admin\EmpHistoryController@offerDataPost')->name('admin.post-add-offer-data');
     /// END SCHEDULE ROUTES
     /// All Applicants Routes
     route::get('/admin/all-applicants', 'Admin\EmpHistoryController@allApplicants')->name('admin.all-applicants');
-    route::get('/admin/export-job-applicant', 'Admin\EmpHistoryController@exportJobApplicant')->name('admin.export-job-applicant');
     route::post('/admin/update-interview-schedule-all/{scheduleId}', 'Admin\EmpHistoryController@interviewScheduleUpdateAll')->name('admin.update-interview-schedule-all');
-
-
+    route::get('/admin/add-all-app-status/{interviewId}', 'Admin\EmpHistoryController@addAllAppStatus')->name('admin.add-all-app-status');
+    route::post('/admin/post-all-applicants-data/{scheduleId}', 'Admin\EmpHistoryController@applicantsDataPost')->name('admin.post-all-applicants-data');
     ///End All Applicants Routes
 
+
+    //////All exports on Hiring
+    route::get('/admin/export-all-added-applicants', 'Admin\EmpHistoryController@exportAllAddedApplicants')->name('admin.export-all-added-applicants');
+    route::get('/admin/export-all-schedules', 'Admin\EmpHistoryController@exportAllSchedules')->name('admin.export-all-schedules');
+    route::get('/admin/export-all-ini-interviews', 'Admin\EmpHistoryController@exportAllIniInterviews')->name('admin.export-all-ini-interviews');
+    route::get('/admin/export-all-hr-interviews', 'Admin\EmpHistoryController@exportAllHRInterviews')->name('admin.export-all-hr-interviews');
+    route::get('/admin/export-all-offer-given', 'Admin\EmpHistoryController@exportAllOfferGiven')->name('admin.export-all-offer-given');
+    route::get('/admin/export-all-shortlisted', 'Admin\EmpHistoryController@exportAllShortlisted')->name('admin.export-all-shortlisted');
+    route::get('/admin/export-all-tech-interviews', 'Admin\EmpHistoryController@exportAllTechInterviews')->name('admin.export-all-tech-interviews');
+    route::get('/admin/export-job-applicant', 'Admin\EmpHistoryController@exportJobApplicant')->name('admin.export-job-applicant');
     //// Schedule mail
 //    Route::get('/send/mailSchedule/{applicantId}/{scheduleId}', 'Admin\EmpHistoryController@mailSchedule')->name('send.mailSchedule');
     /// end mail
@@ -185,10 +216,15 @@ Route::group(['middleware' => ['CheckAdmin', 'auth']], function () {
     route::get('/admin/all-expenses', 'Admin\ExpenseController@allExpenses')->name('admin.all-expenses');
     route::get('/admin/add-expense', 'Admin\ExpenseController@addExpense')->name('admin.add-expense');
     route::get('/admin/view-expense/{expId}', 'Admin\ExpenseController@editExpenseView')->name('admin.view-expense');
+    route::get('/admin/delete-expense/{expId}', 'Admin\ExpenseController@deleteExpense')->name('admin.delete-expense');
     route::post('/admin/post-expense-add', 'Admin\ExpenseController@postExpense')->name('admin.post-expense-add');
     route::post('/admin/post-edit-expense-add/{expId}', 'Admin\ExpenseController@postEditExpense')->name('admin.post-edit-expense-add');
     route::get('/admin/download--file/{expId}', 'Admin\ExpenseController@downloadFile')->name('admin.download-exp-file');
     route::get('/admin/export-expenses', 'Admin\ExpenseController@exportExpenses')->name('admin.export-expenses');
+    route::get('/admin/search-expenses', 'Admin\ExpenseController@searchExpenses')->name('admin.search-expenses');
+    route::get('/admin/exp-emp', 'Admin\ExpenseController@empExpenses')->name('admin.exp-emp');
+    route::get('/admin/exp-cat/{typeID}', 'Admin\ExpenseController@catExpenses')->name('admin.exp-cat');
+    route::get('/admin/exp-type', 'Admin\ExpenseController@typeExpenses')->name('admin.exp-type');
 
     /// CONTENT MANAGEMENT ROUTES
     /// NEW CONTENT ROUTES
@@ -260,7 +296,7 @@ Route::group(['middleware' => ['CheckAdmin', 'auth']], function () {
     route::post('/admin/post-youtube-status-process', 'Admin\PlatFormController@hisStatusProcess')->name('admin.post-youtube-status-process');
 
 
-    //////
+    Route::get('/admin/update-emp-to-user', 'Admin\JoinEmployeeController@createUsers')->name('admin.update-emp-to-user');
 });
 
 
@@ -274,5 +310,3 @@ Route::group(['middleware' => ['CheckAdmin', 'auth']], function () {
 //
 //
 //});
-
-

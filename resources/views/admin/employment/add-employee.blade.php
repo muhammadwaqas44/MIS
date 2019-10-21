@@ -352,7 +352,7 @@
                                                     <label>Designation</label><span style="color:red;">*</span>
                                                     <select class="form-control" name="designation_id"
                                                             id="designation_id" required>
-                                                        <option value="">Select</option>
+                                                        <option value="">First Select Department</option>
 
                                                     </select>
                                                 </div>

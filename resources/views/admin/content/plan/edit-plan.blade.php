@@ -41,10 +41,12 @@
                     <div class="table-toolbar">
                         <div class="row">
                             <div class="col-md-8">
-                                <form action="{{route('admin.edit-plan-post-update',$plan->id)}}"
+                                <form id="plan"
+                                      action="{{route('admin.edit-plan-post-update',$plan->id)}}"
                                       method="post"
                                       enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" id="id" value="{{$plan->id}}">
                                     @foreach($plan->c_history as $his)
                                         <input type="hidden" name="his_id" value="{{$his->id}}">
                                     @endforeach
@@ -216,6 +218,7 @@
                                     </div>
                                     <hr>
 
+
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -229,9 +232,21 @@
                                                 <input type="file"
                                                        class="form-control"
                                                        name="source[]" multiple PLACEHOLDER="Source"/>
+                                                {{--<input type="file" name="source[]" class="form-control" multiple id="file1" onchange="uploadFile()"><br>--}}
+                                                {{--<div class="progress">--}}
+                                                {{--<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>--}}
+                                                {{--</div>--}}
+                                                <div class="progress" style="display: none">
+                                                    <div class="bar"></div>
+                                                    <div class="percent">0%</div>
+                                                </div>
+
+                                                {{--<div id="status"></div>--}}
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -364,10 +379,11 @@
                                                 <table class="table table-bordered table-responsive-md">
                                                     @foreach($plan->media as $media)
                                                         <tr>
-
+                                                            {{--                                                            {{dd(HumanReadable::bytesToHuman(File::size(public_path($media->media))) )}}--}}
                                                             <td class="text-left">
-                                                                <a target="_blank"
-                                                                   href="{{route('admin.download-source-file',$media->id)}}">
+                                                                <span> {{HumanReadable::bytesToHuman(File::size(public_path($media->media))) }}</span><a
+                                                                        target="_blank"
+                                                                        href="{{route('admin.download-source-file',$media->id)}}">
                                                                     <button class="btn">{{$media->media}}</button>
                                                                 </a>
                                                             </td>
@@ -475,6 +491,28 @@
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
     </div>
+    <div id="waite" style="display: none; position: absolute; top: 50%;
+    left: 50%;margin-top: -10px;
+    margin-left: -100px;">
+        <h2><img src="{{asset('/favicon/25.gif')}}" style="width: 40px; height: 40px"/> <b>Just a moment</b></h2>
+    </div>
+    <div class="blac-screen"
+    style="width:100%;display: none;height: 100%;position: fixed;top: 0px;left: 0px;background: rgba(0,0,0,.5);">
+    <div id="load" style="display: none" class="loader"></div>
+    </div>
+    {{--<button type="button" style="display: none" class="btn btn-primary" data-toggle="modal"--}}
+            {{--data-target=".bd-example-modal-sm">Small modal--}}
+    {{--</button>--}}
+
+    {{--<div style="display: none; background-color: transparent; " class="modal fade bd-example-modal-sm" tabindex="-1"--}}
+         {{--role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="waite">--}}
+        {{--<div class="modal-dialog modal-sm">--}}
+            {{--<div class="modal-content">--}}
+                {{--<h2><img src="{{asset('/favicon/25.gif')}}" style="width: 40px; height: 40px"/> <b>Just a moment</b>--}}
+                {{--</h2>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
     <script src="{{asset('assets-admin/assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets-admin/assets/global/plugins/moment.min.js')}}" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css"
@@ -498,4 +536,59 @@
             todayBtn: true
         });
     </script>
+
+    <script type="text/javascript">
+
+        function uploadProgressHandler(event) {
+            $("#loaded_n_total").html("Uploaded " + event.loaded + " bytes of " + event.total);
+            var percent = (event.loaded / event.total) * 100;
+            var progress = Math.round(percent);
+            $(".progress").html(progress + "% uploaded... please wait");
+            $(".progress").css("width", progress + "%", "background-color", progress + "blue");
+//            $("#status").html(progress + "% uploaded... please wait");
+        }
+        $('form#plan').on('submit', function (e) {
+            e.preventDefault();
+            $('.progress').show();
+            $('#waite').show();
+            $('#load, .blac-screen').show();
+//            $('#waite').modal('show');
+            var id = $(this).find('#id').val();
+//            alert(id);ph
+            var formData = new FormData(this);
+            $.ajax({
+
+                type: 'post',
+                url: '/admin/edit-plan-post/' + id,
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress",
+                        uploadProgressHandler,
+                        false
+                    );
+                    return xhr;
+                },
+                success: function (result) {
+                    console.log(result);
+                    alert('Form Submit Successfully');
+                    $('#load, .blac-screen').hide();
+                    $('#waite').hide();
+                    window.location.href = "{{route('admin.all-plans')}}";
+                },
+                error: function (result) {
+                    alert('Form Not Submit');
+                    $('#load, .blac-screen').hide();
+                    $('#waite').hide();
+                    $('#waite').modal('hide');
+                }
+            });
+        });
+
+    </script>
+
 @endsection

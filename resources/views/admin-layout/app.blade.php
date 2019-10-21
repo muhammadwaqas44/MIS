@@ -6,12 +6,13 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
+    <title>{{ config('app.name', 'MIS') }} - @yield('title')</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link rel=icon href="{{asset('/favicon/favicon.png')}}">
   @include('admin-layout.css')
 <!-- END HEAD -->
 </head>
@@ -44,9 +45,9 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="page-footer">
-        <div class="page-footer-inner"> 2016 &copy; Metronic Theme By
-            <a target="_blank" href="http://keenthemes.com">Keenthemes</a> &nbsp;|&nbsp;
-            <a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>
+        <div class="page-footer-inner"> 2019 &copy; Metronic Theme By
+            <a target="_blank" href="http://keenthemes.com">Muhammad Waqas</a> &nbsp;|&nbsp;
+            {{--<a href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes" title="Purchase Metronic just for 27$ and get lifetime updates for free" target="_blank">Purchase Metronic!</a>--}}
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>

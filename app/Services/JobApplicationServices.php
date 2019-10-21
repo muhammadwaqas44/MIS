@@ -304,6 +304,7 @@ class JobApplicationServices
                         'designation' => $designation,
                     );
                     Mail::send('mail.job-portal', $data, function ($message) use ($to, $name) {
+                        $message->from('hr@technerds.com', 'Tech Nerds');
                         $message->to($to, $name)->subject
                         ('Thank you for applying at Tech Nerds');
                         $message->cc('ishteeaq@gmail.com', 'Ishtiaq Haider');

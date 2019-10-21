@@ -11,6 +11,7 @@ namespace App\Services;
 use App\Helpers\ImageHelpers;
 use App\Vendor;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class VendorServices
 {
@@ -52,20 +53,28 @@ class VendorServices
         } else {
             $attach_file = null;
         }
-        Vendor::create([
-            'attech_file' => $attach_file,
-            'is_active' => 1,
-            "name" => $request->name,
-            "contact_no_primary" => $request->contact_no_primary,
-            "contact_no_secondary" => $request->contact_no_secondary,
-            "landline" => $request->landline,
-            "address" => $request->address,
-            "city_id" => $request->city_id,
-            "professional_id" => $request->professional_id,
-            "remarks" => $request->remarks,
-            'created_by' => auth()->user()->id,
-            'created_at' => Carbon::now()->timezone(session('timezone')),
-        ]);
+        DB::beginTransaction();
+        try {
+            Vendor::create([
+                'attech_file' => $attach_file,
+                'is_active' => 1,
+                "name" => $request->name,
+                "contact_no_primary" => $request->contact_no_primary,
+                "contact_no_secondary" => $request->contact_no_secondary,
+                "landline" => $request->landline,
+                "address" => $request->address,
+                "city_id" => $request->city_id,
+                "professional_id" => $request->professional_id,
+                "remarks" => $request->remarks,
+                'created_by' => auth()->user()->id,
+                'created_at' => Carbon::now()->timezone(session('timezone')),
+            ]);
+            DB::commit();
+            return 'success';
+        } catch (\Exception $e) {
+            DB::rollback();
+            return 'error';
+        }
     }
 
     public function updateVendorPost($request, $vendorId)
@@ -80,18 +89,26 @@ class VendorServices
         } else {
             $attach_file = $request->attech_file_hile;
         }
-        if ($vendor) {
-            $vendor->attech_file = $attach_file;
-            $vendor->name = $request->name;
-            $vendor->contact_no_primary = $request->contact_no_primary;
-            $vendor->contact_no_secondary = $request->contact_no_secondary;
-            $vendor->landline = $request->landline;
-            $vendor->address = $request->address;
-            $vendor->city_id = $request->city_id;
-            $vendor->professional_id = $request->professional_id;
-            $vendor->remarks = $request->remarks;
-            $vendor->created_by = auth()->user()->id;
-            $vendor->save();
+        DB::beginTransaction();
+        try {
+            if ($vendor) {
+                $vendor->attech_file = $attach_file;
+                $vendor->name = $request->name;
+                $vendor->contact_no_primary = $request->contact_no_primary;
+                $vendor->contact_no_secondary = $request->contact_no_secondary;
+                $vendor->landline = $request->landline;
+                $vendor->address = $request->address;
+                $vendor->city_id = $request->city_id;
+                $vendor->professional_id = $request->professional_id;
+                $vendor->remarks = $request->remarks;
+                $vendor->created_by = auth()->user()->id;
+                $vendor->save();
+            }
+            DB::commit();
+            return 'success';
+        } catch (\Exception $e) {
+            DB::rollback();
+            return 'error';
         }
     }
 }

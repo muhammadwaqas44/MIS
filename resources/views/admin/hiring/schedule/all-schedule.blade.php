@@ -35,17 +35,17 @@
                                     </button>
                                     <ul class="dropdown-menu pull-right">
                                         <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-print"></i> Print </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
+                                            <a href="{{route('admin.export-all-schedules')}}">
                                                 <i class="fa fa-file-excel-o"></i> Export to Excel </a>
                                         </li>
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-pdf-o"></i> Save as PDF </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-excel-o"></i> Export to Excel </a>--}}
+                                        {{--</li>--}}
                                     </ul>
                                 </div>
                             </div>
@@ -133,205 +133,207 @@
                                                     <i class="icon-note"></i> View </a>
                                             </li>
                                             <li>
-                                                <a href="#" data-toggle="modal"
-                                                   data-target="#addInterview_{{$schedule->id}}">
-                                                    <i class="icon-note"></i> Add</a>
+                                                <a href="{{route('admin.add-status-interview',$schedule->id)}}">
+                                                    <i class="icon-note"></i> add </a>
+                                                {{--<a href="#" data-toggle="modal"--}}
+                                                   {{--data-target="#addInterview_{{$schedule->id}}">--}}
+                                                    {{--<i class="icon-note"></i> Add</a>--}}
                                             </li>
 
                                         </ul>
-                                        <div class="modal fade bs-modal-lg" id="addInterview_{{$schedule->id}}"
-                                             tabindex="-1" role="dialog" style="width: auto">
-                                            <div class="modal-dialog modal-lg">
-                                                <!-- Modal content-->
+                                        {{--<div class="modal fade bs-modal-lg" id="addInterview_{{$schedule->id}}"--}}
+                                             {{--tabindex="-1" role="dialog" style="width: auto">--}}
+                                            {{--<div class="modal-dialog modal-lg">--}}
+                                                {{--<!-- Modal content-->--}}
 
 
-                                                <div class="portlet light ">
-                                                    <div class="portlet-title tabbable-line">
-                                                        <div class="caption caption-md">
-                                                            <span class="caption-subject font-blue-madison bold uppercase">INTERVIEWS SCHEDULE</span>
-                                                            <i class="icon-globe theme-font hide"></i>
-                                                        </div>
+                                                {{--<div class="portlet light ">--}}
+                                                    {{--<div class="portlet-title tabbable-line">--}}
+                                                        {{--<div class="caption caption-md">--}}
+                                                            {{--<span class="caption-subject font-blue-madison bold uppercase">INTERVIEWS SCHEDULE</span>--}}
+                                                            {{--<i class="icon-globe theme-font hide"></i>--}}
+                                                        {{--</div>--}}
 
-                                                    </div>
-                                                    <div class="portlet-body">
-                                                        <div class="tab-content">
-                                                            <form  action="{{route('admin.post-add-interview-data',$schedule->id)}}"
-                                                                  method="post"
-                                                                  enctype="multipart/form-data">
-                                                                @csrf
-
-
-                                                                <div class="form-group">
-                                                                    <input hidden
-                                                                           name="job_id"
-                                                                           value="{{$schedule->applicant->id}}"
-                                                                    />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Name
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none"
-                                                                                   value="{{$schedule->applicant->name}}"/>
-                                                                        </div>
-                                                                        @if($schedule->applicant->designation_id)
-                                                                            <div class="col-md-6">
-                                                                                <label class="control-label">Position
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$schedule->applicant->designation->name}}"
-                                                                                />
-                                                                            </div>
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
+                                                    {{--</div>--}}
+                                                    {{--<div class="portlet-body">--}}
+                                                        {{--<div class="tab-content">--}}
+                                                            {{--<form  action="{{route('admin.post-add-interview-data',$schedule->id)}}"--}}
+                                                                  {{--method="post"--}}
+                                                                  {{--enctype="multipart/form-data">--}}
+                                                                {{--@csrf--}}
 
 
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Email
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none; width: 75%"
-                                                                                   value="{{$schedule->applicant->email}}"/>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Phone
-                                                                                :</label>
-                                                                            <input readonly
-                                                                                   style="background: none; border: none"
-                                                                                   value="{{$schedule->applicant->user_phone}}"/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<input hidden--}}
+                                                                           {{--name="job_id"--}}
+                                                                           {{--value="{{$schedule->applicant->id}}"--}}
+                                                                    {{--/>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Name--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none"--}}
+                                                                                   {{--value="{{$schedule->applicant->name}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--@if($schedule->applicant->designation_id)--}}
+                                                                            {{--<div class="col-md-6">--}}
+                                                                                {{--<label class="control-label">Position--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none"--}}
+                                                                                       {{--value="{{$schedule->applicant->designation->name}}"--}}
+                                                                                {{--/>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--@endif--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
 
 
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            @if($schedule->applicant->address)
-                                                                                <label class="control-label">Address
-                                                                                    :</label>
-                                                                                <textarea readonly class="form-control"
-                                                                                          style="background: none; border: none;width: 60%"
-                                                                                          rows="2">
-                                                                                                {{$schedule->applicant->address}}</textarea>
-                                                                            @endif
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            @if($schedule->applicant->city_name)
-                                                                                <label class="control-label">City
-                                                                                    :</label>
-                                                                                <input readonly
-                                                                                       style="background: none; border: none"
-                                                                                       value="{{$schedule->applicant->city_name}}"/>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Call
-                                                                                Status</label>
-                                                                            <select name="call_id"
-                                                                                    class="form-control">
-                                                                                <option value="">Select Status</option>
-                                                                                @foreach($data['interviewStatus'] as  $interviewStatus)
-                                                                                    <option value="{{$interviewStatus->id}}">
-                                                                                        {{$interviewStatus->name}}
-                                                                                    </option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                        </div>
-
-                                                                        <div class="col-md-6">
-                                                                            <label class="control-label">Time
-                                                                                & Date</label>
-                                                                            <div class="input-append date form_datetime">
-                                                                                <input size="16"  type="text" autocomplete="off"
-                                                                                       name="dateTime"
-                                                                                       class="form-control">
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-remove"></i></span>
-                                                                                <span class="add-on"><i
-                                                                                            class="icon-th"></i></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label class="control-label">Remarks</label>
-                                                                    <textarea name="remarks"
-                                                                              class="form-control"
-                                                                              rows="2"></textarea>
-                                                                </div>
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Email--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none; width: 75%"--}}
+                                                                                   {{--value="{{$schedule->applicant->email}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Phone--}}
+                                                                                {{--:</label>--}}
+                                                                            {{--<input readonly--}}
+                                                                                   {{--style="background: none; border: none"--}}
+                                                                                   {{--value="{{$schedule->applicant->user_phone}}"/>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
 
 
-                                                                <div class="margiv-top-10">
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--@if($schedule->applicant->address)--}}
+                                                                                {{--<label class="control-label">Address--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<textarea readonly class="form-control"--}}
+                                                                                          {{--style="background: none; border: none;width: 60%"--}}
+                                                                                          {{--rows="2">--}}
+                                                                                                {{--{{$schedule->applicant->address}}</textarea>--}}
+                                                                            {{--@endif--}}
+                                                                        {{--</div>--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--@if($schedule->applicant->city_name)--}}
+                                                                                {{--<label class="control-label">City--}}
+                                                                                    {{--:</label>--}}
+                                                                                {{--<input readonly--}}
+                                                                                       {{--style="background: none; border: none"--}}
+                                                                                       {{--value="{{$schedule->applicant->city_name}}"/>--}}
+                                                                            {{--@endif--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<div class="row">--}}
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Call--}}
+                                                                                {{--Status</label>--}}
+                                                                            {{--<select name="call_id"--}}
+                                                                                    {{--class="form-control">--}}
+                                                                                {{--<option value="">Select Status</option>--}}
+                                                                                {{--@foreach($data['interviewStatus'] as  $interviewStatus)--}}
+                                                                                    {{--<option value="{{$interviewStatus->id}}">--}}
+                                                                                        {{--{{$interviewStatus->name}}--}}
+                                                                                    {{--</option>--}}
+                                                                                {{--@endforeach--}}
+                                                                            {{--</select>--}}
+                                                                        {{--</div>--}}
 
-                                                                    <button type="submit"
-                                                                            class="btn green">
-                                                                        Save
-                                                                    </button>
-                                                                    <button type="button"
-                                                                            class="btn red"
-                                                                            data-dismiss="modal">
-                                                                        Cancel
-                                                                    </button>
+                                                                        {{--<div class="col-md-6">--}}
+                                                                            {{--<label class="control-label">Time--}}
+                                                                                {{--& Date</label>--}}
+                                                                            {{--<div class="input-append date form_datetime">--}}
+                                                                                {{--<input size="16"  type="text" autocomplete="off"--}}
+                                                                                       {{--name="dateTime"--}}
+                                                                                       {{--class="form-control">--}}
+                                                                                {{--<span class="add-on"><i--}}
+                                                                                            {{--class="icon-remove"></i></span>--}}
+                                                                                {{--<span class="add-on"><i--}}
+                                                                                            {{--class="icon-th"></i></span>--}}
+                                                                            {{--</div>--}}
+                                                                        {{--</div>--}}
+                                                                    {{--</div>--}}
+                                                                {{--</div>--}}
 
-                                                                </div>
-                                                            </form>
-                                                            <br>
-                                                            <div class="table-responsive">
-                                                                <table class="table table-striped table-bordered table-hover"
-                                                                       id="sample_1">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th>Id</th>
-                                                                        <th> Name</th>
-                                                                        <th> Status</th>
-                                                                        <th> Position</th>
-                                                                        <th> Date & Time</th>
-                                                                        <th> Remarks</th>
-                                                                        <th> Updated by</th>
-                                                                        <th> Updated At</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    @foreach($data['updatedSchedules']->where('job_id', '=', $schedule->applicant->id) as $updatedSchedule)
-                                                                        <tr class="odd gradeX">
-                                                                            <td class="center"> {{$updatedSchedule->id}} </td>
-                                                                            <td> {{$updatedSchedule->applicant->name}}</td>
-                                                                            @if(isset($updatedSchedule->status->name))
-                                                                                <td class="center">{{$updatedSchedule->status->name}}</td>
-                                                                            @else
-                                                                                <td class="center">No Status</td>
-                                                                            @endif
-                                                                            <td class="center">{{$updatedSchedule->applicant->designation->name}}</td>
-                                                                            <td class="center">{{$updatedSchedule->dateTime}}</td>
-                                                                            <td class="center">{{$updatedSchedule->remarks}}</td>
-                                                                            <td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>
-                                                                            <td class="center">{{$updatedSchedule->created_at}}</td>
-
-                                                                        </tr>
-                                                                    @endforeach
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                                {{--<div class="form-group">--}}
+                                                                    {{--<label class="control-label">Remarks</label>--}}
+                                                                    {{--<textarea name="remarks"--}}
+                                                                              {{--class="form-control"--}}
+                                                                              {{--rows="2"></textarea>--}}
+                                                                {{--</div>--}}
 
 
-                                                <!-- //Modal content-->
-                                            </div>
-                                        </div>
+                                                                {{--<div class="margiv-top-10">--}}
+
+                                                                    {{--<button type="submit"--}}
+                                                                            {{--class="btn green">--}}
+                                                                        {{--Save--}}
+                                                                    {{--</button>--}}
+                                                                    {{--<button type="button"--}}
+                                                                            {{--class="btn red"--}}
+                                                                            {{--data-dismiss="modal">--}}
+                                                                        {{--Cancel--}}
+                                                                    {{--</button>--}}
+
+                                                                {{--</div>--}}
+                                                            {{--</form>--}}
+                                                            {{--<br>--}}
+                                                            {{--<div class="table-responsive">--}}
+                                                                {{--<table class="table table-striped table-bordered table-hover"--}}
+                                                                       {{--id="sample_1">--}}
+                                                                    {{--<thead>--}}
+                                                                    {{--<tr>--}}
+                                                                        {{--<th>Id</th>--}}
+                                                                        {{--<th> Name</th>--}}
+                                                                        {{--<th> Status</th>--}}
+                                                                        {{--<th> Position</th>--}}
+                                                                        {{--<th> Date & Time</th>--}}
+                                                                        {{--<th> Remarks</th>--}}
+                                                                        {{--<th> Updated by</th>--}}
+                                                                        {{--<th> Updated At</th>--}}
+                                                                    {{--</tr>--}}
+                                                                    {{--</thead>--}}
+                                                                    {{--<tbody>--}}
+                                                                    {{--@foreach($data['updatedSchedules']->where('job_id', '=', $schedule->applicant->id) as $updatedSchedule)--}}
+                                                                        {{--<tr class="odd gradeX">--}}
+                                                                            {{--<td class="center"> {{$updatedSchedule->id}} </td>--}}
+                                                                            {{--<td> {{$updatedSchedule->applicant->name}}</td>--}}
+                                                                            {{--@if(isset($updatedSchedule->status->name))--}}
+                                                                                {{--<td class="center">{{$updatedSchedule->status->name}}</td>--}}
+                                                                            {{--@else--}}
+                                                                                {{--<td class="center">No Status</td>--}}
+                                                                            {{--@endif--}}
+                                                                            {{--<td class="center">{{$updatedSchedule->applicant->designation->name}}</td>--}}
+                                                                            {{--<td class="center">{{$updatedSchedule->dateTime}}</td>--}}
+                                                                            {{--<td class="center">{{$updatedSchedule->remarks}}</td>--}}
+                                                                            {{--<td class="center">@if(isset($updatedSchedule->user)){{$updatedSchedule->user->first_name}} {{$updatedSchedule->user->last_name}} @endif </td>--}}
+                                                                            {{--<td class="center">{{$updatedSchedule->created_at}}</td>--}}
+
+                                                                        {{--</tr>--}}
+                                                                    {{--@endforeach--}}
+                                                                    {{--</tbody>--}}
+                                                                {{--</table>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                    {{--</div>--}}
+                                                {{--</div>--}}
+
+
+                                                {{--<!-- //Modal content-->--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
                                     </div>
                                 </td>
                             </tr>

@@ -103,6 +103,10 @@ class UserController extends Controller
 
     public function importTawkToUser()
     {
+        set_time_limit(6000);
+        $normalTimeLimit = ini_get('max_execution_time');
+        ini_set('max_execution_time', 6000);
+        ini_set('max_execution_time', $normalTimeLimit);
         Excel::import(new TawkToUsersImport, request()->file('import_file'));
         return back();
     }

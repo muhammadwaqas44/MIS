@@ -65,6 +65,17 @@
                     @elseif(Request::route()->getName() == 'admin.offer-given') class="nav-item active open"
                     @elseif(Request::route()->getName() == 'admin.all-applicants') class="nav-item active open"
                     @elseif(Request::route()->getName() == 'admin.export-job-applicant') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-initial-interview-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.download-offer-latter') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-shortlisted-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-shortlisted-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-tech-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-tech-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-hr-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-hr-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-offer-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.view-offer-status') class="nav-item active open"
+                    @elseif(Request::route()->getName() == 'admin.add-all-app-status') class="nav-item active open"
                     @else class="nav-item " @endif >
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-paper-clip"></i>

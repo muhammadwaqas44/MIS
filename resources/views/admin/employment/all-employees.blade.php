@@ -48,8 +48,8 @@
                                                 <i class="fa fa-file-excel-o"></i> Export to Excel </a>
                                         </li>
                                         {{--<li>--}}
-                                        {{--<a href="javascript:;">--}}
-                                        {{--<i class="fa fa-print"></i> Print </a>--}}
+                                            {{--<a href="{{route('admin.update-emp-to-user')}}">--}}
+                                                {{--<i class="fa fa-print"></i> Add Employee Number </a>--}}
                                         {{--</li>--}}
                                         {{--<li>--}}
                                         {{--<a href="javascript:;">--}}

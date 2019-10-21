@@ -51,6 +51,7 @@
 
                                                 <label class="control-label">Name</label>
                                                 <input type="text"
+                                                       placeholder="Full Name"
                                                        class="form-control"
                                                        name="name"
                                                        required/>
@@ -59,6 +60,7 @@
 
                                                 <label class="control-label">Email</label>
                                                 <input type="email"
+                                                       placeholder="Email"
                                                        class="form-control"
                                                        name="email"
                                                        required/></div>
@@ -69,6 +71,9 @@
                                             <div class="form-group">
                                                 <label class="control-label">Phone</label>
                                                 <input type="text"
+                                                       placeholder="03001234567"
+                                                       pattern="^\d{11}$"
+                                                       title="Please Fill Number Like This 03001234567"
                                                        class="form-control"
                                                        name="user_phone"
                                                        required/></div>
@@ -77,6 +82,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">City</label>
                                                 <input type="text"
+                                                       placeholder="City"
                                                        class="form-control"
                                                        name="city_name"/>
                                             </div>
@@ -87,6 +93,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Address</label>
                                                 <input type="text"
+                                                       placeholder="Address"
                                                        class="form-control"
                                                        name="address"/>
                                             </div>
@@ -97,6 +104,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Skype ID</label>
                                                 <input type="text"
+                                                       placeholder="Skype ID"
                                                        class="form-control"
                                                        name="skype_id"
                                                 />
@@ -108,6 +116,7 @@
                                                 <label class="control-label">Expected
                                                     Salary</label>
                                                 <input type='text'
+                                                       placeholder="Expected Salary"
                                                        class="form-control"
                                                        name="expected_salary"
                                                 />
@@ -183,7 +192,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="control-label">Remarks</label>
-                                                <textarea type="text" rows="2" name="remarks"
+                                                <textarea type="text" placeholder="Remarks" rows="2" name="remarks"
                                                           class="form-control"></textarea>
                                             </div>
 

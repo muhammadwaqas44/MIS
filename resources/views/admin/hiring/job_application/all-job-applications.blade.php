@@ -39,17 +39,17 @@
                                     </button>
                                     <ul class="dropdown-menu pull-right">
                                         <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-print"></i> Print </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <i class="fa fa-file-pdf-o"></i> Save as PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
+                                            <a href="{{route('admin.export-all-added-applicants')}}">
                                                 <i class="fa fa-file-excel-o"></i> Export to Excel </a>
                                         </li>
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-pdf-o"></i> Save as PDF </a>--}}
+                                        {{--</li>--}}
+                                        {{--<li>--}}
+                                            {{--<a href="javascript:;">--}}
+                                                {{--<i class="fa fa-file-excel-o"></i> Export to Excel </a>--}}
+                                        {{--</li>--}}
                                     </ul>
                                 </div>
                             </div>

@@ -10,6 +10,7 @@ namespace App\Services;
 
 use App\Massege;
 use App\SmsLog;
+use Illuminate\Support\Facades\DB;
 
 class SMSResponseServices
 {
@@ -63,15 +64,31 @@ class SMSResponseServices
 
     public function addMessage($request)
     {
+        DB::beginTransaction();
+        try {
             Massege::create(array_merge($request->except('_token'), ['is_active' => 1,]));
-
+            DB::commit();
+            return 'success';
+        } catch (\Exception $e) {
+            DB::rollback();
+            return 'error';
+        }
     }
 
-    public function updateMessage($request,$messageId){
-        $message = Massege::withoutGlobalScopes()->find($messageId);
-        $message->title = $request->title;
-        $message->body = $request->body;
-        $message->save();
+    public function updateMessage($request, $messageId)
+    {
+        DB::beginTransaction();
+        try {
+            $message = Massege::withoutGlobalScopes()->find($messageId);
+            $message->title = $request->title;
+            $message->body = $request->body;
+            $message->save();
+            DB::commit();
+            return 'success';
+        } catch (\Exception $e) {
+            DB::rollback();
+            return 'error';
+        }
 
     }
 }

@@ -23,7 +23,6 @@ class ContentServices
         $this->allContentsPagination = 20;
     }
 
-
     public function allIdeas($request)
     {
         $allIdeas = CHistory::with(['c_status'])->whereHas('c_status', function ($query) {
@@ -284,15 +283,15 @@ class ContentServices
     public function editPlanPost($request, $planId)
     {
 //        dd($request->all(),$planId);
-        $normalMemoryLimit = ini_get('memory_limit');
-        ini_set('memory_limit', '-1');
-        ini_set('memory_limit', $normalMemoryLimit);
-        $normal_post_max_size = ini_get('post_max_size');
-        ini_set('post_max_size', '-1');
-        ini_set('post_max_size', $normal_post_max_size);
-        $normal_upload_max_filesize = ini_get('upload_max_filesize ');
-        ini_set('upload_max_filesize ', '-1');
-        ini_set('upload_max_filesize ', $normal_upload_max_filesize);
+//        $normalMemoryLimit = ini_get('memory_limit');
+//        ini_set('memory_limit', '-1');
+//        ini_set('memory_limit', $normalMemoryLimit);
+//        $normal_post_max_size = ini_get('post_max_size');
+//        ini_set('post_max_size', '-1');
+//        ini_set('post_max_size', $normal_post_max_size);
+//        $normal_upload_max_filesize = ini_get('upload_max_filesize ');
+//        ini_set('upload_max_filesize ', '-1');
+//        ini_set('upload_max_filesize ', $normal_upload_max_filesize);
         DB::beginTransaction();
         try {
             $content = Content::find($planId);

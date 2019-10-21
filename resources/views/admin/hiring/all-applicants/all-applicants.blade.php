@@ -85,7 +85,8 @@
 
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover table-checkable order-column" style=""
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column"
+                               style=""
                                id="sample_1">
                             <thead>
                             <tr>
@@ -142,7 +143,7 @@
                                     @endif
                                     <td class="center">{{$interview->created_at}}</td>
                                     <td class="center"><a target="_blank"
-                                                href="{{route('admin.download-resume',$interview->applicant->id)}}">
+                                                          href="{{route('admin.download-resume',$interview->applicant->id)}}">
                                             <button class="btn btn-xs blue"><i class="fa fa-file"></i> Resume</button>
                                         </a></td>
                                     <td>
@@ -159,9 +160,12 @@
                                                         <i class="icon-user"></i> View </a>
                                                 </li>
                                                 <li>
-                                                    <a href="#" data-toggle="modal"
-                                                       data-target="#myModalApplication2_{{$interview->id}}">
-                                                        <i class="icon-tag"></i> Add  </a>
+                                                    <a href="{{route('admin.add-all-app-status',$interview->applicant->id)}}">
+                                                        <i class="icon-user"></i> Add</a>
+
+                                                    {{--<a href="#" data-toggle="modal"--}}
+                                                    {{--data-target="#myModalApplication2_{{$interview->id}}">--}}
+                                                    {{--<i class="icon-tag"></i> Add  </a>--}}
                                                 </li>
                                                 <li>
                                                     <a href="{{route('admin.join-employee',$interview->id)}}">
@@ -226,8 +230,8 @@
                                                                                        value="1" CHECKED
                                                                                        class="checkbox-inline">
                                                                                 {{--<label style="padding: 2px;"><input type="file" style="display: none;"--}}
-                                                                                                                    {{--name="file_attach"--}}
-                                                                                                                    {{--class="form-control"><i class="icon-paper-clip"></i></label>--}}
+                                                                                {{--name="file_attach"--}}
+                                                                                {{--class="form-control"><i class="icon-paper-clip"></i></label>--}}
                                                                             </div>
 
                                                                         </div>

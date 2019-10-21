@@ -8,7 +8,6 @@ class Content extends Model
 {
     protected $guarded = [];
 
-
     public function c_history()
     {
         return $this->hasMany('App\CHistory', 'plan_id', 'id');

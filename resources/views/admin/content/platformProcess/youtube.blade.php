@@ -335,6 +335,7 @@
                                             <tr>
 
                                                 <td class="text-left">
+                                                    <span> {{HumanReadable::bytesToHuman(File::size(public_path($media->media))) }}</span>
                                                     <a target="_blank"
                                                        href="{{route('admin.download-source-file',$media->id)}}">
                                                         <button class="btn">{{$media->media}}</button>

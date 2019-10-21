@@ -19,3 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 route::post('post-job-application', 'Admin\JobApplicationController@jobApplicationsPostApi')->name('api.post-job-application');
+
+
+Route::prefix('portal')->namespace('ApiJobPortal')->group(function () {
+    Route::post('/sign-up', 'AuthApplicantController@signUpApplicant');
+    Route::post('/forget-password', 'AuthApplicantController@forgetEmailPassword');
+    Route::delete('/get-user/{userId}', 'AuthApplicantController@getUserForPasswordReset')->name('portal.get-user');
+
+});
